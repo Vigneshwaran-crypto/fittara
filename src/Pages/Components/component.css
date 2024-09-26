@@ -1,0 +1,131 @@
+.topBarHolder {
+  /* border: 1px solid plum; */
+  display: flex;
+  background-color: #f6f6f6;
+}
+
+.brandTextHolder {
+  display: flex;
+  /* border: 1px solid black; */
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  transition: 0.4s ease-in;
+  padding-inline: 0 !important;
+  gap: 25px;
+}
+
+/* .brandTextHolder:hover {
+  transition: 0.4s ease-out;
+  transform: scale(1.1);
+} */
+
+.brandText {
+  font-weight: 400;
+  letter-spacing: 1px;
+  font-size: 20px;
+  font-family: "Segoe UI" !important;
+}
+
+@media screen and (max-width: 576px) {
+  .dropMenuHolder {
+    display: none !important;
+  }
+  .topBarIconHolder {
+    padding-top: 4px;
+  }
+  .userIconButton {
+    display: flex !important;
+  }
+}
+
+.dropMenuHolder {
+  display: flex;
+  /* border: 1px solid black; */
+  justify-content: space-evenly;
+  align-items: center;
+}
+.searchBarHolder {
+  display: flex;
+  /* border: 1px solid black; */
+  justify-content: center;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  /* border: 1px solid black; */
+  width: 100%;
+  background-color: white;
+  padding-block: 4px;
+  border-radius: 5px;
+}
+
+.searchInput:focus {
+  outline: none;
+}
+
+.searchInput {
+  flex-grow: 1;
+  border: none;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  /* height: 96%; */
+}
+
+.topBarIconHolder {
+  display: flex;
+  /* border: 1px solid black; */
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+  /* padding-top: 3px; */
+}
+
+.userIconButton {
+  display: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-inline: 10px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 10px 18px;
+  text-decoration: none;
+  display: block;
+  font-family: serif;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropChevIcon {
+  transition: 0.4s ease-in;
+}
+
+.dropdown:hover .dropChevIcon {
+  transform: rotate(180deg);
+  transition: 0.5s ease-out;
+}

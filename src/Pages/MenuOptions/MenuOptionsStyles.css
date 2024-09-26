@@ -1,0 +1,570 @@
+.parentWrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: #f6f6f6;
+  background-color: white;
+  overflow-x: hidden;
+}
+
+.whiteDivider {
+  background-color: white;
+  display: flex;
+  height: 2px;
+}
+
+.contHolder {
+  display: flex;
+  flex-direction: row;
+  margin-top: 3px !important;
+  /* border: 2px solid red; */
+  height: 100%;
+  max-height: 100% !important;
+  width: 100%;
+  position: relative;
+}
+
+.sideBar {
+  /* border: 2px solid aqua; */
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: white;
+  height: 100%;
+  width: 100%;
+}
+
+.menuHolder {
+  /* border: 1px solid green; */
+  background-color: #f6f6f6;
+  height: 100%;
+  max-height: 100% !important;
+  padding-inline: 0 !important;
+  max-width: 15% !important;
+}
+
+.screenHolder {
+  /* border: 2px solid black; */
+  display: flex;
+  flex-grow: 1;
+  padding-inline: 0px;
+  height: 100%;
+  max-height: 100% !important;
+  width: 100% !important;
+  /* overflow: auto; */
+  overflow: hidden;
+  padding-inline: 0 !important;
+  background-color: white;
+  max-width: 100% !important;
+}
+
+.menuBar {
+  background-color: #f6f6f6;
+  /* border: 1px solid green !important; */
+  padding-inline: 2px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 
+--bs-breakpoint-xs: 0;
+    --bs-breakpoint-sm: 576px;
+    --bs-breakpoint-md: 768px;
+    --bs-breakpoint-lg: 992px;
+    --bs-breakpoint-xl: 1200px;
+    --bs-breakpoint-xxl: 1400px; */
+@media screen and (max-width: 576px) {
+  .contHolder {
+    /* border: 2px solid aquamarine !important; */
+  }
+
+  .menuBar {
+    background-color: #f6f6f6;
+    /* border: 1px solid red !important; */
+    height: 100% !important;
+    width: 45% !important;
+    padding-inline: 2px !important;
+    display: block;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transform: translateX(-100%);
+    transition: 0.5s ease-in-out;
+    position: absolute !important;
+    z-index: 1;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+      rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+    z-index: 50;
+  }
+
+  .css-dip3t8 {
+    padding-block: 5px !important;
+  }
+
+  .collapseButton {
+    display: none !important;
+  }
+  .userNameText,
+  .userMailText {
+    font-size: 9px !important;
+  }
+  .userAccDetailsHolder {
+    display: none !important;
+  }
+
+  .userProductHolder {
+    width: 100% !important;
+  }
+}
+
+/* actual menu container & userDetail container */
+.css-dip3t8 {
+  padding-block: 15px;
+  padding-top: 30px;
+  width: 100%;
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.css-1lslmti.ps-collapsed {
+  width: 70px !important;
+  min-width: 70px !important;
+}
+
+.ps-menu-button {
+  padding: 0 !important;
+  margin: 5px !important;
+}
+
+.MenuButton {
+  /* border: 1px solid red !important; */
+  gap: 12px !important;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 6px !important;
+  font-size: 15px;
+  padding-block: 8px !important;
+}
+
+.navigationScreens {
+  padding: 0 !important;
+  background-color: #f6f6f6 !important;
+  background-color: white !important;
+  border: 1px solid red !important;
+}
+
+.sideBarUserContainer {
+  display: flex;
+  /* border: 1px solid green; */
+  padding: 5px;
+  margin-bottom: 15px;
+}
+
+.userDetailButton {
+}
+
+.userDetailHolder {
+  /* border: 1px solid red; */
+  display: flex;
+  /* flex-direction: column; */
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  border-radius: 4px !important;
+  background-color: white !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.01) 0px 1px 2px 0px;
+  /* box-shadow: #aed2ff 0px 0px 5px 0px, #aed2ff 0px 0px 1px 0px; */
+  padding: 0 !important;
+  padding-block: 10px !important;
+  padding-inline: 5px !important;
+  gap: 3px;
+}
+
+.userTextHolder {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.userNameText {
+  /* border: 1px solid black; */
+  font-weight: 500;
+  font-size: 15px;
+  font-family: "Segoe UI";
+}
+
+.userMailText {
+  /* border: 1px solid black; */
+  font-weight: 500;
+  font-size: 12px;
+  font-family: "Segoe UI";
+}
+
+.loginLinkText {
+  padding-inline-start: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: "Segoe UI";
+  letter-spacing: 1px;
+}
+
+.collapseButton {
+  position: absolute !important;
+  /* border: 1px solid black; */
+  top: 5px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screenContainer {
+  /* border: 1px solid black; */
+  display: flex;
+  padding: 5px;
+  flex: 1;
+  /* gap: 5px; */
+}
+
+.userProductHolder {
+  /* border: 1px solid burlywood; */
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  /* padding-inline-end: 5px; */
+  /* background-color: #f6f6f6; */
+}
+
+.userAccDetailsHolder {
+  /* border: 1px solid brown; */
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  width: 30%;
+  background-color: #f6f6f6;
+}
+
+.userProfileContainer {
+  /* border: 1px solid black; */
+  display: flex;
+  /* flex: 1; */
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.userImageWrapper {
+  display: flex;
+  /* border: 1px solid black; */
+  justify-content: center;
+  /* flex: 0.8; */
+}
+
+.userImgHolder {
+  display: flex;
+  /* border: 1px solid green; */
+  overflow: hidden;
+  flex: 0.35;
+  flex: 0.45;
+  border-radius: 100%;
+  width: 100%;
+}
+
+.userImage {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.profileIconsHolder {
+  /* border: 1px solid black; */
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.iconTxtCombo {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+  align-items: center;
+}
+
+.iconNumTxt {
+  font-weight: 550;
+}
+
+.userDetailsContainer {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  flex-grow: 1.8;
+  padding: 10px;
+}
+
+.detailsInputsCont {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+}
+
+.addProductHolder {
+  /* border: 1px solid red; */
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  color: #757575;
+  font-family: "Segoe UI";
+}
+
+.noProductText {
+  font-size: 18px;
+}
+
+.addProductBt {
+  text-transform: none !important;
+}
+
+.inputGroup {
+  /* border: 1px solid brown; */
+  display: flex;
+  /* flex: 1; */
+  flex-direction: column;
+}
+
+.groupHeadTxt {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 550;
+  letter-spacing: 0.8px;
+  color: black;
+  padding-bottom: 8px;
+  display: flex;
+  /* border: 1px solid black; */
+  gap: 3px;
+}
+
+.inputItems {
+  padding-inline-start: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* border: 1px solid antiquewhite; */
+}
+
+.imagesUploadHolder {
+  /* border: 1px solid black; */
+  gap: 4px;
+  display: grid;
+  flex-direction: row;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 5px;
+  height: 150%;
+  flex-grow: 1;
+}
+
+.mainImageHolder {
+  border: 1px solid red;
+  display: flex;
+  border: 1px dashed #91bafe;
+  border-radius: 8px;
+  background-color: #f6f6f6;
+
+  height: 100%;
+  width: 100%;
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.imageIconHolder {
+  /* border: 1px solid red; */
+  display: flex;
+  flex: 1;
+  padding-block: 45px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  /* border: 1px dashed #91bafe; */
+}
+
+.prodActImage {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  border-radius: 8px;
+  object-fit: fill;
+}
+
+.editImgIcon {
+  z-index: 100;
+}
+
+.subImages {
+  /* border: 1px solid red; */
+  display: grid;
+  gap: 5px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.subImageItems {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #91bafe;
+  border-radius: 8px;
+  background-color: #f6f6f6;
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.colorImages {
+  /* border: 1px solid black; */
+  display: grid;
+  gap: 5px;
+  /* grid-template-columns: repeat(auto-fit, minmax(85px, 1fr)); */
+  grid-template-columns: repeat(auto-fit, minmax(90px, max-content));
+}
+
+.colImageItems {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #91bafe;
+  border-radius: 8px;
+  background-color: #f6f6f6;
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.baseContainer {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  height: 100%;
+  width: 100%;
+  max-height: 100% !important;
+
+  /* overflow: hidden !important; */
+}
+
+.addProdBodyCont {
+  display: flex;
+  flex: 1;
+  padding-inline: 10px !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-height: 90dvh !important; /*Matters for child scrolling*/
+  height: fit-content;
+  padding: 0 !important;
+  margin: 0 !important;
+  /* border: 1px solid blue; */
+  overflow: auto !important;
+}
+
+.productElementCont {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 0 !important;
+  /* padding-block: 10px !important; */
+  /* border: 1px solid aqua; */
+  padding: 15px !important;
+  /* min-height: 100dvh !important; */
+  gap: 20px;
+}
+
+.backContent {
+  display: flex;
+  gap: 10px;
+}
+
+.backTexts {
+  display: flex;
+  flex-direction: column;
+}
+
+.prevScrenText {
+  font-weight: 600;
+  font-size: 10px;
+  color: gray;
+}
+
+.screenTitle {
+  font-weight: 600;
+  font-size: 20px;
+  color: black;
+}
+/* Learn And Gain */
+.toolBar {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  border: 1px solid black;
+}
+
+.basePsdHolder {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  border: 1px solid black;
+}
+.psgImage {
+  display: flex;
+  height: 500px;
+  width: 100%;
+  object-fit: fill;
+  border: 1px solid green;
+}
+
+.canvasHolder {
+  display: flex;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  transition: all ease-in;
+  background-color: #f6f6f6;
+}
+
+.hoodComListHolder {
+  display: flex;
+  /* overflow-x: auto; */
+  overflow: hidden;
+  width: fit-content !important;
+}
+
+.meshItem {
+  display: flex;
+}
+
+.hoodComItem {
+  display: flex;
+  border: 1px solid green;
+  width: 30px !important;
+  min-width: 50px;
+  min-width: none !important;
+}
+
+.imgItem {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+}
