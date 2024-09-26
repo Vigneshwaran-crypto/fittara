@@ -5,7 +5,7 @@ import Register from "../Pages/Auth/Register.jsx";
 import NavigationRouter from "./NavigationRouter.jsx";
 const Router = () => {
   return (
-    <BrowserRouter basename="/khalipso">
+    <BrowserRouter basename="/Fittara">
       <Routes>
         <Route path="/register" index element={<Register />} />
         <Route path="/login" element={<LogIn />} />
