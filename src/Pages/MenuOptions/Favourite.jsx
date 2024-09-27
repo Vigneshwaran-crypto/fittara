@@ -2,7 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import Mug from "../../Component/Mug";
 import { Canvas } from "@react-three/fiber";
 import modelObj from "../../Assets/3dFiles/swater.glb";
-import { Decal, OrbitControls, useGLTF } from "@react-three/drei";
+import {
+  Bounds,
+  ContactShadows,
+  Decal,
+  Float,
+  OrbitControls,
+  useGLTF,
+} from "@react-three/drei";
 
 import ecomImg from "../../Assets/auth/ecomVector.jpg";
 import userImg from "../../Assets/auth/userProfile.png";
@@ -19,6 +26,20 @@ import { CanvasTexture, LinearFilter, NearestFilter } from "three";
 import { SketchPicker } from "react-color";
 import "./MenuOptionsStyles.css";
 import * as THREE from "three";
+import { Button, Container } from "react-bootstrap";
+import {
+  Autocomplete,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField,
+} from "@mui/material";
+import { LuImagePlus } from "react-icons/lu";
+import { fonts, inpStye, sampleProducts, selStyle } from "../Components/utils";
+import { AiOutlineCheck } from "react-icons/ai";
 
 const Favorites = (props) => {
   const { nodes, materials } = useGLTF(modelObj);
@@ -375,6 +396,9 @@ const Favorites = (props) => {
       id: 1,
       part: "Hoodie",
       node: "g_Hoodie_Hoodie_0_1",
+      position: [0, -1.3, 0],
+      opacity: 0.2,
+      blur: 1,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_1.geometry}
@@ -386,6 +410,9 @@ const Favorites = (props) => {
       id: 2,
       part: "Front",
       node: "g_Hoodie_Hoodie_0_3",
+      position: [0, -0.85, 0],
+      opacity: 0.8,
+      blur: 1,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_3.geometry}
@@ -397,6 +424,9 @@ const Favorites = (props) => {
       id: 3,
       part: "Pocket",
       node: "g_Hoodie_Hoodie_0_2",
+      position: [0, -1, 0],
+      opacity: 2,
+      blur: 1,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_2.geometry}
@@ -408,6 +438,9 @@ const Favorites = (props) => {
       id: 4,
       part: "Back",
       node: "g_Hoodie_Hoodie_0_5",
+      position: [0, -1.1, 0],
+      opacity: 0.8,
+      blur: 2,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_5.geometry}
@@ -419,6 +452,9 @@ const Favorites = (props) => {
       id: 5,
       part: "Left Hand",
       node: "g_Hoodie_Hoodie_0_6",
+      position: [-0.1, -0.9, 0],
+      opacity: 0.2,
+      blur: 0.8,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_6.geometry}
@@ -430,6 +466,9 @@ const Favorites = (props) => {
       id: 6,
       part: "Right Hand",
       node: "g_Hoodie_Hoodie_0_8",
+      position: [0.1, -0.9, 0],
+      opacity: 0.2,
+      blur: 0.8,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_8.geometry}
@@ -441,6 +480,9 @@ const Favorites = (props) => {
       id: 7,
       part: "Left Cuff",
       node: "g_Hoodie_Hoodie_0_7",
+      position: [0, 0, 0],
+      opacity: 0,
+      blur: 0,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_7.geometry}
@@ -452,6 +494,9 @@ const Favorites = (props) => {
       id: 8,
       part: "Right Cuff",
       node: "g_Hoodie_Hoodie_0_9",
+      position: [0, 0, 0],
+      opacity: 0,
+      blur: 0,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_9.geometry}
@@ -463,6 +508,9 @@ const Favorites = (props) => {
       id: 9,
       part: "Cap",
       node: "g_Hoodie_Hoodie_0_4",
+      position: [0, -0.0, 0],
+      opacity: 0.3,
+      blur: 1,
       mesh: (
         <mesh
           geometry={nodes.g_Hoodie_Hoodie_0_4.geometry}
@@ -703,24 +751,6 @@ const Favorites = (props) => {
     setDraggingIndex(null);
   };
 
-  // const handleScaleChange = (newScale) => {
-  //   console.log("handleScaleChange :", newScale);
-
-  //   const changetxture = texture.map((item) => {
-  //     if (item.part === partName) {
-  //       item.images[chosenInd].scale = newScale;
-  //       chosenComp.images[chosenInd].scale = newScale;
-  //       setImageLoaded(true);
-  //       return item;
-  //     } else {
-  //       return item;
-  //     }
-  //   });
-
-  //   console.log("ipdated scale image front :", changetxture);
-  //   setTexture(changetxture);
-  // };
-
   const handleScaleChange = (newScale) => {
     console.log("handleScaleChange", chosenInd);
     console.log("chosenComp", chosenComp);
@@ -858,196 +888,290 @@ const Favorites = (props) => {
   };
 
   return (
-    <div style={{ display: "flex", height: "100%" }}>
-      {/* <Canvas>
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-
-        {texture?.map((item) => (
-          <>
-            <mesh geometry={item.geo} material={item.mat}>
-              <meshBasicMaterial
-                toneMapped={false}
-                onUpdate={(self) => (self.needsUpdate = true)}
-                color={color}
-              />
-            </mesh>
-
-            <mesh ref={item.ref} geometry={item.geo} material={item.mat}>
-              <meshStandardMaterial
-                toneMapped={false}
-                onUpdate={(self) => (self.needsUpdate = true)}
-                map={item.txture}
-                color={0xffffff}
-              />
-            </mesh>
-          </>
-        ))}
-        <OrbitControls />
-      </Canvas> */}
-
-      <Canvas gl={{ outputEncoding: LinearFilter }} flat={true}>
-        <ambientLight intensity={2.5} />
-        <pointLight position={[10, 10, 10]} />
-        {texture?.map((item) => (
-          <mesh key={item.id} geometry={item.geo} ref={item.ref}>
-            <meshPhysicalMaterial
-              toneMapped={false}
-              attach="material"
-              onUpdate={(self) => (self.needsUpdate = true)}
-              map={item.txture}
-              color={0xffffff}
-            />
-          </mesh>
-        ))}
-        <OrbitControls />
-      </Canvas>
-
-      <div style={{ width: "50%", padding: "10px" }}>
-        <h3>UV Map of 3D Model:</h3>
-
-        <div className="hoodComListHolder">
-          {hoodComs.map((item, ind) => (
-            <Canvas
-              className="hoodComItem"
-              style={{ borderColor: partName === item.part ? "red" : "green" }}
-              onClick={onItemMeshClick.bind(this, item, ind)}
-            >
-              {item.mesh} <OrbitControls />
-            </Canvas>
-          ))}
+    <Container fluid className="navigationScreens">
+      <div className="favConts">
+        <div className="modelObjHolder">
+          <Canvas gl={{ outputEncoding: LinearFilter }} flat={true}>
+            <ambientLight intensity={2.5} />
+            <pointLight position={[10, 10, 10]} />
+            {texture?.map((item) => (
+              <mesh key={item.id} geometry={item.geo} ref={item.ref}>
+                <meshPhysicalMaterial
+                  toneMapped={false}
+                  attach="material"
+                  onUpdate={(self) => (self.needsUpdate = true)}
+                  map={item.txture}
+                  color={0xffffff}
+                />
+              </mesh>
+            ))}
+            <OrbitControls />
+            <ContactShadows position-y={-1.2} opacity={0.7} blur={4} />
+          </Canvas>
         </div>
 
-        <canvas
-          ref={canvasRef}
-          id="uvCanvas"
-          onMouseDown={handleMouseDown}
-          style={{
-            border: "1px solid red",
-            width: "100%",
-            // height: "400px",
-            cursor: "grab",
-            display: "none",
-          }}
-        />
+        <div className="editorHolder">
+          <div className="comTabListHolder">
+            {hoodComs.map((item, ind) => (
+              <div className="hoodComItem">
+                <Canvas
+                  style={{
+                    border: partName === item.part ? "1px solid grey" : "",
+                    borderRadius: "8px",
+                  }}
+                  className="meshItem"
+                  onClick={onItemMeshClick.bind(this, item, ind)}
+                >
+                  <Bounds
+                    fit
+                    clip
+                    observe
+                    margin={partName === item.part ? 0.8 : 1}
+                  >
+                    {partName === item.part ? (
+                      <Float>{item.mesh}</Float>
+                    ) : (
+                      <>{item.mesh}</>
+                    )}
+                  </Bounds>
 
-        <div className="hoodComListHolder">
-          {chosenComp.images.map((item, ind) => (
-            <img
-              key={ind}
-              src={item.src}
-              className="imgItem"
-              onClick={onComImgClick.bind(this, ind)}
-              style={{
-                border: chosenInd === ind ? "1px solid red" : "1px solid green",
-              }}
-            />
-          ))}
+                  {partName === item.part ? (
+                    <ContactShadows
+                      position={item.position}
+                      opacity={item.opacity}
+                      blur={item.blur}
+                    />
+                  ) : null}
 
-          {chosenComp.texts.map((item) => (
-            <span>{item.text}</span>
-          ))}
-        </div>
+                  <ambientLight
+                    color={partName === item.part ? "pink" : "grey"}
+                    intensity={2.5}
+                  />
+                </Canvas>
+              </div>
+            ))}
+          </div>
 
-        {/* {images.map((img, index) => ( */}
-        <div style={{ marginTop: "10px" }}>
-          <label>
-            Image Scale
-            <input
-              type="range"
-              min="0.1"
-              max="10"
-              step="0.1"
-              value={chosenComp.images[chosenInd].scale}
-              onChange={(e) => handleScaleChange(parseFloat(e.target.value))}
-            />
-          </label>
-          <br />
-
-          <label>
-            Image Rotation:
-            <input
-              type="range"
-              min="1"
-              max="1000"
-              step={"0.1"}
-              value={chosenComp.images[chosenInd].rotation}
-              onChange={(e) => handleRotationChange(parseFloat(e.target.value))}
-            />
-          </label>
-
-          <label>
-            Image X
-            <input
-              type="range"
-              min="1"
-              max="1000"
-              step={"0.1"}
-              value={chosenComp.images[chosenInd].position.x}
-              onChange={(e) => handleX(parseFloat(e.target.value))}
-            />
-          </label>
-
-          <label>
-            Image Y
-            <input
-              type="range"
-              min="1"
-              max="1000"
-              step={"0.1"}
-              value={chosenComp.images[chosenInd].position.y}
-              onChange={(e) => handleY(parseFloat(e.target.value))}
-            />
-          </label>
-        </div>
-        {/* ))} */}
-
-        {/* {texts.map((text, index) => ( */}
-        <div style={{ marginTop: "10px" }}>
-          <label>
-            Text Scale:
-            <input
-              type="range"
-              min="0.1"
-              max="200"
-              step="0.1"
-              // value={text.scale}
-              // onChange={(e) =>
-              //   handleTextScaleChange(index, parseFloat(e.target.value))
-              // }
-
-              value={chosenComp.texts[chosenInd].scale}
-              onChange={(e) =>
-                handleTextScaleChange(parseFloat(e.target.value))
-              }
-            />
-          </label>
-          <br />
-          <label>
-            Text Rotation:
-            <input
-              type="range"
-              min="0.1"
-              max="360"
-              step="0.1"
-              value={chosenComp.texts[chosenInd].rotation}
-              onChange={(e) =>
-                handleTextRotationChange(parseFloat(e.target.value))
-              }
-            />
-          </label>
-        </div>
-        {/* ))} */}
-
-        <div>
-          <SketchPicker
-            color={color}
-            // color={ chosenComp.color}
-            onChangeComplete={(color) => handleColorChange(color)}
+          <canvas
+            ref={canvasRef}
+            id="uvCanvas"
+            onMouseDown={handleMouseDown}
+            style={{
+              border: "1px solid red",
+              width: "100%",
+              // height: "400px",
+              cursor: "grab",
+              display: "none",
+            }}
           />
+
+          <div className="hoodComListHolder">
+            <div className="comImgListHolder">
+              {chosenComp.images.map((item, ind) => (
+                <div className="comImgHolder">
+                  <img
+                    key={ind}
+                    src={item.src}
+                    className="imgItem"
+                    onClick={onComImgClick.bind(this, ind)}
+                    style={{
+                      border: chosenInd === ind ? "1px solid grey" : "",
+                      borderRadius: "8px",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="comTxtListHolder">
+              {chosenComp.texts.map((item, ind) => (
+                <span
+                  className="comTxtItem"
+                  style={{
+                    border: chosenInd === ind ? "1px solid grey" : "",
+                    borderRadius: "8px",
+                  }}
+                >
+                  {item.text}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <hr style={{ padding: "5px 0px", margin: 0 }} />
+
+          <div className="editingPallateHolder">
+            <div className="imgtxtUploadHolder">
+              {/* <IconButton>
+                <LuImagePlus color="#1665C0" />
+              </IconButton> */}
+
+              <TextField
+                size="small"
+                label="Print Text"
+                variant="standard"
+                fullWidth
+                sx={inpStye}
+                // onChange={(e) =>
+                //   setNewColor({ ...newColor, name: e.target.value })
+                // }
+                // value={newColor.name}
+                // error={colValid && !newColor.name}
+              />
+
+              <Autocomplete
+                freeSolo
+                options={fonts}
+                size="small"
+                getOptionLabel={(option) => (option.name ? option.name : "")}
+                fullWidth
+                renderInput={(param) => (
+                  <TextField
+                    {...param}
+                    size="small"
+                    label="Fonts"
+                    fullWidth
+                    variant="standard"
+                    placeholder="Search"
+                    sx={inpStye}
+                    // error={
+                    //   validate && !product.name?.product && !product.typedName
+                    // }
+                  />
+                )}
+                // value={product.name}
+                // onInputChange={(e, val) => {
+                //   console.log("onInputChange : ", val);
+                //   setProduct({
+                //     ...product,
+                //     typedName: val,
+                //   });
+                // }}
+                // onChange={(e, val) => {
+                //   console.log("onChange : ", val);
+                //   setProduct({
+                //     ...product,
+                //     name: val,
+                //   });
+                // }}
+                renderOption={(props, item, { selected }) => (
+                  <MenuItem
+                    style={{ fontFamily: item.name }}
+                    {...props}
+                    id={item.id}
+                    value={item.name}
+                  >
+                    {item.name}
+                  </MenuItem>
+                )}
+              />
+
+              <IconButton
+                style={{
+                  backgroundColor: "green",
+                  boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
+                }}
+                // onClick={onNewColSave}
+              >
+                <AiOutlineCheck size={17} color={"white"} />
+              </IconButton>
+            </div>
+
+            <div style={{ marginTop: "10px" }}>
+              <label>
+                Image Scale
+                <input
+                  type="range"
+                  min="0.1"
+                  max="10"
+                  step="0.1"
+                  value={chosenComp.images[chosenInd].scale}
+                  onChange={(e) =>
+                    handleScaleChange(parseFloat(e.target.value))
+                  }
+                />
+              </label>
+              <br />
+
+              <label>
+                Image Rotation:
+                <input
+                  type="range"
+                  min="1"
+                  max="1000"
+                  step={"0.1"}
+                  value={chosenComp.images[chosenInd].rotation}
+                  onChange={(e) =>
+                    handleRotationChange(parseFloat(e.target.value))
+                  }
+                />
+              </label>
+
+              <label>
+                Image X
+                <input
+                  type="range"
+                  min="1"
+                  max="1000"
+                  step={"0.1"}
+                  value={chosenComp.images[chosenInd].position.x}
+                  onChange={(e) => handleX(parseFloat(e.target.value))}
+                />
+              </label>
+
+              <label>
+                Image Y
+                <input
+                  type="range"
+                  min="1"
+                  max="1000"
+                  step={"0.1"}
+                  value={chosenComp.images[chosenInd].position.y}
+                  onChange={(e) => handleY(parseFloat(e.target.value))}
+                />
+              </label>
+            </div>
+
+            <div style={{ marginTop: "10px" }}>
+              <label>
+                Text Scale:
+                <input
+                  type="range"
+                  min="0.1"
+                  max="200"
+                  step="0.1"
+                  value={chosenComp.texts[chosenInd].scale}
+                  onChange={(e) =>
+                    handleTextScaleChange(parseFloat(e.target.value))
+                  }
+                />
+              </label>
+              <br />
+              <label>
+                Text Rotation:
+                <input
+                  type="range"
+                  min="0.1"
+                  max="360"
+                  step="0.1"
+                  value={chosenComp.texts[chosenInd].rotation}
+                  onChange={(e) =>
+                    handleTextRotationChange(parseFloat(e.target.value))
+                  }
+                />
+              </label>
+            </div>
+
+            <div>
+              <SketchPicker
+                color={color}
+                onChangeComplete={(color) => handleColorChange(color)}
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

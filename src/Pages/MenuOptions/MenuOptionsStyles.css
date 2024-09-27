@@ -154,7 +154,7 @@
   padding: 0 !important;
   background-color: #f6f6f6 !important;
   background-color: white !important;
-  border: 1px solid red !important;
+  /* border: 1px solid red !important; */
 }
 
 .sideBarUserContainer {
@@ -544,27 +544,113 @@
   background-color: #f6f6f6;
 }
 
-.hoodComListHolder {
+.favConts {
   display: flex;
-  /* overflow-x: auto; */
-  overflow: hidden;
-  width: fit-content !important;
+  height: 100%;
+  width: 100%;
 }
 
-.meshItem {
+.modelObjHolder {
+  /* border: 1px solid black; */
   display: flex;
+  flex: 2;
+}
+
+.editorHolder {
+  /* border: 1px solid black; */
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: #f6f6f6;
+  overflow: hidden;
+}
+
+.comTabListHolder {
+  display: flex;
+  overflow-x: auto;
+  /* border: 1px solid pink; */
+  /* height: 12%; */
+  flex: 0.5;
+  padding: 3px;
+  gap: 5px;
+  scrollbar-width: thin;
 }
 
 .hoodComItem {
   display: flex;
-  border: 1px solid green;
-  width: 30px !important;
-  min-width: 50px;
-  min-width: none !important;
+  /* border: 1px solid green;  */
+  border-radius: 8px;
+  height: 100%;
+  width: 15%;
+}
+
+.meshItem {
+  /* border: 1px solid red; */
+}
+
+.hoodComListHolder {
+  display: flex;
+  flex-direction: column;
+  /* flex: 0.5; */
+  width: 100%;
+  /* overflow-x: auto; */
+  overflow: hidden;
+  width: fit-content !important;
+  justify-content: space-evenly;
+  /* border: 1px solid #91bafe; */
+}
+
+.comImgListHolder {
+  display: flex;
+  /* flex: 1; */
+  overflow-x: auto;
+  padding: 3px;
+  gap: 3px;
+  /* border: 1px solid magenta; */
+}
+
+.comImgHolder {
+  display: flex;
+  flex: 1;
+  height: 10%;
+  width: 20%;
 }
 
 .imgItem {
   height: 50px;
   width: 50px;
+  /* height: 100%;
+  width: 100%; */
   object-fit: contain;
+}
+
+.comTxtListHolder {
+  display: flex;
+  /* flex: 1; */
+  overflow-x: auto;
+  padding: 3px;
+  gap: 3px;
+  /* border: 1px solid magenta; */
+}
+
+.comTxtItem {
+  display: flex;
+  border: 1px solid black;
+  align-self: center;
+  padding-inline: 5px;
+}
+
+.editingPallateHolder {
+  display: flex;
+  flex-direction: column;
+  flex: 2.5;
+  /* border: 1px solid red; */
+}
+
+.imgtxtUploadHolder {
+  /* border: 1px solid black; */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-inline: 5px;
 }
