@@ -563,6 +563,8 @@
   flex-direction: column;
   background-color: #f6f6f6;
   overflow: hidden;
+  /* border: 1px solid magenta; */
+  padding-inline: 12px;
 }
 
 .comTabListHolder {
@@ -574,6 +576,7 @@
   padding: 3px;
   gap: 5px;
   scrollbar-width: thin;
+  /* border: 1px solid magenta; */
 }
 
 .hoodComItem {
@@ -598,6 +601,7 @@
   width: fit-content !important;
   justify-content: space-evenly;
   /* border: 1px solid #91bafe; */
+  /* border: 1px solid magenta; */
 }
 
 .comImgListHolder {
@@ -622,6 +626,7 @@
   /* height: 100%;
   width: 100%; */
   object-fit: contain;
+  border: 1px solid transparent;
 }
 
 .comTxtListHolder {
@@ -635,7 +640,7 @@
 
 .comTxtItem {
   display: flex;
-  border: 1px solid black;
+  border: 1px solid transparent;
   align-self: center;
   padding-inline: 5px;
 }
@@ -643,8 +648,11 @@
 .editingPallateHolder {
   display: flex;
   flex-direction: column;
+  /* justify-content: space-evenly; */
   flex: 2.5;
   /* border: 1px solid red; */
+  /* padding-inline: 8px; */
+  gap: 10px;
 }
 
 .imgtxtUploadHolder {
@@ -652,5 +660,32 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-inline: 5px;
+  /* padding-inline: 5px; */
+  /* border: 1px solid magenta; */
+}
+
+.rangesHolder {
+  /* border: 1px solid magenta; */
+  display: flex;
+  flex-direction: column;
+  /* padding-block: 5px; */
+}
+
+.rangeItem {
+  /* border: 1px solid black; */
+  display: flex;
+  /* padding: 2px 3px; */
+}
+
+.rangeLabel {
+  font-size: medium;
+  font-family: serif;
+  width: 45%;
+}
+
+.colorPickerHolder {
+  display: flex;
+  /* border: 1px solid magenta; */
+  /* align-items: center; */
+  justify-content: center;
 }

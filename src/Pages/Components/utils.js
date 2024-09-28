@@ -557,6 +557,23 @@ export const isDarkHex = (rgb) => {
 //   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 // };
 
+export const hexToRgba = (hex, alpha) => {
+  let r = parseInt(hex.slice(1, 3), 16);
+  let g = parseInt(hex.slice(3, 5), 16);
+  let b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+export const rgbaToHex = (r, g, b, a) => {
+  const toHex = (n) => {
+    let hex = n.toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+  };
+
+  const alpha = Math.round(a * 255); // Convert alpha to 0-255 scale
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}${toHex(alpha)}`;
+};
+
 export const productCategories = [
   { id: 1, category: "Accessories" },
   { id: 2, category: "Art & Craft" },

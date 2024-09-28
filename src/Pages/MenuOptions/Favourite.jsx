@@ -30,15 +30,25 @@ import { Button, Container } from "react-bootstrap";
 import {
   Autocomplete,
   FormControl,
+  hexToRgb,
   IconButton,
   InputLabel,
   MenuItem,
   OutlinedInput,
+  rgbToHex,
   Select,
+  Slider,
   TextField,
 } from "@mui/material";
 import { LuImagePlus } from "react-icons/lu";
-import { fonts, inpStye, sampleProducts, selStyle } from "../Components/utils";
+import {
+  fonts,
+  hexToRgba,
+  inpStye,
+  rgbaToHex,
+  sampleProducts,
+  selStyle,
+} from "../Components/utils";
 import { AiOutlineCheck } from "react-icons/ai";
 
 const Favorites = (props) => {
@@ -56,11 +66,15 @@ const Favorites = (props) => {
   const [isDraggingText, setDraggingText] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const rerenderer = useRef(0);
-
-  const meshRef = useRef();
-
   const [incre, setIncre] = useState(0);
+  const [isImg, setIsImg] = useState(true);
+
+  const [printTxt, setPrintTxt] = useState("");
+  const [printFont, setPrintFont] = useState({
+    id: 1,
+    name: "Arial",
+  });
+  const [isValid, setIsValid] = useState(false);
 
   const [chosenComp, setChosenComp] = useState({
     id: 2,
@@ -69,7 +83,6 @@ const Favorites = (props) => {
     mat: materials.Hoodie,
     txture: null,
     color: "",
-    txts: [{ txt: "", font: "" }],
     ref: useRef(null),
     images: [
       {
@@ -90,7 +103,7 @@ const Favorites = (props) => {
     texts: [
       {
         text: "Front",
-        font: "",
+        font: "Arial",
         position: { x: 300, y: 300 },
         rotation: 0,
         scale: 1,
@@ -108,7 +121,6 @@ const Favorites = (props) => {
       geo: nodes.g_Hoodie_Hoodie_0_1.geometry,
       mat: materials.Hoodie,
       txture: null,
-      txts: [{ txt: "", font: "" }],
       color: "#FFFEFE",
       ref: useRef(null),
       images: [
@@ -130,7 +142,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Hoodie",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -144,7 +156,6 @@ const Favorites = (props) => {
       mat: materials.Hoodie,
       txture: null,
       color: "#FFFEFE",
-      txts: [{ txt: "", font: "" }],
       ref: useRef(null),
       images: [
         {
@@ -165,7 +176,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Front",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -179,7 +190,6 @@ const Favorites = (props) => {
       mat: materials.poacket,
       txture: null,
       color: "#FFFEFE",
-      txts: [{ txt: "", font: "" }],
       ref: useRef(null),
       images: [
         {
@@ -193,7 +203,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Pocket",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -207,7 +217,6 @@ const Favorites = (props) => {
       mat: materials.back,
       txture: null,
       color: "#FFFEFE",
-      txts: [{ txt: "", font: "" }],
       ref: useRef(null),
       images: [
         {
@@ -221,7 +230,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Back",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -235,7 +244,6 @@ const Favorites = (props) => {
       mat: materials.left,
       txture: null,
       color: "#FFFEFE",
-      txts: [{ txt: "", font: "" }],
       ref: useRef(null),
       images: [
         {
@@ -249,7 +257,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Left Hand",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -262,7 +270,6 @@ const Favorites = (props) => {
       geo: nodes.g_Hoodie_Hoodie_0_8.geometry,
       mat: materials.right,
       txture: null,
-      txts: [{ txt: "", font: "" }],
       ref: useRef(null),
       images: [
         {
@@ -276,7 +283,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Right Hand",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -290,7 +297,6 @@ const Favorites = (props) => {
       mat: materials.lcuff,
       txture: null,
       color: "#FFFEFE",
-      txts: [{ txt: "", font: "" }],
       ref: useRef(null),
       images: [
         {
@@ -304,7 +310,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Left Cuff",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -318,7 +324,6 @@ const Favorites = (props) => {
       mat: materials.rcuff,
       txture: null,
       color: "#FFFEFE",
-      txts: [{ txt: "", font: "" }],
       ref: useRef(null),
       images: [
         {
@@ -332,7 +337,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Right Cuff",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -359,7 +364,7 @@ const Favorites = (props) => {
       texts: [
         {
           text: "Sample Text 1",
-          font: "",
+          font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -388,7 +393,7 @@ const Favorites = (props) => {
     },
   ]);
 
-  const [color, setColor] = useState("#ffffff"); // State to hold the selected color
+  const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" }); // State to hold the selected color
   const imgElements = useRef([]);
 
   const hoodComs = [
@@ -609,7 +614,7 @@ const Favorites = (props) => {
         ctx.translate(textItem.position.x, textItem.position.y);
         ctx.rotate((textItem.rotation * Math.PI) / 180);
         ctx.scale(textItem.scale, textItem.scale);
-        ctx.font = "30px Helvetica"; // Set your desired font
+        ctx.font = "30px " + textItem.font; // Set your desired font
         ctx.fillStyle = "#000"; // Text color
         ctx.fillText(textItem.text, 0, 0);
         ctx.restore();
@@ -638,7 +643,7 @@ const Favorites = (props) => {
   }, [
     // images,
     imageLoaded,
-    color,
+    color.hex,
     texts,
     partName,
     // chosenComp.images[chosenInd].scale,
@@ -757,10 +762,8 @@ const Favorites = (props) => {
 
     const updatedTextures = texture.map((item) => {
       if (item.part === chosenComp.part) {
-        console.log("handleScaleChange", item);
-
-        item.images[chosenInd].scale = newScale;
-        chosenComp.images[chosenInd].scale = newScale;
+        item[isImg ? "images" : "texts"][chosenInd].scale = newScale;
+        chosenComp[isImg ? "images" : "texts"][chosenInd].scale = newScale;
         return item;
       }
       return item;
@@ -775,8 +778,9 @@ const Favorites = (props) => {
   const handleRotationChange = (newRotation) => {
     const updatedTextures = texture.map((item) => {
       if (item.part === partName) {
-        item.images[chosenInd].rotation = newRotation;
-        chosenComp.images[chosenInd].rotation = newRotation;
+        item[isImg ? "images" : "texts"][chosenInd].rotation = newRotation;
+        chosenComp[isImg ? "images" : "texts"][chosenInd].rotation =
+          newRotation;
         return item;
       }
       return item;
@@ -789,8 +793,8 @@ const Favorites = (props) => {
   const handleX = (newPos) => {
     const updatedTextures = texture.map((item) => {
       if (item.part === partName) {
-        item.images[chosenInd].position.x = newPos;
-        chosenComp.images[chosenInd].position.x = newPos;
+        item[isImg ? "images" : "texts"][chosenInd].position.x = newPos;
+        chosenComp[isImg ? "images" : "texts"][chosenInd].position.x = newPos;
         return item;
       }
       return item;
@@ -803,8 +807,8 @@ const Favorites = (props) => {
   const handleY = (newPos) => {
     const updatedTextures = texture.map((item) => {
       if (item.part === partName) {
-        item.images[chosenInd].position.y = newPos;
-        chosenComp.images[chosenInd].position.y = newPos;
+        item[isImg ? "images" : "texts"][chosenInd].position.y = newPos;
+        chosenComp[isImg ? "images" : "texts"][chosenInd].position.y = newPos;
         return item;
       }
       return item;
@@ -843,7 +847,12 @@ const Favorites = (props) => {
   };
 
   const handleColorChange = (color) => {
-    const col = color.hex;
+    console.log("handleColorChange :", color);
+    const { hex, rgb } = color;
+    console.log("NONconverted rgba to hex :", hex);
+    const col = rgbaToHex(rgb.r, rgb.g, rgb.b, rgb.a);
+    console.log("converted rgba to hex :", col);
+    // const col = rgbToHex(rgb);
 
     const updatedTextures = texture.map((item) => {
       if (item.part === partName) {
@@ -856,7 +865,13 @@ const Favorites = (props) => {
 
     setTexture(updatedTextures);
     // setIncre(incre + 1);
-    setColor(col); // Update the color state
+    // setColor(col); // Update the color state
+
+    setColor({
+      hex: hex,
+      alpha: rgb.a, // Extract alpha value from RGBA object
+      rgb,
+    });
   };
 
   useEffect(() => {
@@ -879,12 +894,41 @@ const Favorites = (props) => {
     const meshItem = texture.find((item) => item.id === val.id);
     setChosenComp(meshItem);
     setChosenInd(0);
-
+    setIsValid(false);
+    setPrintFont({ id: "", name: "" });
+    setPrintTxt("");
     // setColor(meshItem.color ? meshItem.color : "#FFFEFE");
   };
 
-  const onComImgClick = (ind) => {
+  const onComImgClick = (ind, img) => {
+    setIsImg(img);
     setChosenInd(ind);
+  };
+
+  const onTxtPrintConfirm = () => {
+    setIsValid(true);
+
+    if (printTxt && printFont.id) {
+      const textSamp = {
+        text: printTxt,
+        font: printFont.name,
+        position: { x: 0, y: 0 },
+        rotation: 0,
+        scale: 1,
+      };
+
+      const updatedTextures = texture.map((item) => {
+        if (item.id === chosenComp.id) {
+          item.texts.push(textSamp);
+          chosenComp.texts.push(textSamp);
+          return item;
+        }
+        return item;
+      });
+
+      setTexture(updatedTextures);
+      setIncre(incre + 1);
+    }
   };
 
   return (
@@ -973,9 +1017,10 @@ const Favorites = (props) => {
                     key={ind}
                     src={item.src}
                     className="imgItem"
-                    onClick={onComImgClick.bind(this, ind)}
+                    onClick={onComImgClick.bind(this, ind, true)}
                     style={{
-                      border: chosenInd === ind ? "1px solid grey" : "",
+                      border:
+                        isImg && chosenInd === ind ? "1px solid grey" : "",
                       borderRadius: "8px",
                     }}
                   />
@@ -985,20 +1030,21 @@ const Favorites = (props) => {
 
             <div className="comTxtListHolder">
               {chosenComp.texts.map((item, ind) => (
-                <span
+                <div
                   className="comTxtItem"
+                  onClick={onComImgClick.bind(this, ind, false)}
                   style={{
-                    border: chosenInd === ind ? "1px solid grey" : "",
+                    border: !isImg && chosenInd === ind ? "1px solid grey" : "",
                     borderRadius: "8px",
                   }}
                 >
                   {item.text}
-                </span>
+                </div>
               ))}
             </div>
           </div>
 
-          <hr style={{ padding: "5px 0px", margin: 0 }} />
+          <hr style={{ padding: "2px 0px", margin: 0 }} />
 
           <div className="editingPallateHolder">
             <div className="imgtxtUploadHolder">
@@ -1012,11 +1058,9 @@ const Favorites = (props) => {
                 variant="standard"
                 fullWidth
                 sx={inpStye}
-                // onChange={(e) =>
-                //   setNewColor({ ...newColor, name: e.target.value })
-                // }
-                // value={newColor.name}
-                // error={colValid && !newColor.name}
+                onChange={(e) => setPrintTxt(e.target.value)}
+                value={printTxt}
+                error={isValid && !printTxt}
               />
 
               <Autocomplete
@@ -1034,12 +1078,10 @@ const Favorites = (props) => {
                     variant="standard"
                     placeholder="Search"
                     sx={inpStye}
-                    // error={
-                    //   validate && !product.name?.product && !product.typedName
-                    // }
+                    error={isValid && !printFont.name}
                   />
                 )}
-                // value={product.name}
+                value={printFont}
                 // onInputChange={(e, val) => {
                 //   console.log("onInputChange : ", val);
                 //   setProduct({
@@ -1047,13 +1089,10 @@ const Favorites = (props) => {
                 //     typedName: val,
                 //   });
                 // }}
-                // onChange={(e, val) => {
-                //   console.log("onChange : ", val);
-                //   setProduct({
-                //     ...product,
-                //     name: val,
-                //   });
-                // }}
+                onChange={(e, val) => {
+                  console.log("onChange font : ", val);
+                  setPrintFont(val);
+                }}
                 renderOption={(props, item, { selected }) => (
                   <MenuItem
                     style={{ fontFamily: item.name }}
@@ -1071,68 +1110,75 @@ const Favorites = (props) => {
                   backgroundColor: "green",
                   boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
                 }}
-                // onClick={onNewColSave}
+                onClick={onTxtPrintConfirm}
               >
-                <AiOutlineCheck size={17} color={"white"} />
+                <AiOutlineCheck size={12} color={"white"} />
               </IconButton>
             </div>
 
-            <div style={{ marginTop: "10px" }}>
-              <label>
-                Image Scale
-                <input
-                  type="range"
-                  min="0.1"
-                  max="10"
-                  step="0.1"
-                  value={chosenComp.images[chosenInd].scale}
+            <div className="rangesHolder">
+              <div className="rangeItem">
+                <label className="rangeLabel">Scale</label>
+                <Slider
+                  size="small"
+                  step={0.1}
+                  min={0.1}
+                  max={10}
+                  value={
+                    chosenComp[isImg ? "images" : "texts"][chosenInd].scale
+                  }
                   onChange={(e) =>
                     handleScaleChange(parseFloat(e.target.value))
                   }
                 />
-              </label>
-              <br />
+              </div>
 
-              <label>
-                Image Rotation:
-                <input
-                  type="range"
-                  min="1"
-                  max="1000"
-                  step={"0.1"}
-                  value={chosenComp.images[chosenInd].rotation}
+              <div className="rangeItem">
+                <label className="rangeLabel">Rotation</label>
+                <Slider
+                  size="small"
+                  step={0.1}
+                  min={1}
+                  max={1000}
+                  value={
+                    chosenComp[isImg ? "images" : "texts"][chosenInd].rotation
+                  }
                   onChange={(e) =>
                     handleRotationChange(parseFloat(e.target.value))
                   }
                 />
-              </label>
+              </div>
 
-              <label>
-                Image X
-                <input
-                  type="range"
-                  min="1"
-                  max="1000"
-                  step={"0.1"}
-                  value={chosenComp.images[chosenInd].position.x}
+              <div className="rangeItem">
+                <label className="rangeLabel">Vertical</label>
+                <Slider
+                  size="small"
+                  step={0.1}
+                  min={1}
+                  max={1000}
+                  value={
+                    chosenComp[isImg ? "images" : "texts"][chosenInd].position.x
+                  }
                   onChange={(e) => handleX(parseFloat(e.target.value))}
                 />
-              </label>
+              </div>
 
-              <label>
-                Image Y
-                <input
-                  type="range"
-                  min="1"
-                  max="1000"
-                  step={"0.1"}
-                  value={chosenComp.images[chosenInd].position.y}
+              <div className="rangeItem">
+                <label className="rangeLabel">Horizondal</label>
+                <Slider
+                  size="small"
+                  step={0.1}
+                  min={1}
+                  max={1000}
+                  value={
+                    chosenComp[isImg ? "images" : "texts"][chosenInd].position.y
+                  }
                   onChange={(e) => handleY(parseFloat(e.target.value))}
                 />
-              </label>
+              </div>
             </div>
 
-            <div style={{ marginTop: "10px" }}>
+            {/* <div style={{ marginTop: "10px" }}>
               <label>
                 Text Scale:
                 <input
@@ -1160,11 +1206,13 @@ const Favorites = (props) => {
                   }
                 />
               </label>
-            </div>
+            </div> */}
 
-            <div>
+            <div className="colorPickerHolder">
               <SketchPicker
-                color={color}
+                // color={color}
+                // color={color ? hexToRgb(color) : color}
+                color={hexToRgba(color.hex, color.alpha)}
                 onChangeComplete={(color) => handleColorChange(color)}
               />
             </div>
