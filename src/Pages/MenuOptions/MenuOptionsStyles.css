@@ -581,7 +581,7 @@
 
 .hoodComItem {
   display: flex;
-  /* border: 1px solid green;  */
+  /* border: 1px solid green; */
   border-radius: 8px;
   height: 100%;
   width: 15%;
@@ -595,13 +595,12 @@
   display: flex;
   flex-direction: column;
   /* flex: 0.5; */
-  width: 100%;
   /* overflow-x: auto; */
   overflow: hidden;
   width: fit-content !important;
   justify-content: space-evenly;
-  /* border: 1px solid #91bafe; */
   /* border: 1px solid magenta; */
+  padding-bottom: 5px;
 }
 
 .comImgListHolder {
@@ -616,8 +615,7 @@
 .comImgHolder {
   display: flex;
   flex: 1;
-  height: 10%;
-  width: 20%;
+  /* border: 1px solid magenta; */
 }
 
 .imgItem {
@@ -648,11 +646,12 @@
 .editingPallateHolder {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   /* justify-content: space-evenly; */
-  flex: 2.5;
+  flex: 2.3;
   /* border: 1px solid red; */
   /* padding-inline: 8px; */
-  gap: 10px;
+  gap: 15px;
 }
 
 .imgtxtUploadHolder {
@@ -688,4 +687,14 @@
   /* border: 1px solid magenta; */
   /* align-items: center; */
   justify-content: center;
+}
+
+.threeDHolder {
+  background-color: #f6f6f6;
+  background-color: #fbf9f1;
+  cursor: grab;
+}
+
+.threeDHolder:active {
+  cursor: grabbing;
 }

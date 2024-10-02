@@ -1,13 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import Mug from "../../Component/Mug";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import modelObj from "../../Assets/3dFiles/swater.glb";
 import {
+  AccumulativeShadows,
   Bounds,
   ContactShadows,
   Decal,
+  Environment,
   Float,
   OrbitControls,
+  PerspectiveCamera,
+  RandomizedLight,
   useGLTF,
 } from "@react-three/drei";
 
@@ -21,6 +25,10 @@ import img4 from "../../Assets/auth/img4.png";
 import img5 from "../../Assets/auth/img5.png";
 import img6 from "../../Assets/auth/img6.png";
 import img7 from "../../Assets/auth/img7.png";
+
+import positive from "../../Assets/auth/positive.png";
+import butter from "../../Assets/auth/butter.png";
+import flower from "../../Assets/auth/flower.png";
 
 import { CanvasTexture, LinearFilter, NearestFilter } from "three";
 import { SketchPicker } from "react-color";
@@ -50,6 +58,8 @@ import {
   selStyle,
 } from "../Components/utils";
 import { AiOutlineCheck } from "react-icons/ai";
+import { easing } from "maath";
+import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
 
 const Favorites = (props) => {
   const { nodes, materials } = useGLTF(modelObj);
@@ -75,6 +85,8 @@ const Favorites = (props) => {
     name: "Arial",
   });
   const [isValid, setIsValid] = useState(false);
+  const uploadImgInpRef = useRef(null);
+  const newImgRef = useRef(null);
 
   const [chosenComp, setChosenComp] = useState({
     id: 2,
@@ -86,15 +98,8 @@ const Favorites = (props) => {
     ref: useRef(null),
     images: [
       {
-        src: img1,
-        position: { x: 20, y: 100 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-      {
-        src: img3,
-        position: { x: 20, y: 100 },
+        src: flower,
+        position: { x: 261.2, y: 333.5 },
         rotation: 0,
         scale: 1,
         ref: useRef(),
@@ -102,7 +107,7 @@ const Favorites = (props) => {
     ],
     texts: [
       {
-        text: "Front",
+        text: "Print Text",
         font: "Arial",
         position: { x: 300, y: 300 },
         rotation: 0,
@@ -123,6 +128,9 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
+      defPos: { x: 652.4, y: 300 },
+      defRot: 87.7,
+      defScal: 3.6,
       images: [
         {
           src: userImg,
@@ -157,17 +165,13 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
+      defPos: { x: 261.2, y: 333.5 },
+      defRot: 87.7,
+      defScal: 3.1,
       images: [
         {
-          src: img1,
-          position: { x: 20, y: 100 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-        {
-          src: img3,
-          position: { x: 20, y: 100 },
+          src: flower,
+          position: { x: 261.2, y: 333.5 },
           rotation: 0,
           scale: 1,
           ref: useRef(),
@@ -175,7 +179,7 @@ const Favorites = (props) => {
       ],
       texts: [
         {
-          text: "Front",
+          text: "Print Text",
           font: "Arial",
           position: { x: 300, y: 300 },
           rotation: 0,
@@ -191,14 +195,17 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
+      defPos: { x: 100.1, y: 333.5 },
+      defRot: 87.7,
+      defScal: 1.9,
       images: [
-        {
-          src: img2,
-          position: { x: 30, y: 30 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
+        // {
+        //   src: img2,
+        //   position: { x: 30, y: 30 },
+        //   rotation: 87.7,
+        //   scale: 1,
+        //   ref: useRef(),
+        // },
       ],
       texts: [
         {
@@ -218,23 +225,26 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
+      defPos: { x: 1250.8, y: 974.5 },
+      defRot: 87.7,
+      defScal: 3.6,
       images: [
-        {
-          src: img3,
-          position: { x: 35, y: 35 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
+        // {
+        //   src: butter,
+        //   position: { x: 1250.8, y: 974.5 },
+        //   rotation: 87.7,
+        //   scale: 3.6,
+        //   ref: useRef(),
+        // },
       ],
       texts: [
-        {
-          text: "Back",
-          font: "Arial",
-          position: { x: 300, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
+        // {
+        //   text: "Back",
+        //   font: "Arial",
+        //   position: { x: 300, y: 300 },
+        //   rotation: 0,
+        //   scale: 1,
+        // },
       ],
     },
     {
@@ -245,6 +255,9 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
+      defPos: { x: 652.4, y: 300 },
+      defRot: 87.7,
+      defScal: 3.6,
       images: [
         {
           src: img4,
@@ -271,6 +284,9 @@ const Favorites = (props) => {
       mat: materials.right,
       txture: null,
       ref: useRef(null),
+      defPos: { x: 1527, y: 333.5 },
+      defRot: 95.3,
+      defScal: 1,
       images: [
         {
           src: img5,
@@ -298,6 +314,9 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
+      defPos: { x: 652.4, y: 300 },
+      defRot: 87.7,
+      defScal: 3.6,
       images: [
         {
           src: img6,
@@ -325,6 +344,9 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
+      defPos: { x: 652.4, y: 300 },
+      defRot: 87.7,
+      defScal: 3.6,
       images: [
         {
           src: img7,
@@ -352,6 +374,9 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
+      defPos: { x: 652.4, y: 300 },
+      defRot: 87.7,
+      defScal: 3.6,
       images: [
         {
           src: img2,
@@ -626,6 +651,9 @@ const Favorites = (props) => {
     newTexture.minFilter = LinearFilter;
     newTexture.magFilter = NearestFilter;
 
+    // newTexture.minFilter = sRGBEncoding;
+    // newTexture.magFilter = THREE.ACESFilmicToneMapping;
+
     const madetxture = texture.map((item) => {
       if (partName === item.part) {
         item.txture = newTexture;
@@ -634,7 +662,6 @@ const Favorites = (props) => {
         return item;
       }
     });
-
     setTexture(madetxture);
   };
 
@@ -900,9 +927,16 @@ const Favorites = (props) => {
     // setColor(meshItem.color ? meshItem.color : "#FFFEFE");
   };
 
-  const onComImgClick = (ind, img) => {
+  const onComImgClick = (ind, img, item) => {
     setIsImg(img);
     setChosenInd(ind);
+
+    if (!img) {
+      const val = fonts.find((ite) => ite.name === item.font);
+      console.log("found font :", val);
+      setPrintFont(val);
+      setPrintTxt(item.text);
+    }
   };
 
   const onTxtPrintConfirm = () => {
@@ -912,45 +946,172 @@ const Favorites = (props) => {
       const textSamp = {
         text: printTxt,
         font: printFont.name,
-        position: { x: 0, y: 0 },
-        rotation: 0,
-        scale: 1,
+        position: { x: 1250.8, y: 974.5 },
+        rotation: 87.7,
+        scale: 3.6,
       };
 
       const updatedTextures = texture.map((item) => {
         if (item.id === chosenComp.id) {
           item.texts.push(textSamp);
-          chosenComp.texts.push(textSamp);
+          // chosenComp.texts.push(textSamp);
           return item;
         }
         return item;
       });
+
+      setChosenComp(updatedTextures.find((item) => item.id === chosenComp.id));
 
       setTexture(updatedTextures);
       setIncre(incre + 1);
     }
   };
 
+  const getChosenImage = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    console.log("Chose file :", file);
+
+    const imgUrl = URL.createObjectURL(file);
+
+    const imgItem = {
+      src: imgUrl,
+      position: { x: 1250.8, y: 974.5 },
+      rotation: 87.7,
+      scale: 3.6,
+      ref: newImgRef,
+    };
+
+    const updatedTextures = texture.map((item) => {
+      if (item.id === chosenComp.id) {
+        item.images.push(imgItem);
+        // chosenComp.images.push(imgItem);
+        return item;
+      }
+      return item;
+    });
+    setChosenComp(updatedTextures.find((item) => item.id === chosenComp.id));
+    setTexture(updatedTextures);
+    setIncre(incre + 1);
+  };
+
   return (
     <Container fluid className="navigationScreens">
       <div className="favConts">
         <div className="modelObjHolder">
-          <Canvas gl={{ outputEncoding: LinearFilter }} flat={true}>
-            <ambientLight intensity={2.5} />
+          {/* <Canvas
+            gl={{
+              outputEncoding: LinearFilter,
+              // antialias: true,
+
+              // outputEncoding: sRGBEncoding, // Ensures proper color rendering
+              // toneMapping: THREE.ACESFilmicToneMapping, // Preserves highlights and shadows
+              antialias: true,
+            }}
+            // camera={{ exposure: 1.5, fov: 25 }}
+            camera={{ exposure: 1.5, fov: 35, position: [0, 1.5, 4] }}
+            // style={{ backgroundColor: "#FBF9F1" }}
+            className="threeDHolder"
+            flat={true}
+            // shadows
+          >
+            <ambientLight intensity={2.2} />
+            <directionalLight
+              castShadow
+              // position={[2, 5, 2]}
+              // intensity={1.2}
+              // shadow-mapSize-width={2048}
+              // shadow-mapSize-height={2048}
+              position={[5, 10, 5]}
+              intensity={1.2}
+              shadow-mapSize-width={4096}
+              shadow-mapSize-height={4096}
+              shadow-camera-far={10}
+              shadow-camera-left={-5}
+              shadow-camera-right={5}
+              shadow-camera-top={5}
+              shadow-camera-bottom={-5}
+            />
             <pointLight position={[10, 10, 10]} />
+
             {texture?.map((item) => (
-              <mesh key={item.id} geometry={item.geo} ref={item.ref}>
+              <mesh
+                receiveShadow
+                position={[0, 0.15, 0]}
+                // rotation={[-Math.PI / 2, 0, 0]}
+                key={item.id}
+                geometry={item.geo}
+                ref={item.ref}
+              >
                 <meshPhysicalMaterial
                   toneMapped={false}
                   attach="material"
                   onUpdate={(self) => (self.needsUpdate = true)}
                   map={item.txture}
-                  color={0xffffff}
+                  // color={0xffffff}
+                  color={"white"}
+                  roughness={0.8}
+                  metalness={0.0}
                 />
               </mesh>
             ))}
             <OrbitControls />
-            <ContactShadows position-y={-1.2} opacity={0.7} blur={4} />
+            <ContactShadows position={[0, -1.3, 0]} opacity={0.2} blur={2} />
+          </Canvas> */}
+
+          <Canvas
+            gl={{
+              outputEncoding: LinearFilter,
+              toneMapping: NearestFilter,
+              // toneMapping: THREE.ACESFilmicToneMapping,
+              antialias: true,
+              toneMappingExposure: 1.5,
+            }}
+            camera={{ fov: 35, position: [0, 1.5, 4] }}
+            shadows
+            className="threeDHolder"
+          >
+            <ambientLight intensity={1.6} />
+
+            <directionalLight
+              position={[5, 10, 5]}
+              intensity={1.4}
+              castShadow
+              shadow-mapSize-width={4096}
+              shadow-mapSize-height={4096}
+              shadow-bias={-0.0001}
+              shadow-normalBias={0.02}
+            />
+            <hemisphereLight
+              skyColor={"#ffffff"}
+              groundColor={"#333333"}
+              intensity={0.9}
+            />
+
+            {texture?.map((item) => (
+              <mesh
+                receiveShadow
+                position={[0, 0.15, 0]}
+                key={item.id}
+                geometry={item.geo}
+                ref={item.ref}
+              >
+                <meshPhysicalMaterial
+                  toneMapped={false}
+                  map={item.txture}
+                  color={"#ffffff"}
+                  roughness={0.6}
+                  clearcoat={0.1}
+                  reflectivity={0.2}
+                  metalness={0.0}
+                />
+              </mesh>
+            ))}
+
+            <OrbitControls />
+            <ContactShadows position={[0, -1.3, 0]} opacity={0.3} blur={3} />
           </Canvas>
         </div>
 
@@ -1026,16 +1187,22 @@ const Favorites = (props) => {
                   />
                 </div>
               ))}
+              <div className="comImgHolder">
+                <IconButton onClick={() => uploadImgInpRef.current.click()}>
+                  <LuImagePlus color="#1665C0" />
+                </IconButton>
+              </div>
             </div>
 
             <div className="comTxtListHolder">
               {chosenComp.texts.map((item, ind) => (
                 <div
                   className="comTxtItem"
-                  onClick={onComImgClick.bind(this, ind, false)}
+                  onClick={onComImgClick.bind(this, ind, false, item)}
                   style={{
                     border: !isImg && chosenInd === ind ? "1px solid grey" : "",
                     borderRadius: "8px",
+                    fontFamily: item.font,
                   }}
                 >
                   {item.text}
@@ -1044,14 +1211,10 @@ const Favorites = (props) => {
             </div>
           </div>
 
-          <hr style={{ padding: "2px 0px", margin: 0 }} />
+          <hr style={{ padding: "0px", margin: 0, opacity: "0.2" }} />
 
           <div className="editingPallateHolder">
             <div className="imgtxtUploadHolder">
-              {/* <IconButton>
-                <LuImagePlus color="#1665C0" />
-              </IconButton> */}
-
               <TextField
                 size="small"
                 label="Print Text"
@@ -1082,13 +1245,6 @@ const Favorites = (props) => {
                   />
                 )}
                 value={printFont}
-                // onInputChange={(e, val) => {
-                //   console.log("onInputChange : ", val);
-                //   setProduct({
-                //     ...product,
-                //     typedName: val,
-                //   });
-                // }}
                 onChange={(e, val) => {
                   console.log("onChange font : ", val);
                   setPrintFont(val);
@@ -1125,7 +1281,8 @@ const Favorites = (props) => {
                   min={0.1}
                   max={10}
                   value={
-                    chosenComp[isImg ? "images" : "texts"][chosenInd].scale
+                    chosenComp[isImg ? "images" : "texts"][chosenInd]?.scale ??
+                    0
                   }
                   onChange={(e) =>
                     handleScaleChange(parseFloat(e.target.value))
@@ -1141,7 +1298,8 @@ const Favorites = (props) => {
                   min={1}
                   max={1000}
                   value={
-                    chosenComp[isImg ? "images" : "texts"][chosenInd].rotation
+                    chosenComp[isImg ? "images" : "texts"][chosenInd]
+                      ?.rotation ?? 0
                   }
                   onChange={(e) =>
                     handleRotationChange(parseFloat(e.target.value))
@@ -1155,9 +1313,10 @@ const Favorites = (props) => {
                   size="small"
                   step={0.1}
                   min={1}
-                  max={1000}
+                  max={3000}
                   value={
-                    chosenComp[isImg ? "images" : "texts"][chosenInd].position.x
+                    chosenComp[isImg ? "images" : "texts"][chosenInd]?.position
+                      .x ?? 0
                   }
                   onChange={(e) => handleX(parseFloat(e.target.value))}
                 />
@@ -1169,49 +1328,29 @@ const Favorites = (props) => {
                   size="small"
                   step={0.1}
                   min={1}
-                  max={1000}
+                  max={3000}
                   value={
-                    chosenComp[isImg ? "images" : "texts"][chosenInd].position.y
+                    chosenComp[isImg ? "images" : "texts"][chosenInd]?.position
+                      .y ?? 0
                   }
                   onChange={(e) => handleY(parseFloat(e.target.value))}
                 />
               </div>
             </div>
 
-            {/* <div style={{ marginTop: "10px" }}>
-              <label>
-                Text Scale:
-                <input
-                  type="range"
-                  min="0.1"
-                  max="200"
-                  step="0.1"
-                  value={chosenComp.texts[chosenInd].scale}
-                  onChange={(e) =>
-                    handleTextScaleChange(parseFloat(e.target.value))
-                  }
-                />
-              </label>
-              <br />
-              <label>
-                Text Rotation:
-                <input
-                  type="range"
-                  min="0.1"
-                  max="360"
-                  step="0.1"
-                  value={chosenComp.texts[chosenInd].rotation}
-                  onChange={(e) =>
-                    handleTextRotationChange(parseFloat(e.target.value))
-                  }
-                />
-              </label>
-            </div> */}
+            <input
+              ref={uploadImgInpRef}
+              type="file"
+              accept="image/*"
+              onChange={getChosenImage}
+              style={{ display: "none" }}
+            />
 
             <div className="colorPickerHolder">
               <SketchPicker
                 // color={color}
                 // color={color ? hexToRgb(color) : color}
+                disableAlpha
                 color={hexToRgba(color.hex, color.alpha)}
                 onChangeComplete={(color) => handleColorChange(color)}
               />
