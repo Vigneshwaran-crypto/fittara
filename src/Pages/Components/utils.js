@@ -666,6 +666,30 @@ export const fonts = [
   { id: 25, name: "Optima" },
 ];
 
+export const fontColors = [
+  { id: 1, color: "Red", hex: "#D32F2F" },
+  { id: 2, color: "Pink", hex: "#E91E63" },
+  { id: 3, color: "Purple", hex: "#9C27B0" },
+  { id: 4, color: "Deep Purple", hex: "#673AB7" },
+  { id: 5, color: "Indigo", hex: "#3F51B5" },
+  { id: 6, color: "Blue", hex: "#2196F3" },
+  { id: 7, color: "Light Blue", hex: "#03A9F4" },
+  { id: 8, color: "Cyan", hex: "#00BCD4" },
+  { id: 9, color: "Teal", hex: "#009688" },
+  { id: 10, color: "Green", hex: "#4CAF50" },
+  { id: 11, color: "Light Green", hex: "#8BC34A" },
+  { id: 12, color: "Lime", hex: "#CDDC39" },
+  { id: 13, color: "Yellow", hex: "#FFEB3B" },
+  { id: 14, color: "Amber", hex: "#FFC107" },
+  { id: 15, color: "Orange", hex: "#FF9800" },
+  { id: 16, color: "Deep Orange", hex: "#FF5722" },
+  { id: 17, color: "Brown", hex: "#795548" },
+  { id: 18, color: "Grey", hex: "#9E9E9E" },
+  { id: 19, color: "Blue Grey", hex: "#607D8B" },
+  { id: 20, color: "Black", hex: "#000000" },
+  { id: 21, color: "White", hex: "#FFFFFF" },
+];
+
 export const erToast = (title) => {
   toast.error(title);
 };

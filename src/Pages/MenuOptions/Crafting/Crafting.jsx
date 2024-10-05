@@ -61,22 +61,6 @@ const Crafting = (props) => {
         const deltaY = event.movementY / window.innerHeight;
         frontMesh.current.position.x += deltaX * 5;
         frontMesh.current.position.y -= deltaY * 5;
-
-        //   const deltaX = (event.movementX / window.innerWidth) * 5;
-        //   const deltaY = (event.movementY / window.innerHeight) * 5;
-
-        //   const newX = THREE.MathUtils.clamp(
-        //     decalPosition[0] + deltaX,
-        //     -0.4,
-        //     0.4
-        //   );
-        //   const newY = THREE.MathUtils.clamp(
-        //     decalPosition[1] - deltaY,
-        //     -0.38,
-        //     0.38
-        //   );
-
-        //   setDecalPosition([newX, newY, decalPosition[2]]);
       }
     };
 

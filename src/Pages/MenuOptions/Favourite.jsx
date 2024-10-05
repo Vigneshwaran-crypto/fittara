@@ -30,13 +30,21 @@ import positive from "../../Assets/auth/positive.png";
 import butter from "../../Assets/auth/butter.png";
 import flower from "../../Assets/auth/flower.png";
 
+import frontSide from "../../Assets/sides/front2.png";
+import backSide from "../../Assets/sides/back.png";
+import leftSide from "../../Assets/sides/left.png";
+import rightSide from "../../Assets/sides/right.png";
+
 import { CanvasTexture, LinearFilter, NearestFilter } from "three";
 import { SketchPicker } from "react-color";
 import "./MenuOptionsStyles.css";
 import * as THREE from "three";
-import { Button, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import {
   Autocomplete,
+  Box,
+  Button,
+  Chip,
   FormControl,
   hexToRgb,
   IconButton,
@@ -50,16 +58,42 @@ import {
 } from "@mui/material";
 import { LuImagePlus } from "react-icons/lu";
 import {
+  fontColors,
   fonts,
   hexToRgba,
   inpStye,
+  isDarkHex,
   rgbaToHex,
   sampleProducts,
   selStyle,
+  wholeColors,
 } from "../Components/utils";
 import { AiOutlineCheck } from "react-icons/ai";
 import { easing } from "maath";
 import { sRGBEncoding } from "@react-three/drei/helpers/deprecated";
+import {
+  buttonClasses,
+  Tab,
+  tabClasses,
+  TabPanel,
+  Tabs,
+  TabsList,
+} from "@mui/base";
+import { IoText } from "react-icons/io5";
+import { FaImage } from "react-icons/fa6";
+import {
+  Avatar,
+  FormLabel,
+  Radio,
+  radioClasses,
+  RadioGroup,
+  Sheet,
+} from "@mui/joy";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import TitleIcon from "@mui/icons-material/Title";
+import Done from "@mui/icons-material/Done";
 
 const Favorites = (props) => {
   const { nodes, materials } = useGLTF(modelObj);
@@ -88,6 +122,8 @@ const Favorites = (props) => {
   const uploadImgInpRef = useRef(null);
   const newImgRef = useRef(null);
 
+  const [hover, setHover] = useState(null);
+
   const [chosenComp, setChosenComp] = useState({
     id: 2,
     part: "Front",
@@ -104,10 +140,130 @@ const Favorites = (props) => {
         scale: 1,
         ref: useRef(),
       },
+
+      {
+        src: img1,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
+
+      {
+        src: img2,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
+
+      {
+        src: img3,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
+
+      {
+        src: img4,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
+      {
+        src: flower,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
+
+      {
+        src: img1,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
+
+      {
+        src: img2,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
+
+      {
+        src: img3,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
+
+      {
+        src: img4,
+        position: { x: 261.2, y: 333.5 },
+        rotation: 0,
+        scale: 1,
+        ref: useRef(),
+      },
     ],
     texts: [
       {
-        text: "Print Text",
+        text: "Oraisa",
+        font: "Arial",
+        position: { x: 300, y: 300 },
+        rotation: 0,
+        scale: 1,
+      },
+      {
+        text: "Magna",
+        font: "Arial",
+        position: { x: 300, y: 300 },
+        rotation: 0,
+        scale: 1,
+      },
+      {
+        text: "Vignesh",
+        font: "Arial",
+        position: { x: 300, y: 300 },
+        rotation: 0,
+        scale: 1,
+      },
+      {
+        text: "Quintas",
+        font: "Arial",
+        position: { x: 300, y: 300 },
+        rotation: 0,
+        scale: 1,
+      },
+      {
+        text: "Scorpus",
+        font: "Arial",
+        position: { x: 300, y: 300 },
+        rotation: 0,
+        scale: 1,
+      },
+      {
+        text: "Poseiden",
+        font: "Arial",
+        position: { x: 300, y: 300 },
+        rotation: 0,
+        scale: 1,
+      },
+      {
+        text: "Clamartha",
+        font: "Arial",
+        position: { x: 300, y: 300 },
+        rotation: 0,
+        scale: 1,
+      },
+      {
+        text: "Rebecca",
         font: "Arial",
         position: { x: 300, y: 300 },
         rotation: 0,
@@ -421,6 +577,10 @@ const Favorites = (props) => {
   const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" }); // State to hold the selected color
   const imgElements = useRef([]);
 
+  const [defMeshRot, setdefMeshRot] = useState([0, 0, 0]);
+
+  const [radioGroupValue, setRadioGroupValue] = useState("1");
+
   const hoodComs = [
     {
       id: 1,
@@ -547,6 +707,59 @@ const Favorites = (props) => {
           material={materials.cape}
         />
       ),
+    },
+    {
+      id: 5,
+      part: "Left Hand",
+      node: "g_Hoodie_Hoodie_0_6",
+      position: [-0.1, -0.9, 0],
+      opacity: 0.2,
+      blur: 0.8,
+      mesh: (
+        <mesh
+          geometry={nodes.g_Hoodie_Hoodie_0_6.geometry}
+          material={materials.left}
+        />
+      ),
+    },
+  ];
+
+  const sidePosses = [
+    {
+      id: 2,
+      part: "Front",
+      node: "g_Hoodie_Hoodie_0_3",
+      position: [0, -0.85, 0],
+      opacity: 0.8,
+      blur: 1,
+      img: frontSide,
+    },
+    {
+      id: 4,
+      part: "Back",
+      node: "g_Hoodie_Hoodie_0_5",
+      position: [0, -1.1, 0],
+      opacity: 0.8,
+      blur: 2,
+      img: backSide,
+    },
+    {
+      id: 5,
+      part: "Left Hand",
+      node: "g_Hoodie_Hoodie_0_6",
+      position: [-0.1, -0.9, 0],
+      opacity: 0.2,
+      blur: 0.8,
+      img: leftSide,
+    },
+    {
+      id: 6,
+      part: "Right Hand",
+      node: "g_Hoodie_Hoodie_0_8",
+      position: [0.1, -0.9, 0],
+      opacity: 0.2,
+      blur: 0.8,
+      img: rightSide,
     },
   ];
 
@@ -911,10 +1124,10 @@ const Favorites = (props) => {
     };
   }, [isDragging, mousePos]);
 
-  const onItemMeshClick = (val, ind) => {
+  const onItemMeshClick = (val) => {
     console.log("clicked mesh :", val);
 
-    const samp = nodes.g_Hoodie_Hoodie_0_3.geometry;
+    // const samp = nodes.g_Hoodie_Hoodie_0_3.geometry;
     setGeometry(nodes[val.node].geometry);
     setPartName(val.part);
 
@@ -924,7 +1137,6 @@ const Favorites = (props) => {
     setIsValid(false);
     setPrintFont({ id: "", name: "" });
     setPrintTxt("");
-    // setColor(meshItem.color ? meshItem.color : "#FFFEFE");
   };
 
   const onComImgClick = (ind, img, item) => {
@@ -1000,221 +1212,73 @@ const Favorites = (props) => {
   return (
     <Container fluid className="navigationScreens">
       <div className="favConts">
-        <div className="modelObjHolder">
-          {/* <Canvas
-            gl={{
-              outputEncoding: LinearFilter,
-              // antialias: true,
+        <canvas
+          ref={canvasRef}
+          id="uvCanvas"
+          onMouseDown={handleMouseDown}
+          style={{
+            width: "100%",
+            display: "none",
+          }}
+        />
 
-              // outputEncoding: sRGBEncoding, // Ensures proper color rendering
-              // toneMapping: THREE.ACESFilmicToneMapping, // Preserves highlights and shadows
-              antialias: true,
-            }}
-            // camera={{ exposure: 1.5, fov: 25 }}
-            camera={{ exposure: 1.5, fov: 35, position: [0, 1.5, 4] }}
-            // style={{ backgroundColor: "#FBF9F1" }}
-            className="threeDHolder"
-            flat={true}
-            // shadows
-          >
-            <ambientLight intensity={2.2} />
-            <directionalLight
-              castShadow
-              // position={[2, 5, 2]}
-              // intensity={1.2}
-              // shadow-mapSize-width={2048}
-              // shadow-mapSize-height={2048}
-              position={[5, 10, 5]}
-              intensity={1.2}
-              shadow-mapSize-width={4096}
-              shadow-mapSize-height={4096}
-              shadow-camera-far={10}
-              shadow-camera-left={-5}
-              shadow-camera-right={5}
-              shadow-camera-top={5}
-              shadow-camera-bottom={-5}
-            />
-            <pointLight position={[10, 10, 10]} />
-
-            {texture?.map((item) => (
-              <mesh
-                receiveShadow
-                position={[0, 0.15, 0]}
-                // rotation={[-Math.PI / 2, 0, 0]}
-                key={item.id}
-                geometry={item.geo}
-                ref={item.ref}
-              >
-                <meshPhysicalMaterial
-                  toneMapped={false}
-                  attach="material"
-                  onUpdate={(self) => (self.needsUpdate = true)}
-                  map={item.txture}
-                  // color={0xffffff}
-                  color={"white"}
-                  roughness={0.8}
-                  metalness={0.0}
-                />
-              </mesh>
-            ))}
-            <OrbitControls />
-            <ContactShadows position={[0, -1.3, 0]} opacity={0.2} blur={2} />
-          </Canvas> */}
-
-          <Canvas
-            gl={{
-              outputEncoding: LinearFilter,
-              toneMapping: NearestFilter,
-              // toneMapping: THREE.ACESFilmicToneMapping,
-              antialias: true,
-              toneMappingExposure: 1.5,
-            }}
-            camera={{ fov: 35, position: [0, 1.5, 4] }}
-            shadows
-            className="threeDHolder"
-          >
-            <ambientLight intensity={1.6} />
-
-            <directionalLight
-              position={[5, 10, 5]}
-              intensity={1.4}
-              castShadow
-              shadow-mapSize-width={4096}
-              shadow-mapSize-height={4096}
-              shadow-bias={-0.0001}
-              shadow-normalBias={0.02}
-            />
-            <hemisphereLight
-              skyColor={"#ffffff"}
-              groundColor={"#333333"}
-              intensity={0.9}
-            />
-
-            {texture?.map((item) => (
-              <mesh
-                receiveShadow
-                position={[0, 0.15, 0]}
-                key={item.id}
-                geometry={item.geo}
-                ref={item.ref}
-              >
-                <meshPhysicalMaterial
-                  toneMapped={false}
-                  map={item.txture}
-                  color={"#ffffff"}
-                  roughness={0.6}
-                  clearcoat={0.1}
-                  reflectivity={0.2}
-                  metalness={0.0}
-                />
-              </mesh>
-            ))}
-
-            <OrbitControls />
-            <ContactShadows position={[0, -1.3, 0]} opacity={0.3} blur={3} />
-          </Canvas>
-        </div>
-
+        <input
+          ref={uploadImgInpRef}
+          type="file"
+          accept="image/*"
+          onChange={getChosenImage}
+          style={{ display: "none" }}
+        />
         <div className="editorHolder">
-          <div className="comTabListHolder">
-            {hoodComs.map((item, ind) => (
-              <div className="hoodComItem">
-                <Canvas
-                  style={{
-                    border: partName === item.part ? "1px solid grey" : "",
-                    borderRadius: "8px",
-                  }}
-                  className="meshItem"
-                  onClick={onItemMeshClick.bind(this, item, ind)}
-                >
-                  <Bounds
-                    fit
-                    clip
-                    observe
-                    margin={partName === item.part ? 0.8 : 1}
-                  >
-                    {partName === item.part ? (
-                      <Float>{item.mesh}</Float>
-                    ) : (
-                      <>{item.mesh}</>
-                    )}
-                  </Bounds>
-
-                  {partName === item.part ? (
-                    <ContactShadows
-                      position={item.position}
-                      opacity={item.opacity}
-                      blur={item.blur}
+          {/* <div className="txtureListHolder">
+            <div className="txtFlexCont">
+              <div className="imgGridListHolder">
+                {chosenComp.images.map((item, ind) => (
+                  <div className="comImgHolder">
+                    <img
+                      key={ind}
+                      src={item.src}
+                      className="imgItem"
+                      onClick={onComImgClick.bind(this, ind, true)}
+                      style={{
+                        border:
+                          isImg && chosenInd === ind ? "1px solid grey" : "",
+                        borderRadius: "8px",
+                      }}
                     />
-                  ) : null}
-
-                  <ambientLight
-                    color={partName === item.part ? "pink" : "grey"}
-                    intensity={2.5}
-                  />
-                </Canvas>
-              </div>
-            ))}
-          </div>
-
-          <canvas
-            ref={canvasRef}
-            id="uvCanvas"
-            onMouseDown={handleMouseDown}
-            style={{
-              border: "1px solid red",
-              width: "100%",
-              // height: "400px",
-              cursor: "grab",
-              display: "none",
-            }}
-          />
-
-          <div className="hoodComListHolder">
-            <div className="comImgListHolder">
-              {chosenComp.images.map((item, ind) => (
+                  </div>
+                ))}
                 <div className="comImgHolder">
-                  <img
-                    key={ind}
-                    src={item.src}
-                    className="imgItem"
-                    onClick={onComImgClick.bind(this, ind, true)}
+                  <IconButton onClick={() => uploadImgInpRef.current.click()}>
+                    <LuImagePlus color="#1665C0" />
+                  </IconButton>
+                </div>
+              </div>
+            </div>
+
+            <div className="txtFlexCont">
+              <div className="txtListHolder">
+                {chosenComp.texts.map((item, ind) => (
+                  <div
+                    className="comTxtItem"
+                    onClick={onComImgClick.bind(this, ind, false, item)}
                     style={{
                       border:
-                        isImg && chosenInd === ind ? "1px solid grey" : "",
+                        !isImg && chosenInd === ind ? "1px solid grey" : "",
                       borderRadius: "8px",
+                      fontFamily: item.font,
+                      width: "fit-content",
                     }}
-                  />
-                </div>
-              ))}
-              <div className="comImgHolder">
-                <IconButton onClick={() => uploadImgInpRef.current.click()}>
-                  <LuImagePlus color="#1665C0" />
-                </IconButton>
+                  >
+                    {item.text}
+                  </div>
+                ))}
               </div>
-            </div>
-
-            <div className="comTxtListHolder">
-              {chosenComp.texts.map((item, ind) => (
-                <div
-                  className="comTxtItem"
-                  onClick={onComImgClick.bind(this, ind, false, item)}
-                  style={{
-                    border: !isImg && chosenInd === ind ? "1px solid grey" : "",
-                    borderRadius: "8px",
-                    fontFamily: item.font,
-                  }}
-                >
-                  {item.text}
-                </div>
-              ))}
             </div>
           </div>
 
-          <hr style={{ padding: "0px", margin: 0, opacity: "0.2" }} />
-
           <div className="editingPallateHolder">
-            <div className="imgtxtUploadHolder">
+            <div className="printTxtHolder">
               <TextField
                 size="small"
                 label="Print Text"
@@ -1337,25 +1401,371 @@ const Favorites = (props) => {
                 />
               </div>
             </div>
+          </div> */}
 
-            <input
-              ref={uploadImgInpRef}
-              type="file"
-              accept="image/*"
-              onChange={getChosenImage}
-              style={{ display: "none" }}
-            />
+          {/* Tabs here */}
 
-            <div className="colorPickerHolder">
-              <SketchPicker
-                // color={color}
-                // color={color ? hexToRgb(color) : color}
-                disableAlpha
-                color={hexToRgba(color.hex, color.alpha)}
-                onChangeComplete={(color) => handleColorChange(color)}
-              />
+          <div className="tabsHolder">
+            <Tabs defaultValue={0} className="tabsContainer">
+              <TabsList className="tabsList">
+                <Tab className="tabBt" label="Image" value={0}>
+                  <IoText size={20} />
+                </Tab>
+                <Tab className="tabBt" label="Text" value={1}>
+                  <FaImage size={20} />
+                </Tab>
+              </TabsList>
+
+              <TabPanel className="tabPanel" value={0}>
+                <div className="printTxtHolder">
+                  <div className="secTitle">Text</div>
+                  <div className="txtInputsHolder">
+                    <TextField
+                      size="small"
+                      label="Print Text"
+                      variant="standard"
+                      fullWidth
+                      sx={inpStye}
+                      onChange={(e) => setPrintTxt(e.target.value)}
+                      value={printTxt}
+                      error={isValid && !printTxt}
+                    />
+                    <Autocomplete
+                      freeSolo
+                      options={fonts}
+                      size="small"
+                      getOptionLabel={(option) =>
+                        option.name ? option.name : ""
+                      }
+                      fullWidth
+                      renderInput={(param) => (
+                        <TextField
+                          {...param}
+                          size="small"
+                          label="Fonts"
+                          fullWidth
+                          variant="standard"
+                          placeholder="Search"
+                          sx={inpStye}
+                          error={isValid && !printFont.name}
+                        />
+                      )}
+                      value={printFont}
+                      onChange={(e, val) => {
+                        console.log("onChange font : ", val);
+                        setPrintFont(val);
+                      }}
+                      renderOption={(props, item, { selected }) => (
+                        <MenuItem
+                          style={{ fontFamily: item.name }}
+                          {...props}
+                          id={item.id}
+                          value={item.name}
+                        >
+                          {item.name}
+                        </MenuItem>
+                      )}
+                    />
+
+                    <div className="radioGrpHolder">
+                      <div className="subTitle">Font Style</div>
+                      <RadioGroup
+                        aria-labelledby="storage-label"
+                        defaultValue="1"
+                        size="sm"
+                        sx={{
+                          gap: 1.2,
+                          flexDirection: "row",
+                          alignItem: "center",
+                          paddingInlineStart: "5px",
+                        }}
+                      >
+                        {["1", "2", "3"].map((value) => (
+                          <Sheet
+                            key={value}
+                            size="sm"
+                            sx={{
+                              p: "3px 10px",
+                              borderRadius: "sm",
+                              boxShadow: 2,
+                              "&:hover": {
+                                backgroundColor: "transparent !important",
+                                opacity: " 1 !important",
+                              },
+                            }}
+                          >
+                            <Radio
+                              size="sm"
+                              overlay
+                              disableIcon
+                              value={value}
+                              slotProps={{
+                                action: ({ checked }) => ({
+                                  sx: (theme) => ({
+                                    ...(checked && {
+                                      "--variant-borderWidth": "1.3px",
+                                      "&&": {
+                                        // && to increase the specificity to win the base :hover styles
+                                        borderColor:
+                                          theme.vars.palette.primary[500],
+                                      },
+                                    }),
+                                    "&:hover": {
+                                      // Keep the hover style clean, no color mess-up
+                                      borderColor:
+                                        theme.vars.palette.primary[0],
+                                      backgroundColor: "transparent",
+                                      opacity: "1 !important",
+                                    },
+                                  }),
+                                }),
+                              }}
+                            />
+                            {value === "1" ? (
+                              <TitleIcon sx={{ fontSize: "16px" }} />
+                            ) : value === "2" ? (
+                              <FormatBoldIcon sx={{ fontSize: "16px" }} />
+                            ) : (
+                              <FormatItalicIcon sx={{ fontSize: "16px" }} />
+                            )}
+                          </Sheet>
+                        ))}
+                      </RadioGroup>
+                    </div>
+                  </div>
+
+                  <div className="colorsPallateHolder">
+                    <div className="subTitle">Colors</div>
+
+                    <div className="colListHolder">
+                      <RadioGroup
+                        sx={{
+                          gap: 1,
+                          display: "flex",
+                          flexWrap: "wrap",
+                          flexDirection: "row",
+                          overflow: "auto",
+                        }}
+                      >
+                        {fontColors.map((color) => (
+                          <Sheet
+                            key={color.id}
+                            sx={{
+                              position: "relative",
+                              width: 25,
+                              height: 25,
+                              flexShrink: 0,
+                              bgcolor: color.hex,
+                              borderRadius: "50%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Radio
+                              overlay
+                              variant="solid"
+                              color={color.hex}
+                              checkedIcon={
+                                <Done
+                                  fontSize="small"
+                                  sx={{
+                                    color: isDarkHex(color.hex)
+                                      ? "white"
+                                      : "black",
+                                  }}
+                                />
+                              }
+                              value={color.id}
+                              slotProps={{
+                                input: { "aria-label": color.color },
+                                radio: {
+                                  sx: {
+                                    display: "contents",
+                                    "--variant-borderWidth": "1px",
+                                  },
+                                },
+                              }}
+                            />
+                          </Sheet>
+                        ))}
+                      </RadioGroup>
+                    </div>
+
+                    <div className="addEditHolder">
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        sx={{
+                          border: "1px solid transparent",
+                          textTransform: "none",
+                          padding: "2px 10px",
+                          fontFamily: "sans-serif",
+                        }}
+                        size="small"
+                        onClick={onTxtPrintConfirm}
+                      >
+                        Print
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="txtRangesHolder">
+                  <div className="printedTextList">
+                    {chosenComp.texts.map((item, ind) => (
+                      <Chip key={ind} label={item.text} sx={{ m: 0.1 }} />
+                    ))}
+                  </div>
+
+                  <div className="rangesList">
+                    <div className="rangeItem">
+                      <label className="rangeLabel">Scale</label>
+                      <Slider
+                        size="small"
+                        step={0.1}
+                        min={0.1}
+                        max={10}
+                        value={
+                          chosenComp[isImg ? "images" : "texts"][chosenInd]
+                            ?.scale ?? 0
+                        }
+                        onChange={(e) =>
+                          handleScaleChange(parseFloat(e.target.value))
+                        }
+                      />
+                    </div>
+
+                    <div className="rangeItem">
+                      <label className="rangeLabel">Rotation</label>
+                      <Slider
+                        size="small"
+                        step={0.1}
+                        min={1}
+                        max={1000}
+                        value={
+                          chosenComp[isImg ? "images" : "texts"][chosenInd]
+                            ?.rotation ?? 0
+                        }
+                        onChange={(e) =>
+                          handleRotationChange(parseFloat(e.target.value))
+                        }
+                      />
+                    </div>
+
+                    <div className="rangeItem">
+                      <label className="rangeLabel">Vertical</label>
+                      <Slider
+                        size="small"
+                        step={0.1}
+                        min={1}
+                        max={3000}
+                        value={
+                          chosenComp[isImg ? "images" : "texts"][chosenInd]
+                            ?.position.x ?? 0
+                        }
+                        onChange={(e) => handleX(parseFloat(e.target.value))}
+                      />
+                    </div>
+
+                    <div className="rangeItem">
+                      <label className="rangeLabel">Horizondal</label>
+                      <Slider
+                        size="small"
+                        step={0.1}
+                        min={1}
+                        max={3000}
+                        value={
+                          chosenComp[isImg ? "images" : "texts"][chosenInd]
+                            ?.position.y ?? 0
+                        }
+                        onChange={(e) => handleY(parseFloat(e.target.value))}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabPanel>
+
+              <TabPanel className="tabPanel" value={1}>
+                image List
+              </TabPanel>
+            </Tabs>
+            <Styles />
+          </div>
+
+          {/* Tabs here */}
+        </div>
+
+        <div className="modelObjHolder">
+          <div className="objPosHolder">
+            <div className="posImgListHolder">
+              {sidePosses.map((item) => (
+                <div
+                  onClick={onItemMeshClick.bind(this, item)}
+                  style={{
+                    backgroundColor:
+                      chosenComp.id === item.id ? "#e4e4e4" : "transparent",
+                  }}
+                  className="posImgItemHolder"
+                >
+                  <img className="posImg" src={item.img} />
+                </div>
+              ))}
             </div>
           </div>
+
+          <Canvas
+            gl={{
+              outputEncoding: LinearFilter,
+              toneMapping: NearestFilter,
+              antialias: true,
+              toneMappingExposure: 1.5,
+            }}
+            camera={{ fov: 35, position: [0, 1.5, 4] }}
+            shadows
+            className="threeDHolder"
+          >
+            <ambientLight intensity={1.6} />
+
+            <directionalLight
+              position={[5, 10, 5]}
+              intensity={1.4}
+              castShadow
+              shadow-mapSize-width={4096}
+              shadow-mapSize-height={4096}
+              shadow-bias={-0.0001}
+              shadow-normalBias={0.02}
+            />
+            <hemisphereLight
+              skyColor={"#ffffff"}
+              groundColor={"#333333"}
+              intensity={0.9}
+            />
+
+            {texture?.map((item) => (
+              <mesh
+                receiveShadow
+                position={[0, 0.15, 0]}
+                rotation={defMeshRot}
+                key={item.id}
+                geometry={item.geo}
+                ref={item.ref}
+              >
+                <meshPhysicalMaterial
+                  toneMapped={false}
+                  map={item.txture}
+                  color={"#ffffff"}
+                  roughness={0.6}
+                  clearcoat={0.1}
+                  reflectivity={0.2}
+                  metalness={0.0}
+                />
+              </mesh>
+            ))}
+
+            <OrbitControls />
+            <ContactShadows position={[0, -1.3, 0]} opacity={0.3} blur={3} />
+          </Canvas>
         </div>
       </div>
     </Container>
@@ -1363,3 +1773,64 @@ const Favorites = (props) => {
 };
 
 export default Favorites;
+
+{
+  /* <div className="colorPickerHolder">
+              <SketchPicker
+                disableAlpha
+                color={hexToRgba(color.hex, color.alpha)}
+                onChangeComplete={(color) => handleColorChange(color)}
+              />
+            </div> */
+}
+
+function Styles() {
+  return (
+    <style>
+      {`
+      .tabsList {
+        // background-color: pink;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-content: space-between;
+      }
+      .tabBt {
+        font-family: 'IBM Plex Sans', sans-serif;
+        color: black;
+        cursor: pointer;
+        font-size: 1dvw;
+        // background-color: white;
+        background-color: transparent;
+        padding: 5px 15px;
+        border: none;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        margin-inline:7px
+      }
+      .tabBt:hover {
+        color:black
+      }
+      .tabBt.${tabClasses.selected} {
+        background-color: #969696;
+        color: white;
+      }
+      .tabBt.${buttonClasses.disabled} {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .tabPanel {
+        display: flex;
+        flex:1;
+        flex-direction:column;
+        width: 100%;
+        // border: 1px solid pink;
+        // font-family: 'IBM Plex Sans', sans-serif;
+        // font-size: 0.875rem;
+        // padding-top:10px;
+      }
+      `}
+    </style>
+  );
+}
