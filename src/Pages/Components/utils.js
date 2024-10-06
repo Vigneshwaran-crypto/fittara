@@ -44,6 +44,16 @@ export const curencySelStyle = {
   },
 };
 
+export const sliderStyle = {
+  "& .MuiSlider-thumb": {
+    width: 12, // Decrease the thumb size
+    height: 12,
+    "&:hover, &:active, &:focus": {
+      boxShadow: "none", // Remove the shadow effect on interaction
+    },
+  },
+};
+
 export const htmlStrDef = `<h5><strong style="font-size: 14px;">Product details :&nbsp;</strong></h5><p><em style="font-size: 14px;">write about product details</em></p><h5><strong style="font-size: 14px;">About this item :</strong></h5><p><em style="font-size: 14px; color: rgb(0, 0, 0);">write about the item</em></p><h5><strong style="font-size: 14px;">Additional information :</strong></h5><p><em style="font-size: 14px; color: rgb(0, 0, 0);">write any additional information</em></p><p><br></p>`;
 
 export const templates = {

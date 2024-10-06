@@ -66,6 +66,7 @@ import {
   rgbaToHex,
   sampleProducts,
   selStyle,
+  sliderStyle,
   wholeColors,
 } from "../Components/utils";
 import { AiOutlineCheck } from "react-icons/ai";
@@ -94,6 +95,7 @@ import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import TitleIcon from "@mui/icons-material/Title";
 import Done from "@mui/icons-material/Done";
+import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
 
 const Favorites = (props) => {
   const { nodes, materials } = useGLTF(modelObj);
@@ -1418,7 +1420,7 @@ const Favorites = (props) => {
 
               <TabPanel className="tabPanel" value={0}>
                 <div className="printTxtHolder">
-                  <div className="secTitle">Text</div>
+                  {/* <div className="secTitle">Text</div> */}
                   <div className="txtInputsHolder">
                     <TextField
                       size="small"
@@ -1442,7 +1444,7 @@ const Favorites = (props) => {
                         <TextField
                           {...param}
                           size="small"
-                          label="Fonts"
+                          label="Font"
                           fullWidth
                           variant="standard"
                           placeholder="Search"
@@ -1477,6 +1479,7 @@ const Favorites = (props) => {
                           gap: 1.2,
                           flexDirection: "row",
                           alignItem: "center",
+                          // justifyContent: "center",
                           paddingInlineStart: "5px",
                         }}
                       >
@@ -1485,8 +1488,10 @@ const Favorites = (props) => {
                             key={value}
                             size="sm"
                             sx={{
-                              p: "3px 10px",
+                              p: "0 10px",
                               borderRadius: "sm",
+                              alignItems: "center",
+                              justifyContent: "center",
                               boxShadow: 2,
                               "&:hover": {
                                 backgroundColor: "transparent !important",
@@ -1522,11 +1527,11 @@ const Favorites = (props) => {
                               }}
                             />
                             {value === "1" ? (
-                              <TitleIcon sx={{ fontSize: "16px" }} />
+                              <TitleIcon sx={{ fontSize: "14px" }} />
                             ) : value === "2" ? (
-                              <FormatBoldIcon sx={{ fontSize: "16px" }} />
+                              <FormatBoldIcon sx={{ fontSize: "14px" }} />
                             ) : (
-                              <FormatItalicIcon sx={{ fontSize: "16px" }} />
+                              <FormatItalicIcon sx={{ fontSize: "14px" }} />
                             )}
                           </Sheet>
                         ))}
@@ -1540,7 +1545,8 @@ const Favorites = (props) => {
                     <div className="colListHolder">
                       <RadioGroup
                         sx={{
-                          gap: 1,
+                          gap: 0.5,
+                          padding: "3px",
                           display: "flex",
                           flexWrap: "wrap",
                           flexDirection: "row",
@@ -1599,7 +1605,7 @@ const Favorites = (props) => {
                         sx={{
                           border: "1px solid transparent",
                           textTransform: "none",
-                          padding: "2px 10px",
+                          padding: "1px 10px",
                           fontFamily: "sans-serif",
                         }}
                         size="small"
@@ -1612,75 +1618,135 @@ const Favorites = (props) => {
                 </div>
 
                 <div className="txtRangesHolder">
+                  <div className="subTitle">Added Text</div>
+
                   <div className="printedTextList">
                     {chosenComp.texts.map((item, ind) => (
-                      <Chip key={ind} label={item.text} sx={{ m: 0.1 }} />
+                      <Chip
+                        key={ind}
+                        label={item.text}
+                        sx={{ m: 0.1, height: "25px" }}
+                      />
                     ))}
+
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      sx={{
+                        textTransform: "none",
+                        borderRadius: "30px",
+                        fontFamily: "sans-serif",
+                        height: "25px",
+                        m: 0.1,
+                      }}
+                      size="small"
+                    >
+                      Add Text
+                    </Button>
                   </div>
 
                   <div className="rangesList">
+                    <div className="subTitle" style={{ paddingBottom: 0 }}>
+                      Alignment
+                    </div>
                     <div className="rangeItem">
                       <label className="rangeLabel">Scale</label>
-                      <Slider
-                        size="small"
-                        step={0.1}
-                        min={0.1}
-                        max={10}
-                        value={
-                          chosenComp[isImg ? "images" : "texts"][chosenInd]
-                            ?.scale ?? 0
-                        }
-                        onChange={(e) =>
-                          handleScaleChange(parseFloat(e.target.value))
-                        }
-                      />
+
+                      <div className="sliderHolder">
+                        <Slider
+                          size="small"
+                          className="sliders"
+                          step={0.1}
+                          min={0.1}
+                          max={10}
+                          value={
+                            chosenComp[isImg ? "images" : "texts"][chosenInd]
+                              ?.scale ?? 0
+                          }
+                          onChange={(e) =>
+                            handleScaleChange(parseFloat(e.target.value))
+                          }
+                          sx={sliderStyle}
+                        />
+                        <div className="sliderValTxt">
+                          {chosenComp[isImg ? "images" : "texts"][chosenInd]
+                            ?.scale ?? 0}
+                        </div>
+                      </div>
                     </div>
 
                     <div className="rangeItem">
                       <label className="rangeLabel">Rotation</label>
-                      <Slider
-                        size="small"
-                        step={0.1}
-                        min={1}
-                        max={1000}
-                        value={
-                          chosenComp[isImg ? "images" : "texts"][chosenInd]
-                            ?.rotation ?? 0
-                        }
-                        onChange={(e) =>
-                          handleRotationChange(parseFloat(e.target.value))
-                        }
-                      />
+                      <div className="sliderHolder">
+                        <Slider
+                          size="small"
+                          className="sliders"
+                          step={0.1}
+                          min={1}
+                          max={1000}
+                          value={
+                            chosenComp[isImg ? "images" : "texts"][chosenInd]
+                              ?.rotation ?? 0
+                          }
+                          onChange={(e) =>
+                            handleRotationChange(parseFloat(e.target.value))
+                          }
+                          sx={sliderStyle}
+                        />
+
+                        <div className="sliderValTxt">
+                          {chosenComp[isImg ? "images" : "texts"][chosenInd]
+                            ?.rotation ?? 0}
+                        </div>
+                      </div>
                     </div>
 
                     <div className="rangeItem">
                       <label className="rangeLabel">Vertical</label>
-                      <Slider
-                        size="small"
-                        step={0.1}
-                        min={1}
-                        max={3000}
-                        value={
-                          chosenComp[isImg ? "images" : "texts"][chosenInd]
-                            ?.position.x ?? 0
-                        }
-                        onChange={(e) => handleX(parseFloat(e.target.value))}
-                      />
+                      <div className="sliderHolder">
+                        <Slider
+                          size="small"
+                          className="sliders"
+                          step={0.1}
+                          min={1}
+                          max={3000}
+                          value={
+                            chosenComp[isImg ? "images" : "texts"][chosenInd]
+                              ?.position.x ?? 0
+                          }
+                          onChange={(e) => handleX(parseFloat(e.target.value))}
+                          sx={sliderStyle}
+                        />
+
+                        <div className="sliderValTxt">
+                          {chosenComp[isImg ? "images" : "texts"][chosenInd]
+                            ?.position.x ?? 0}
+                        </div>
+                      </div>
                     </div>
 
                     <div className="rangeItem">
                       <label className="rangeLabel">Horizondal</label>
-                      <Slider
-                        size="small"
-                        step={0.1}
-                        min={1}
-                        max={3000}
-                        value={
-                          chosenComp[isImg ? "images" : "texts"][chosenInd]
-                            ?.position.y ?? 0
-                        }
-                        onChange={(e) => handleY(parseFloat(e.target.value))}
-                      />
+                      <div className="sliderHolder">
+                        <Slider
+                          size="small"
+                          className="sliders"
+                          step={0.1}
+                          min={1}
+                          max={3000}
+                          value={
+                            chosenComp[isImg ? "images" : "texts"][chosenInd]
+                              ?.position.y ?? 0
+                          }
+                          onChange={(e) => handleY(parseFloat(e.target.value))}
+                          sx={sliderStyle}
+                        />
+
+                        <div className="sliderValTxt">
+                          {chosenComp[isImg ? "images" : "texts"][chosenInd]
+                            ?.position.y ?? 0}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

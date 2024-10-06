@@ -727,7 +727,7 @@
 
 .printTxtHolder {
   display: flex;
-  flex: 1.2;
+  flex: 1;
   flex-direction: column;
   /* align-items: center; */
   /* border: 1px solid magenta; */
@@ -749,13 +749,14 @@
   font-size: small;
   font-weight: 500;
   color: #626262;
-  padding-bottom: 5px;
+  /* padding-bottom: 5px; */
+  padding-bottom: 4px;
 }
 
 .colorsPallateHolder {
   display: flex;
   flex-direction: column;
-  flex: 0.7;
+  flex: 0.9;
   /* height: 100%; */
   overflow: hidden;
   /* border: 1px solid aquamarine; */
@@ -770,13 +771,15 @@
   height: 100%; /* Maintain full height of parent */
   min-height: 0; /* Ensures that it doesn't auto-grow based on content */
   /* border: 1px solid green; */
+  border: 1px solid #e3e3e3;
+  border-style: dashed;
 }
 
 .addEditHolder {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-block: 2px;
+  padding-block: 4px;
 }
 
 .txtRangesHolder {
@@ -787,7 +790,8 @@
 }
 
 .printedTextList {
-  /* border: 1px solid black; */
+  border: 1px solid #e3e3e3;
+  border-style: dashed;
   display: flex;
   flex-wrap: wrap;
   flex: 1 0 auto;
@@ -796,13 +800,18 @@
   overflow: auto;
   height: 100%;
   min-height: 0;
+  align-items: flex-start;
+  padding: 3px;
 }
 
 .rangesList {
   display: flex;
-  flex: 2;
+  flex: 2.5;
   flex-direction: column;
-  justify-content: space-evenly;
+  padding-block: 3px;
+  /* justify-content: space-evenly; */
+  justify-content: space-around;
+  overflow-y: auto;
   /* border: 1px solid black; */
 }
 
@@ -818,11 +827,36 @@
 .rangeItem {
   display: flex;
   flex-direction: column;
+  padding-bottom: 5px;
   /* border: 1px solid gray; */
 }
 
 .rangeLabel {
-  /* font-size: medium; */
+  font-size: medium;
+  font-size: 14px;
+  /* padding-bottom: 1px; */
+  /* border: 1px solid gray; */
   font-family: serif;
-  width: 45%;
+  /* width: 45%; */
+}
+
+.sliderHolder {
+  display: flex;
+  align-items: center;
+  /* border: 1px solid gray; */
+  padding-inline-start: 7px;
+}
+
+.sliderValTxt {
+  font-size: x-small;
+  padding-inline: 5px;
+  font-family: serif;
+  text-align: center;
+  width: 15%;
+  max-width: 20%;
+}
+
+.sliders {
+  padding: 5px 0 !important;
+  width: 85%;
 }
