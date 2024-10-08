@@ -96,6 +96,9 @@ import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import TitleIcon from "@mui/icons-material/Title";
 import Done from "@mui/icons-material/Done";
 import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const Favorites = (props) => {
   const { nodes, materials } = useGLTF(modelObj);
@@ -113,18 +116,21 @@ const Favorites = (props) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const [incre, setIncre] = useState(0);
-  const [isImg, setIsImg] = useState(true);
+  const [isImg, setIsImg] = useState(0);
 
   const [printTxt, setPrintTxt] = useState("");
   const [printFont, setPrintFont] = useState({
     id: 1,
     name: "Arial",
   });
+  const [fontStyle, setFontStyle] = useState("");
+  const [fontColor, setFontColor] = useState("#000000");
+
+  const [focTab, setFoctab] = useState(0);
+
   const [isValid, setIsValid] = useState(false);
   const uploadImgInpRef = useRef(null);
   const newImgRef = useRef(null);
-
-  const [hover, setHover] = useState(null);
 
   const [chosenComp, setChosenComp] = useState({
     id: 2,
@@ -216,58 +222,11 @@ const Favorites = (props) => {
     ],
     texts: [
       {
-        text: "Oraisa",
+        text: "Print Text",
         font: "Arial",
-        position: { x: 300, y: 300 },
-        rotation: 0,
-        scale: 1,
-      },
-      {
-        text: "Magna",
-        font: "Arial",
-        position: { x: 300, y: 300 },
-        rotation: 0,
-        scale: 1,
-      },
-      {
-        text: "Vignesh",
-        font: "Arial",
-        position: { x: 300, y: 300 },
-        rotation: 0,
-        scale: 1,
-      },
-      {
-        text: "Quintas",
-        font: "Arial",
-        position: { x: 300, y: 300 },
-        rotation: 0,
-        scale: 1,
-      },
-      {
-        text: "Scorpus",
-        font: "Arial",
-        position: { x: 300, y: 300 },
-        rotation: 0,
-        scale: 1,
-      },
-      {
-        text: "Poseiden",
-        font: "Arial",
-        position: { x: 300, y: 300 },
-        rotation: 0,
-        scale: 1,
-      },
-      {
-        text: "Clamartha",
-        font: "Arial",
-        position: { x: 300, y: 300 },
-        rotation: 0,
-        scale: 1,
-      },
-      {
-        text: "Rebecca",
-        font: "Arial",
-        position: { x: 300, y: 300 },
+        fontStyle: "italic",
+        color: "#0000",
+        position: { x: 261.2, y: 333.5 },
         rotation: 0,
         scale: 1,
       },
@@ -275,7 +234,8 @@ const Favorites = (props) => {
   });
 
   const [chosenInd, setChosenInd] = useState(0);
-  const [txtInd, setTxtInd] = useState(0);
+  const imgIndHold = useRef(0);
+  const txtIndHold = useRef(0);
 
   const [texture, setTexture] = useState([
     {
@@ -309,7 +269,9 @@ const Favorites = (props) => {
         {
           text: "Hoodie",
           font: "Arial",
-          position: { x: 300, y: 300 },
+          fontStyle: "italic",
+          color: "#0000",
+          position: { x: 652.4, y: 300 },
           rotation: 0,
           scale: 1,
         },
@@ -339,6 +301,8 @@ const Favorites = (props) => {
         {
           text: "Print Text",
           font: "Arial",
+          fontStyle: "italic",
+          color: "#0000",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -369,6 +333,8 @@ const Favorites = (props) => {
         {
           text: "Pocket",
           font: "Arial",
+          fontStyle: "italic",
+          color: "#0000",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -429,6 +395,8 @@ const Favorites = (props) => {
         {
           text: "Left Hand",
           font: "Arial",
+          fontStyle: "italic",
+          color: "#0000",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -458,6 +426,8 @@ const Favorites = (props) => {
         {
           text: "Right Hand",
           font: "Arial",
+          fontStyle: "italic",
+          color: "#0000",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -488,6 +458,8 @@ const Favorites = (props) => {
         {
           text: "Left Cuff",
           font: "Arial",
+          fontStyle: "italic",
+          color: "#0000",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -518,6 +490,8 @@ const Favorites = (props) => {
         {
           text: "Right Cuff",
           font: "Arial",
+          fontStyle: "italic",
+          color: "#0000",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -548,6 +522,7 @@ const Favorites = (props) => {
         {
           text: "Sample Text 1",
           font: "Arial",
+          fontStyle: "italic",
           position: { x: 300, y: 300 },
           rotation: 0,
           scale: 1,
@@ -580,8 +555,6 @@ const Favorites = (props) => {
   const imgElements = useRef([]);
 
   const [defMeshRot, setdefMeshRot] = useState([0, 0, 0]);
-
-  const [radioGroupValue, setRadioGroupValue] = useState("1");
 
   const hoodComs = [
     {
@@ -850,13 +823,17 @@ const Favorites = (props) => {
 
       // Render texts
       item.texts.forEach((textItem) => {
+        // const textWidth = ctx.measureText(textItem.text).width;
+        // const textHeight = 30;
+
         ctx.save();
         ctx.translate(textItem.position.x, textItem.position.y);
         ctx.rotate((textItem.rotation * Math.PI) / 180);
         ctx.scale(textItem.scale, textItem.scale);
-        ctx.font = "30px " + textItem.font; // Set your desired font
-        ctx.fillStyle = "#000"; // Text color
+        ctx.font = textItem.fontStyle + " 30px " + textItem.font; // Set your desired font
+        ctx.fillStyle = textItem.color; // Text color
         ctx.fillText(textItem.text, 0, 0);
+        // ctx.strokeText(textItem.text, 0, 0); border
         ctx.restore();
       });
     });
@@ -1004,8 +981,8 @@ const Favorites = (props) => {
 
     const updatedTextures = texture.map((item) => {
       if (item.part === chosenComp.part) {
-        item[isImg ? "images" : "texts"][chosenInd].scale = newScale;
-        chosenComp[isImg ? "images" : "texts"][chosenInd].scale = newScale;
+        item[focTab ? "images" : "texts"][chosenInd].scale = newScale;
+        chosenComp[focTab ? "images" : "texts"][chosenInd].scale = newScale;
         return item;
       }
       return item;
@@ -1020,8 +997,8 @@ const Favorites = (props) => {
   const handleRotationChange = (newRotation) => {
     const updatedTextures = texture.map((item) => {
       if (item.part === partName) {
-        item[isImg ? "images" : "texts"][chosenInd].rotation = newRotation;
-        chosenComp[isImg ? "images" : "texts"][chosenInd].rotation =
+        item[focTab ? "images" : "texts"][chosenInd].rotation = newRotation;
+        chosenComp[focTab ? "images" : "texts"][chosenInd].rotation =
           newRotation;
         return item;
       }
@@ -1035,8 +1012,8 @@ const Favorites = (props) => {
   const handleX = (newPos) => {
     const updatedTextures = texture.map((item) => {
       if (item.part === partName) {
-        item[isImg ? "images" : "texts"][chosenInd].position.x = newPos;
-        chosenComp[isImg ? "images" : "texts"][chosenInd].position.x = newPos;
+        item[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
+        chosenComp[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
         return item;
       }
       return item;
@@ -1049,36 +1026,8 @@ const Favorites = (props) => {
   const handleY = (newPos) => {
     const updatedTextures = texture.map((item) => {
       if (item.part === partName) {
-        item[isImg ? "images" : "texts"][chosenInd].position.y = newPos;
-        chosenComp[isImg ? "images" : "texts"][chosenInd].position.y = newPos;
-        return item;
-      }
-      return item;
-    });
-
-    setTexture(updatedTextures);
-    setIncre(incre + 1);
-  };
-
-  const handleTextScaleChange = (newScale) => {
-    const updatedTextures = texture.map((item) => {
-      if (item.part === partName) {
-        item.texts[chosenInd].scale = newScale;
-        chosenComp.texts[chosenInd].scale = newScale;
-        return item;
-      }
-      return item;
-    });
-
-    setTexture(updatedTextures);
-    setIncre(incre + 1);
-  };
-
-  const handleTextRotationChange = (newRot) => {
-    const updatedTextures = texture.map((item) => {
-      if (item.part === partName) {
-        item.texts[chosenInd].rotation = newRot;
-        chosenComp.texts[chosenInd].rotation = newRot;
+        item[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
+        chosenComp[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
         return item;
       }
       return item;
@@ -1135,22 +1084,25 @@ const Favorites = (props) => {
 
     const meshItem = texture.find((item) => item.id === val.id);
     setChosenComp(meshItem);
-    setChosenInd(0);
+    // setChosenInd(0);
     setIsValid(false);
     setPrintFont({ id: "", name: "" });
     setPrintTxt("");
   };
 
-  const onComImgClick = (ind, img, item) => {
-    setIsImg(img);
+  const onComImgClick = (ind, item) => {
+    // setIsImg(img);
+    if (focTab) imgIndHold.current = ind;
+    else txtIndHold.current = ind;
+
     setChosenInd(ind);
 
-    if (!img) {
-      const val = fonts.find((ite) => ite.name === item.font);
-      console.log("found font :", val);
-      setPrintFont(val);
-      setPrintTxt(item.text);
-    }
+    // if (!img) {
+    //   const val = fonts.find((ite) => ite.name === item.font);
+    //   console.log("found font :", val);
+    //   setPrintFont(val);
+    //   setPrintTxt(item.text);
+    // }
   };
 
   const onTxtPrintConfirm = () => {
@@ -1160,10 +1112,14 @@ const Favorites = (props) => {
       const textSamp = {
         text: printTxt,
         font: printFont.name,
+        color: fontColor,
+        fontStyle: fontStyle,
         position: { x: 1250.8, y: 974.5 },
         rotation: 87.7,
         scale: 3.6,
       };
+
+      console.log("builded text :", textSamp);
 
       const updatedTextures = texture.map((item) => {
         if (item.id === chosenComp.id) {
@@ -1404,29 +1360,36 @@ const Favorites = (props) => {
               </div>
             </div>
           </div> */}
-
           {/* Tabs here */}
 
           <div className="tabsHolder">
-            <Tabs defaultValue={0} className="tabsContainer">
+            <Tabs
+              defaultValue={0}
+              onChange={(e, val) => {
+                console.log("selected tab :", val);
+                setChosenInd(val ? imgIndHold.current : txtIndHold.current);
+                setFoctab(val);
+              }}
+              className="tabsContainer"
+            >
               <TabsList className="tabsList">
-                <Tab className="tabBt" label="Image" value={0}>
+                <Tab className="tabBt" label="Image" value={0} key={0}>
                   <IoText size={20} />
                 </Tab>
-                <Tab className="tabBt" label="Text" value={1}>
+                <Tab className="tabBt" label="Text" value={1} key={1}>
                   <FaImage size={20} />
                 </Tab>
               </TabsList>
 
               <TabPanel className="tabPanel" value={0}>
                 <div className="printTxtHolder">
-                  {/* <div className="secTitle">Text</div> */}
                   <div className="txtInputsHolder">
                     <TextField
                       size="small"
                       label="Print Text"
                       variant="standard"
                       fullWidth
+                      multiline
                       sx={inpStye}
                       onChange={(e) => setPrintTxt(e.target.value)}
                       value={printTxt}
@@ -1479,8 +1442,14 @@ const Favorites = (props) => {
                           gap: 1.2,
                           flexDirection: "row",
                           alignItem: "center",
-                          // justifyContent: "center",
                           paddingInlineStart: "5px",
+                        }}
+                        onChange={(e) => {
+                          console.log("onChange radioGrp :", e.target.value);
+                          const val = e.target.value;
+                          const fStyle =
+                            val === "1" ? "" : val === "2" ? "bold" : "italic";
+                          setFontStyle(fStyle);
                         }}
                       >
                         {["1", "2", "3"].map((value) => (
@@ -1552,6 +1521,13 @@ const Favorites = (props) => {
                           flexDirection: "row",
                           overflow: "auto",
                         }}
+                        onChange={(e) => {
+                          console.log("change cols :", e.target.value);
+                          const selCol = fontColors.find(
+                            (ite) => ite.id == e.target.value
+                          );
+                          setFontColor(selCol.hex || "#000000");
+                        }}
                       >
                         {fontColors.map((color) => (
                           <Sheet
@@ -1611,7 +1587,7 @@ const Favorites = (props) => {
                         size="small"
                         onClick={onTxtPrintConfirm}
                       >
-                        Print
+                        Add
                       </Button>
                     </div>
                   </div>
@@ -1622,11 +1598,58 @@ const Favorites = (props) => {
 
                   <div className="printedTextList">
                     {chosenComp.texts.map((item, ind) => (
-                      <Chip
-                        key={ind}
-                        label={item.text}
-                        sx={{ m: 0.1, height: "25px" }}
-                      />
+                      <div style={{ position: "relative" }}>
+                        <Chip
+                          key={ind}
+                          label={item.text}
+                          variant="filled"
+                          onClick={onComImgClick.bind(this, ind)}
+                          sx={{
+                            m: 0.1,
+                            height: "25px",
+                            position: "relative",
+                            backgroundColor:
+                              !focTab && chosenInd === ind
+                                ? "#D8D8D8"
+                                : "transparent",
+                            fontFamily: item.font,
+                            "&:hover": {
+                              backgroundColor:
+                                !focTab && chosenInd === ind
+                                  ? "#D8D8D8"
+                                  : "transparent",
+                            },
+                          }}
+                        />
+                        <ClearIcon
+                          fontSize="10px"
+                          sx={{
+                            display:
+                              !focTab && chosenInd === ind ? "block" : "none",
+                            position: "absolute",
+                            left: "-3px",
+                            top: "-20%",
+                            "&:hover": {
+                              color: "red",
+                            },
+                          }}
+                        />
+
+                        <EditIcon
+                          fontSize="15px"
+                          sx={{
+                            display:
+                              !focTab && chosenInd === ind ? "block" : "none",
+                            position: "absolute",
+
+                            left: "85%",
+                            top: "-20%",
+                            "&:hover": {
+                              color: "#1A76D2",
+                            },
+                          }}
+                        />
+                      </div>
                     ))}
 
                     <Button
@@ -1644,122 +1667,160 @@ const Favorites = (props) => {
                       Add Text
                     </Button>
                   </div>
-
-                  <div className="rangesList">
-                    <div className="subTitle" style={{ paddingBottom: 0 }}>
-                      Alignment
-                    </div>
-                    <div className="rangeItem">
-                      <label className="rangeLabel">Scale</label>
-
-                      <div className="sliderHolder">
-                        <Slider
-                          size="small"
-                          className="sliders"
-                          step={0.1}
-                          min={0.1}
-                          max={10}
-                          value={
-                            chosenComp[isImg ? "images" : "texts"][chosenInd]
-                              ?.scale ?? 0
-                          }
-                          onChange={(e) =>
-                            handleScaleChange(parseFloat(e.target.value))
-                          }
-                          sx={sliderStyle}
-                        />
-                        <div className="sliderValTxt">
-                          {chosenComp[isImg ? "images" : "texts"][chosenInd]
-                            ?.scale ?? 0}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rangeItem">
-                      <label className="rangeLabel">Rotation</label>
-                      <div className="sliderHolder">
-                        <Slider
-                          size="small"
-                          className="sliders"
-                          step={0.1}
-                          min={1}
-                          max={1000}
-                          value={
-                            chosenComp[isImg ? "images" : "texts"][chosenInd]
-                              ?.rotation ?? 0
-                          }
-                          onChange={(e) =>
-                            handleRotationChange(parseFloat(e.target.value))
-                          }
-                          sx={sliderStyle}
-                        />
-
-                        <div className="sliderValTxt">
-                          {chosenComp[isImg ? "images" : "texts"][chosenInd]
-                            ?.rotation ?? 0}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rangeItem">
-                      <label className="rangeLabel">Vertical</label>
-                      <div className="sliderHolder">
-                        <Slider
-                          size="small"
-                          className="sliders"
-                          step={0.1}
-                          min={1}
-                          max={3000}
-                          value={
-                            chosenComp[isImg ? "images" : "texts"][chosenInd]
-                              ?.position.x ?? 0
-                          }
-                          onChange={(e) => handleX(parseFloat(e.target.value))}
-                          sx={sliderStyle}
-                        />
-
-                        <div className="sliderValTxt">
-                          {chosenComp[isImg ? "images" : "texts"][chosenInd]
-                            ?.position.x ?? 0}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="rangeItem">
-                      <label className="rangeLabel">Horizondal</label>
-                      <div className="sliderHolder">
-                        <Slider
-                          size="small"
-                          className="sliders"
-                          step={0.1}
-                          min={1}
-                          max={3000}
-                          value={
-                            chosenComp[isImg ? "images" : "texts"][chosenInd]
-                              ?.position.y ?? 0
-                          }
-                          onChange={(e) => handleY(parseFloat(e.target.value))}
-                          sx={sliderStyle}
-                        />
-
-                        <div className="sliderValTxt">
-                          {chosenComp[isImg ? "images" : "texts"][chosenInd]
-                            ?.position.y ?? 0}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </TabPanel>
 
               <TabPanel className="tabPanel" value={1}>
-                image List
+                <div className="suggImageHolder">
+                  <div style={{ paddingBlock: "4px" }} className="subTitle">
+                    Images
+                  </div>
+                  <div className="addedImgHolder"></div>
+                </div>
+
+                <div style={{ paddingBlock: "4px" }} className="subTitle">
+                  Printed Images
+                </div>
+
+                <div className="addedImgHolder">
+                  <div className="imgGridListHolder">
+                    {chosenComp.images.map((item, ind) => (
+                      <div className="comImgHolder">
+                        <img
+                          key={ind}
+                          src={item.src}
+                          className="imgItem"
+                          onClick={onComImgClick.bind(this, ind)}
+                          style={{
+                            border:
+                              focTab && chosenInd === ind
+                                ? "1px solid grey"
+                                : "",
+                            borderRadius: "8px",
+                          }}
+                        />
+                      </div>
+                    ))}
+                    <div className="comImgHolder">
+                      <IconButton
+                        onClick={() => uploadImgInpRef.current.click()}
+                      >
+                        <LuImagePlus color="#1665C0" />
+                      </IconButton>
+                    </div>
+                  </div>
+                </div>
               </TabPanel>
             </Tabs>
+            <div className="rangesList">
+              <div
+                className="subTitle"
+                style={{ paddingBottom: 0, paddingTop: "4px" }}
+              >
+                Alignment
+              </div>
+              <div className="rangeItem">
+                <label className="rangeLabel">Scale</label>
+
+                <div className="sliderHolder">
+                  <Slider
+                    size="small"
+                    className="sliders"
+                    step={0.1}
+                    min={0.1}
+                    max={10}
+                    value={
+                      chosenComp[focTab ? "images" : "texts"][chosenInd]
+                        ?.scale ?? 0
+                    }
+                    onChange={(e) =>
+                      handleScaleChange(parseFloat(e.target.value))
+                    }
+                    sx={sliderStyle}
+                  />
+                  <div className="sliderValTxt">
+                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
+                      ?.scale ?? 0}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rangeItem">
+                <label className="rangeLabel">Rotation</label>
+                <div className="sliderHolder">
+                  <Slider
+                    size="small"
+                    className="sliders"
+                    step={0.1}
+                    min={1}
+                    max={1000}
+                    value={
+                      chosenComp[focTab ? "images" : "texts"][chosenInd]
+                        ?.rotation ?? 0
+                    }
+                    onChange={(e) =>
+                      handleRotationChange(parseFloat(e.target.value))
+                    }
+                    sx={sliderStyle}
+                  />
+
+                  <div className="sliderValTxt">
+                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
+                      ?.rotation ?? 0}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rangeItem">
+                <label className="rangeLabel">Vertical</label>
+                <div className="sliderHolder">
+                  <Slider
+                    size="small"
+                    className="sliders"
+                    step={0.1}
+                    min={1}
+                    max={3000}
+                    value={
+                      chosenComp[focTab ? "images" : "texts"][chosenInd]
+                        ?.position.x ?? 0
+                    }
+                    onChange={(e) => handleX(parseFloat(e.target.value))}
+                    sx={sliderStyle}
+                  />
+
+                  <div className="sliderValTxt">
+                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
+                      ?.position.x ?? 0}
+                  </div>
+                </div>
+              </div>
+
+              <div className="rangeItem">
+                <label className="rangeLabel">Horizondal</label>
+                <div className="sliderHolder">
+                  <Slider
+                    size="small"
+                    className="sliders"
+                    step={0.1}
+                    min={1}
+                    max={3000}
+                    value={
+                      chosenComp[focTab ? "images" : "texts"][chosenInd]
+                        ?.position.y ?? 0
+                    }
+                    onChange={(e) => handleY(parseFloat(e.target.value))}
+                    sx={sliderStyle}
+                  />
+
+                  <div className="sliderValTxt">
+                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
+                      ?.position.y ?? 0}
+                  </div>
+                </div>
+              </div>
+            </div>
             <Styles />
           </div>
-
-          {/* Tabs here */}
         </div>
 
         <div className="modelObjHolder">

@@ -633,33 +633,6 @@
   border: 1px solid black;
 }
 
-.imgGridListHolder {
-  display: grid;
-  width: 100%;
-  /* height: 70%; */
-  grid-template-columns: repeat(3, 1fr);
-  overflow: auto;
-  padding: 3px;
-  gap: 3px;
-  border: 1px solid palevioletred;
-}
-
-.comImgHolder {
-  width: 100%;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid magenta;
-}
-
-.imgItem {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  border: 1px solid transparent;
-}
-
 .txtListHolder {
   display: grid;
   /* grid-template-columns: repeat(auto-fit, minmax(0, fit-content(100%))); */
@@ -705,17 +678,19 @@
 
 .tabsHolder {
   display: flex;
+  flex-direction: column;
   flex: 1;
-  /* border: 1px solid black; */
   padding: 5px;
+  /* border: 1px solid black; */
 }
 
 .tabsContainer {
-  /* border: 1px solid greenyellow; */
   display: flex;
   flex-direction: column;
+  flex: 1;
   width: 100%;
   /* margin-top: 5px;  */
+  /* border: 1px solid greenyellow; */
 }
 
 .secTitle {
@@ -779,12 +754,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-block: 4px;
+  padding-top: 6px;
+  /* border: 1px solid green; */
 }
 
 .txtRangesHolder {
   display: flex;
-  flex: 1;
+  flex: 0.35;
   flex-direction: column;
   /* border: 1px solid red; */
 }
@@ -806,7 +782,8 @@
 
 .rangesList {
   display: flex;
-  flex: 2.5;
+  /* flex: 2.5; */
+  flex: 0.45;
   flex-direction: column;
   padding-block: 3px;
   /* justify-content: space-evenly; */
@@ -859,4 +836,132 @@
 .sliders {
   padding: 5px 0 !important;
   width: 85%;
+}
+
+.suggImageHolder {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  /* border: 1px solid gray; */
+}
+
+.addedImgHolder {
+  display: flex;
+  border: 1px solid #e3e3e3;
+  border-style: dashed;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 0 auto;
+  flex-basis: 0;
+  overflow: hidden;
+  overflow: auto;
+  height: 100%;
+  min-height: 0;
+  align-items: flex-start;
+  /* padding: 3px; */
+}
+
+.imgGridListHolder {
+  display: grid;
+  width: 100%;
+  /* height: 70%; */
+  grid-template-columns: repeat(3, 1fr);
+  overflow: auto;
+  padding: 3px;
+  gap: 3px;
+  /* border: 1px solid palevioletred; */
+}
+
+.comImgHolder {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid magenta; */
+}
+
+.imgItem {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border: 1px solid transparent;
+}
+
+/* Testing menu holder */
+
+.exploreHolder {
+  display: flex;
+  flex: 1;
+  border: 1px solid red;
+  align-items: center;
+  justify-content: center;
+}
+
+.menuContainer {
+  /* border: 1px solid red; */
+  display: flex;
+  /* flex: 1; */
+  height: 60%;
+  width: 80%;
+  align-items: center;
+  overflow: hidden;
+  position: absolute;
+}
+
+.menuLink {
+  display: flex;
+  height: 190%;
+  width: 50%;
+  border-radius: 50%;
+  border: 0.8px solid gray;
+  position: relative;
+  left: 3%;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+}
+
+.iconHolder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4%;
+  width: 5.5%;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+}
+
+.iconCont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  height: 80%;
+  width: 80%;
+  background-color: black;
+}
+
+.icon2Pos {
+  left: 2%;
+  top: 35%;
+  transform: translate(-50%, -50%);
+}
+
+.icon1Pos {
+  left: 0%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+}
+
+.icon3Pos {
+  left: 0%;
+  top: 55%;
+  transform: translate(-50%, -50%);
+}
+.icon4Pos {
+  left: 2%;
+  top: 65%;
+  transform: translate(-50%, -50%);
 }

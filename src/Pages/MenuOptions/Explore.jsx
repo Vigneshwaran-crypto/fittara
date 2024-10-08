@@ -1,64 +1,41 @@
-import { OrbitControls, Text, useGLTF, useTexture } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
 import React, { useEffect } from "react";
-import sampImg from "../../Assets/auth/userProfile.png";
-import ClampImage from "./Test/ClampImage";
+import "./MenuOptionsStyles.css";
 
-import hoodie from "../../Assets/3dFiles/hoodie.glb";
-import adidas from "../../Assets/3dFiles/adidas_hoodie.glb";
-import jacket from "../../Assets/3dFiles/oversize_jacket_-_low_poly.glb";
-import Hoodie from "../../Component/Hoodie";
+import { IoTextOutline } from "react-icons/io5";
+import { CiImageOn } from "react-icons/ci";
+import { TbMessageChatbot } from "react-icons/tb";
+import { FaIceCream } from "react-icons/fa";
 
 const Explore = (props) => {
-  const { nodes, materials } = useGLTF(hoodie);
-
-  useEffect(() => {
-    console.log("3d Items Nodes :", nodes);
-    console.log("3d Items Materials :", materials);
-  }, []);
-
   return (
-    <div className="container">
-      <Canvas>
-        <ambientLight intensity={10} />
-        <pointLight position={[0, 0, 0]} />
-        {/* 
-        <Text
-          color={"white"}
-          fontSize={0.6}
-          maxWidth={200}
-          lineHeight={1}
-          letterSpacing={0.02}
-          textAlign="center"
-          position={[0, 0, 1]}
-        >
-          Hello 3d world
-        </Text> */}
+    <div className="exploreHolder">
+      <div className="menuContainer">
+        <div className="menuLink">
+          <div className="iconHolder icon1Pos">
+            <div className="iconCont">
+              <IoTextOutline color="white" />
+            </div>
+          </div>
 
-        {/* <mesh>
-          <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color={"blue"} />
-          <ClampImage />
-        </mesh> */}
+          <div className="iconHolder icon2Pos">
+            <div className="iconCont">
+              <CiImageOn color="white" />
+            </div>
+          </div>
 
-        {/* <mesh>
-          <group>
-            <mesh position={[0, 0, 0]}>
-              <boxGeometry args={[4, 1.5, 2]} />
-              <meshStandardMaterial color={"red"} />
-            </mesh>
+          <div className="iconHolder icon3Pos">
+            <div className="iconCont">
+              <TbMessageChatbot color="white" />
+            </div>
+          </div>
 
-            <mesh position={[-1.5, -1, -10]}>
-              <cylinderGeometry args={[0.5, 0.5, 1, 32]} />
-              <meshStandardMaterial color={"black"} />
-            </mesh>
-          </group>
-        </mesh> */}
-
-        <Hoodie />
-
-        <OrbitControls />
-      </Canvas>
+          <div className="iconHolder icon4Pos">
+            <div className="iconCont">
+              <FaIceCream color="white" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

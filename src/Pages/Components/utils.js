@@ -677,8 +677,8 @@ export const fonts = [
 ];
 
 export const fontColors = [
-  { id: 1, color: "Red", hex: "#D32F2F" },
-  { id: 2, color: "Pink", hex: "#E91E63" },
+  { id: 1, color: "Black", hex: "#000000" },
+  { id: 2, color: "White", hex: "#FFFFFF" },
   { id: 3, color: "Purple", hex: "#9C27B0" },
   { id: 4, color: "Deep Purple", hex: "#673AB7" },
   { id: 5, color: "Indigo", hex: "#3F51B5" },
@@ -696,8 +696,8 @@ export const fontColors = [
   { id: 17, color: "Brown", hex: "#795548" },
   { id: 18, color: "Grey", hex: "#9E9E9E" },
   { id: 19, color: "Blue Grey", hex: "#607D8B" },
-  { id: 20, color: "Black", hex: "#000000" },
-  { id: 21, color: "White", hex: "#FFFFFF" },
+  { id: 20, color: "Pink", hex: "#E91E63" },
+  { id: 21, color: "Red", hex: "#D32F2F" },
 ];
 
 export const erToast = (title) => {
