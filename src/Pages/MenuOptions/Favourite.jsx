@@ -18,18 +18,6 @@ import {
 import ecomImg from "../../Assets/auth/ecomVector.jpg";
 import userImg from "../../Assets/auth/userProfile.png";
 
-import img1 from "../../Assets/auth/img1.png";
-import img2 from "../../Assets/auth/img2.png";
-import img3 from "../../Assets/auth/img3.png";
-import img4 from "../../Assets/auth/img4.png";
-import img5 from "../../Assets/auth/img5.png";
-import img6 from "../../Assets/auth/img6.png";
-import img7 from "../../Assets/auth/img7.png";
-
-import positive from "../../Assets/auth/positive.png";
-import butter from "../../Assets/auth/butter.png";
-import flower from "../../Assets/auth/flower.png";
-
 import frontSide from "../../Assets/sides/front2.png";
 import backSide from "../../Assets/sides/back.png";
 import leftSide from "../../Assets/sides/left.png";
@@ -103,10 +91,8 @@ import ClearIcon from "@mui/icons-material/Clear";
 const Favorites = (props) => {
   const { nodes, materials } = useGLTF(modelObj);
 
-  const mesh = useRef();
   const canvasRef = useRef(null);
   const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry);
-  const [partName, setPartName] = useState("Front");
   const uv = geometry.attributes.uv.array;
 
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -116,7 +102,6 @@ const Favorites = (props) => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const [incre, setIncre] = useState(0);
-  const [isImg, setIsImg] = useState(0);
 
   const [printTxt, setPrintTxt] = useState("");
   const [printFont, setPrintFont] = useState({
@@ -124,13 +109,17 @@ const Favorites = (props) => {
     name: "Arial",
   });
   const [fontStyle, setFontStyle] = useState("");
-  const [fontColor, setFontColor] = useState("#000000");
+  const [fontColor, setFontColor] = useState({
+    id: 1,
+    color: "Black",
+    hex: "#000000",
+  });
 
   const [focTab, setFoctab] = useState(0);
 
   const [isValid, setIsValid] = useState(false);
   const uploadImgInpRef = useRef(null);
-  const newImgRef = useRef(null);
+  const [isChipHover, setChipHover] = useState(null);
 
   const [chosenComp, setChosenComp] = useState({
     id: 2,
@@ -140,102 +129,17 @@ const Favorites = (props) => {
     txture: null,
     color: "",
     ref: useRef(null),
-    images: [
-      {
-        src: flower,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-
-      {
-        src: img1,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-
-      {
-        src: img2,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-
-      {
-        src: img3,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-
-      {
-        src: img4,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-      {
-        src: flower,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-
-      {
-        src: img1,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-
-      {
-        src: img2,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-
-      {
-        src: img3,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-
-      {
-        src: img4,
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-        ref: useRef(),
-      },
-    ],
-    texts: [
-      {
-        text: "Print Text",
-        font: "Arial",
-        fontStyle: "italic",
-        color: "#0000",
-        position: { x: 261.2, y: 333.5 },
-        rotation: 0,
-        scale: 1,
-      },
-    ],
+    defPos: { x: 610.7, y: 333.5 },
+    defRot: 87.7,
+    defScal: 3.1,
+    images: [],
+    texts: [],
   });
 
   const [chosenInd, setChosenInd] = useState(0);
   const imgIndHold = useRef(0);
   const txtIndHold = useRef(0);
+  const prinTxtInpRef = useRef(null);
 
   const [texture, setTexture] = useState([
     {
@@ -249,33 +153,8 @@ const Favorites = (props) => {
       defPos: { x: 652.4, y: 300 },
       defRot: 87.7,
       defScal: 3.6,
-      images: [
-        {
-          src: userImg,
-          position: { x: 50, y: 50 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-        {
-          src: img3,
-          position: { x: 20, y: 100 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-      ],
-      texts: [
-        {
-          text: "Hoodie",
-          font: "Arial",
-          fontStyle: "italic",
-          color: "#0000",
-          position: { x: 652.4, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
-      ],
+      images: [],
+      texts: [],
     },
     {
       id: 2,
@@ -285,29 +164,11 @@ const Favorites = (props) => {
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
-      defPos: { x: 261.2, y: 333.5 },
+      defPos: { x: 610.7, y: 333.5 },
       defRot: 87.7,
       defScal: 3.1,
-      images: [
-        {
-          src: flower,
-          position: { x: 261.2, y: 333.5 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-      ],
-      texts: [
-        {
-          text: "Print Text",
-          font: "Arial",
-          fontStyle: "italic",
-          color: "#0000",
-          position: { x: 300, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
-      ],
+      images: [],
+      texts: [],
     },
     {
       id: 3,
@@ -320,26 +181,8 @@ const Favorites = (props) => {
       defPos: { x: 100.1, y: 333.5 },
       defRot: 87.7,
       defScal: 1.9,
-      images: [
-        // {
-        //   src: img2,
-        //   position: { x: 30, y: 30 },
-        //   rotation: 87.7,
-        //   scale: 1,
-        //   ref: useRef(),
-        // },
-      ],
-      texts: [
-        {
-          text: "Pocket",
-          font: "Arial",
-          fontStyle: "italic",
-          color: "#0000",
-          position: { x: 300, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
-      ],
+      images: [],
+      texts: [],
     },
     {
       id: 4,
@@ -352,24 +195,8 @@ const Favorites = (props) => {
       defPos: { x: 1250.8, y: 974.5 },
       defRot: 87.7,
       defScal: 3.6,
-      images: [
-        // {
-        //   src: butter,
-        //   position: { x: 1250.8, y: 974.5 },
-        //   rotation: 87.7,
-        //   scale: 3.6,
-        //   ref: useRef(),
-        // },
-      ],
-      texts: [
-        // {
-        //   text: "Back",
-        //   font: "Arial",
-        //   position: { x: 300, y: 300 },
-        //   rotation: 0,
-        //   scale: 1,
-        // },
-      ],
+      images: [],
+      texts: [],
     },
     {
       id: 5,
@@ -382,26 +209,8 @@ const Favorites = (props) => {
       defPos: { x: 652.4, y: 300 },
       defRot: 87.7,
       defScal: 3.6,
-      images: [
-        {
-          src: img4,
-          position: { x: 25, y: 25 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-      ],
-      texts: [
-        {
-          text: "Left Hand",
-          font: "Arial",
-          fontStyle: "italic",
-          color: "#0000",
-          position: { x: 300, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
-      ],
+      images: [],
+      texts: [],
     },
     {
       id: 6,
@@ -413,26 +222,8 @@ const Favorites = (props) => {
       defPos: { x: 1527, y: 333.5 },
       defRot: 95.3,
       defScal: 1,
-      images: [
-        {
-          src: img5,
-          position: { x: 45, y: 45 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-      ],
-      texts: [
-        {
-          text: "Right Hand",
-          font: "Arial",
-          fontStyle: "italic",
-          color: "#0000",
-          position: { x: 300, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
-      ],
+      images: [],
+      texts: [],
     },
     {
       id: 7,
@@ -445,26 +236,8 @@ const Favorites = (props) => {
       defPos: { x: 652.4, y: 300 },
       defRot: 87.7,
       defScal: 3.6,
-      images: [
-        {
-          src: img6,
-          position: { x: 50, y: 50 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-      ],
-      texts: [
-        {
-          text: "Left Cuff",
-          font: "Arial",
-          fontStyle: "italic",
-          color: "#0000",
-          position: { x: 300, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
-      ],
+      images: [],
+      texts: [],
     },
     {
       id: 8,
@@ -477,26 +250,8 @@ const Favorites = (props) => {
       defPos: { x: 652.4, y: 300 },
       defRot: 87.7,
       defScal: 3.6,
-      images: [
-        {
-          src: img7,
-          position: { x: 50, y: 50 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-      ],
-      texts: [
-        {
-          text: "Right Cuff",
-          font: "Arial",
-          fontStyle: "italic",
-          color: "#0000",
-          position: { x: 300, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
-      ],
+      images: [],
+      texts: [],
     },
     {
       id: 9,
@@ -509,25 +264,8 @@ const Favorites = (props) => {
       defPos: { x: 652.4, y: 300 },
       defRot: 87.7,
       defScal: 3.6,
-      images: [
-        {
-          src: img2,
-          position: { x: 50, y: 50 },
-          rotation: 0,
-          scale: 1,
-          ref: useRef(),
-        },
-      ],
-      texts: [
-        {
-          text: "Sample Text 1",
-          font: "Arial",
-          fontStyle: "italic",
-          position: { x: 300, y: 300 },
-          rotation: 0,
-          scale: 1,
-        },
-      ],
+      images: [],
+      texts: [],
     },
   ]);
 
@@ -553,151 +291,7 @@ const Favorites = (props) => {
 
   const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" }); // State to hold the selected color
   const imgElements = useRef([]);
-
   const [defMeshRot, setdefMeshRot] = useState([0, 0, 0]);
-
-  const hoodComs = [
-    {
-      id: 1,
-      part: "Hoodie",
-      node: "g_Hoodie_Hoodie_0_1",
-      position: [0, -1.3, 0],
-      opacity: 0.2,
-      blur: 1,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_1.geometry}
-          material={materials.Hoodie}
-        />
-      ),
-    },
-    {
-      id: 2,
-      part: "Front",
-      node: "g_Hoodie_Hoodie_0_3",
-      position: [0, -0.85, 0],
-      opacity: 0.8,
-      blur: 1,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_3.geometry}
-          material={materials.front}
-        />
-      ),
-    },
-    {
-      id: 3,
-      part: "Pocket",
-      node: "g_Hoodie_Hoodie_0_2",
-      position: [0, -1, 0],
-      opacity: 2,
-      blur: 1,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_2.geometry}
-          material={materials.poacket}
-        />
-      ),
-    },
-    {
-      id: 4,
-      part: "Back",
-      node: "g_Hoodie_Hoodie_0_5",
-      position: [0, -1.1, 0],
-      opacity: 0.8,
-      blur: 2,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_5.geometry}
-          material={materials.back}
-        />
-      ),
-    },
-    {
-      id: 5,
-      part: "Left Hand",
-      node: "g_Hoodie_Hoodie_0_6",
-      position: [-0.1, -0.9, 0],
-      opacity: 0.2,
-      blur: 0.8,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_6.geometry}
-          material={materials.left}
-        />
-      ),
-    },
-    {
-      id: 6,
-      part: "Right Hand",
-      node: "g_Hoodie_Hoodie_0_8",
-      position: [0.1, -0.9, 0],
-      opacity: 0.2,
-      blur: 0.8,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_8.geometry}
-          material={materials.right}
-        />
-      ),
-    },
-    {
-      id: 7,
-      part: "Left Cuff",
-      node: "g_Hoodie_Hoodie_0_7",
-      position: [0, 0, 0],
-      opacity: 0,
-      blur: 0,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_7.geometry}
-          material={materials.lcuff}
-        />
-      ),
-    },
-    {
-      id: 8,
-      part: "Right Cuff",
-      node: "g_Hoodie_Hoodie_0_9",
-      position: [0, 0, 0],
-      opacity: 0,
-      blur: 0,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_9.geometry}
-          material={materials.rcuff}
-        />
-      ),
-    },
-    {
-      id: 9,
-      part: "Cap",
-      node: "g_Hoodie_Hoodie_0_4",
-      position: [0, -0.0, 0],
-      opacity: 0.3,
-      blur: 1,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_4.geometry}
-          material={materials.cape}
-        />
-      ),
-    },
-    {
-      id: 5,
-      part: "Left Hand",
-      node: "g_Hoodie_Hoodie_0_6",
-      position: [-0.1, -0.9, 0],
-      opacity: 0.2,
-      blur: 0.8,
-      mesh: (
-        <mesh
-          geometry={nodes.g_Hoodie_Hoodie_0_6.geometry}
-          material={materials.left}
-        />
-      ),
-    },
-  ];
 
   const sidePosses = [
     {
@@ -739,9 +333,20 @@ const Favorites = (props) => {
   ];
 
   useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, mousePos]);
+
+  useEffect(() => {
     const imgsList = texture.map((item) => item.images).flat();
 
     console.log("imgsList :", imgsList);
+
     const madeTxtures = texture.map((item, index) => {
       item.images.map((img, ind) => {
         const imgElem = new Image();
@@ -760,11 +365,7 @@ const Favorites = (props) => {
     });
 
     console.log("madeTxtures :", madeTxtures);
-  }, [
-    // texture,
-    // chosenComp.images[chosenInd].scale,
-    incre,
-  ]);
+  }, [incre, chosenInd]);
 
   const renderCanvas = () => {
     // if (!imageLoaded) return;
@@ -846,8 +447,18 @@ const Favorites = (props) => {
     // newTexture.minFilter = sRGBEncoding;
     // newTexture.magFilter = THREE.ACESFilmicToneMapping;
 
+    // const madetxture = texture.map((item) => {
+    //   if (partName === item.part) {
+    //     item.txture = newTexture;
+    //     return item;
+    //   } else {
+    //     return item;
+    //   }
+    // });
+    // setTexture(madetxture);
+
     const madetxture = texture.map((item) => {
-      if (partName === item.part) {
+      if (chosenComp.part === item.part) {
         item.txture = newTexture;
         return item;
       } else {
@@ -864,9 +475,10 @@ const Favorites = (props) => {
     imageLoaded,
     color.hex,
     texts,
-    partName,
+    // partName,
     // chosenComp.images[chosenInd].scale,
     incre,
+    chosenInd,
   ]);
 
   useEffect(() => {
@@ -996,7 +608,7 @@ const Favorites = (props) => {
 
   const handleRotationChange = (newRotation) => {
     const updatedTextures = texture.map((item) => {
-      if (item.part === partName) {
+      if (item.part === chosenComp.part) {
         item[focTab ? "images" : "texts"][chosenInd].rotation = newRotation;
         chosenComp[focTab ? "images" : "texts"][chosenInd].rotation =
           newRotation;
@@ -1011,7 +623,7 @@ const Favorites = (props) => {
 
   const handleX = (newPos) => {
     const updatedTextures = texture.map((item) => {
-      if (item.part === partName) {
+      if (item.part === chosenComp.part) {
         item[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
         chosenComp[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
         return item;
@@ -1025,7 +637,7 @@ const Favorites = (props) => {
 
   const handleY = (newPos) => {
     const updatedTextures = texture.map((item) => {
-      if (item.part === partName) {
+      if (item.part === chosenComp.part) {
         item[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
         chosenComp[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
         return item;
@@ -1046,7 +658,7 @@ const Favorites = (props) => {
     // const col = rgbToHex(rgb);
 
     const updatedTextures = texture.map((item) => {
-      if (item.part === partName) {
+      if (item.part === chosenComp.part) {
         item.color = col;
         chosenComp.color = col;
         return item;
@@ -1065,22 +677,46 @@ const Favorites = (props) => {
     });
   };
 
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDragging, mousePos]);
-
   const onItemMeshClick = (val) => {
     console.log("clicked mesh :", val);
 
+    const rots = [
+      [0, 0, 0], // Original position
+      [0, Math.PI / 1.8, 0], // 90 degrees right
+      [0, -Math.PI / 1.8, 0], // 90 degrees left
+      [0, Math.PI, 0], // 180 degrees
+      [0, (3 * Math.PI) / 2, 0], // 270 degrees
+    ];
+
+    // id: 2,
+    // part: "Front",
+    // id: 4,
+    // part: "Back",
+    // id: 5,
+    // part: "Left Hand",
+    // id: 6,
+    // part: "Right Hand",
+
+    switch (val.id) {
+      case 2:
+        setdefMeshRot(rots[0]);
+        break;
+      case 4:
+        setdefMeshRot(rots[3]);
+        break;
+      case 5:
+        setdefMeshRot(rots[2]);
+        break;
+      case 6:
+        setdefMeshRot(rots[1]);
+        break;
+      default:
+        break;
+    }
+
     // const samp = nodes.g_Hoodie_Hoodie_0_3.geometry;
     setGeometry(nodes[val.node].geometry);
-    setPartName(val.part);
+    // setPartName(val.part);
 
     const meshItem = texture.find((item) => item.id === val.id);
     setChosenComp(meshItem);
@@ -1106,17 +742,21 @@ const Favorites = (props) => {
   };
 
   const onTxtPrintConfirm = () => {
-    setIsValid(true);
+    if (!printTxt) {
+      setIsValid(true);
+      return;
+    }
 
     if (printTxt && printFont.id) {
       const textSamp = {
         text: printTxt,
         font: printFont.name,
-        color: fontColor,
+        // color: fontColor,
+        color: fontColor.hex,
         fontStyle: fontStyle,
-        position: { x: 1250.8, y: 974.5 },
-        rotation: 87.7,
-        scale: 3.6,
+        position: chosenComp.defPos,
+        rotation: chosenComp.defRot,
+        scale: chosenComp.defScal,
       };
 
       console.log("builded text :", textSamp);
@@ -1124,16 +764,29 @@ const Favorites = (props) => {
       const updatedTextures = texture.map((item) => {
         if (item.id === chosenComp.id) {
           item.texts.push(textSamp);
-          // chosenComp.texts.push(textSamp);
           return item;
         }
         return item;
       });
 
-      setChosenComp(updatedTextures.find((item) => item.id === chosenComp.id));
+      const updatedItem = updatedTextures.find(
+        (item) => item.id === chosenComp.id
+      );
 
       setTexture(updatedTextures);
       setIncre(incre + 1);
+
+      setChosenComp(updatedItem);
+      // console.log("current text items index :", updatedItem.texts.length - 1);
+      setChosenInd(updatedItem.texts.length - 1);
+
+      setIsValid(false);
+      setPrintTxt("");
+      setPrintFont({
+        id: 1,
+        name: "Arial",
+      });
+      setFontStyle("");
     }
   };
 
@@ -1148,10 +801,11 @@ const Favorites = (props) => {
 
     const imgItem = {
       src: imgUrl,
-      position: { x: 1250.8, y: 974.5 },
-      rotation: 87.7,
-      scale: 3.6,
-      ref: newImgRef,
+      position: chosenComp.defPos,
+      rotation: chosenComp.defRot,
+      scale: chosenComp.defScal,
+      ref: React.createRef(),
+      file,
     };
 
     const updatedTextures = texture.map((item) => {
@@ -1164,6 +818,23 @@ const Favorites = (props) => {
     });
     setChosenComp(updatedTextures.find((item) => item.id === chosenComp.id));
     setTexture(updatedTextures);
+    setIncre(incre + 1);
+  };
+
+  const onChipTxtDelClick = (ind) => {
+    console.log("clicked chip for delete :", ind);
+    const updatedtxture = texture.map((item) => {
+      if (item.id === chosenComp.id) {
+        const newItem = { ...chosenComp };
+        const txts = chosenComp.texts?.filter((ite, dex) => ind !== dex);
+        newItem.texts = txts;
+        return newItem;
+      } else {
+        return item;
+      }
+    });
+
+    setTexture(updatedtxture);
     setIncre(incre + 1);
   };
 
@@ -1385,6 +1056,8 @@ const Favorites = (props) => {
                 <div className="printTxtHolder">
                   <div className="txtInputsHolder">
                     <TextField
+                      // ref={prinTxtInpRef}
+                      inputRef={prinTxtInpRef}
                       size="small"
                       label="Print Text"
                       variant="standard"
@@ -1397,6 +1070,7 @@ const Favorites = (props) => {
                     />
                     <Autocomplete
                       freeSolo
+                      disableClearable
                       options={fonts}
                       size="small"
                       getOptionLabel={(option) =>
@@ -1420,16 +1094,21 @@ const Favorites = (props) => {
                         console.log("onChange font : ", val);
                         setPrintFont(val);
                       }}
-                      renderOption={(props, item, { selected }) => (
-                        <MenuItem
-                          style={{ fontFamily: item.name }}
-                          {...props}
-                          id={item.id}
-                          value={item.name}
-                        >
-                          {item.name}
-                        </MenuItem>
-                      )}
+                      renderOption={(props, item, { selected }) => {
+                        const { key, ...otherProps } = props;
+                        return (
+                          <MenuItem
+                            style={{ fontFamily: item.name }}
+                            // {...props}
+                            {...otherProps}
+                            key={item.id}
+                            id={item.id}
+                            value={item.name}
+                          >
+                            {item.name}
+                          </MenuItem>
+                        );
+                      }}
                     />
 
                     <div className="radioGrpHolder">
@@ -1437,6 +1116,13 @@ const Favorites = (props) => {
                       <RadioGroup
                         aria-labelledby="storage-label"
                         defaultValue="1"
+                        value={
+                          fontStyle === "bold"
+                            ? "2"
+                            : fontStyle === "italic"
+                            ? "3"
+                            : "1"
+                        }
                         size="sm"
                         sx={{
                           gap: 1.2,
@@ -1510,9 +1196,10 @@ const Favorites = (props) => {
 
                   <div className="colorsPallateHolder">
                     <div className="subTitle">Colors</div>
-
                     <div className="colListHolder">
                       <RadioGroup
+                        defaultValue={1}
+                        value={fontColor.id}
                         sx={{
                           gap: 0.5,
                           padding: "3px",
@@ -1526,7 +1213,8 @@ const Favorites = (props) => {
                           const selCol = fontColors.find(
                             (ite) => ite.id == e.target.value
                           );
-                          setFontColor(selCol.hex || "#000000");
+                          // setFontColor(selCol.hex || "#000000");
+                          setFontColor(selCol);
                         }}
                       >
                         {fontColors.map((color) => (
@@ -1598,7 +1286,12 @@ const Favorites = (props) => {
 
                   <div className="printedTextList">
                     {chosenComp.texts.map((item, ind) => (
-                      <div style={{ position: "relative" }}>
+                      <div
+                        key={ind}
+                        style={{ position: "relative" }}
+                        onMouseEnter={() => setChipHover(ind)}
+                        onMouseLeave={() => setChipHover(null)}
+                      >
                         <Chip
                           key={ind}
                           label={item.text}
@@ -1625,7 +1318,9 @@ const Favorites = (props) => {
                           fontSize="10px"
                           sx={{
                             display:
-                              !focTab && chosenInd === ind ? "block" : "none",
+                              isChipHover === ind && chosenInd === ind
+                                ? "block"
+                                : "none",
                             position: "absolute",
                             left: "-3px",
                             top: "-20%",
@@ -1633,15 +1328,17 @@ const Favorites = (props) => {
                               color: "red",
                             },
                           }}
+                          onClick={onChipTxtDelClick.bind(this, ind)}
                         />
 
                         <EditIcon
                           fontSize="15px"
                           sx={{
                             display:
-                              !focTab && chosenInd === ind ? "block" : "none",
+                              isChipHover === ind && chosenInd === ind
+                                ? "block"
+                                : "none",
                             position: "absolute",
-
                             left: "85%",
                             top: "-20%",
                             "&:hover": {
@@ -1663,8 +1360,9 @@ const Favorites = (props) => {
                         m: 0.1,
                       }}
                       size="small"
+                      onClick={() => prinTxtInpRef.current.focus()}
                     >
-                      Add Text
+                      New Text
                     </Button>
                   </div>
                 </div>
@@ -1685,9 +1383,8 @@ const Favorites = (props) => {
                 <div className="addedImgHolder">
                   <div className="imgGridListHolder">
                     {chosenComp.images.map((item, ind) => (
-                      <div className="comImgHolder">
+                      <div className="comImgHolder" key={ind}>
                         <img
-                          key={ind}
                           src={item.src}
                           className="imgItem"
                           onClick={onComImgClick.bind(this, ind)}
@@ -1726,7 +1423,7 @@ const Favorites = (props) => {
                   <Slider
                     size="small"
                     className="sliders"
-                    step={0.1}
+                    step={0.01}
                     min={0.1}
                     max={10}
                     value={
@@ -1737,6 +1434,9 @@ const Favorites = (props) => {
                       handleScaleChange(parseFloat(e.target.value))
                     }
                     sx={sliderStyle}
+                    disabled={
+                      chosenComp[focTab ? "images" : "texts"].length === 0
+                    }
                   />
                   <div className="sliderValTxt">
                     {chosenComp[focTab ? "images" : "texts"][chosenInd]
@@ -1751,7 +1451,7 @@ const Favorites = (props) => {
                   <Slider
                     size="small"
                     className="sliders"
-                    step={0.1}
+                    step={0.01}
                     min={1}
                     max={1000}
                     value={
@@ -1762,6 +1462,9 @@ const Favorites = (props) => {
                       handleRotationChange(parseFloat(e.target.value))
                     }
                     sx={sliderStyle}
+                    disabled={
+                      chosenComp[focTab ? "images" : "texts"].length === 0
+                    }
                   />
 
                   <div className="sliderValTxt">
@@ -1777,7 +1480,7 @@ const Favorites = (props) => {
                   <Slider
                     size="small"
                     className="sliders"
-                    step={0.1}
+                    step={0.01}
                     min={1}
                     max={3000}
                     value={
@@ -1786,6 +1489,9 @@ const Favorites = (props) => {
                     }
                     onChange={(e) => handleX(parseFloat(e.target.value))}
                     sx={sliderStyle}
+                    disabled={
+                      chosenComp[focTab ? "images" : "texts"].length === 0
+                    }
                   />
 
                   <div className="sliderValTxt">
@@ -1801,7 +1507,7 @@ const Favorites = (props) => {
                   <Slider
                     size="small"
                     className="sliders"
-                    step={0.1}
+                    step={0.01}
                     min={1}
                     max={3000}
                     value={
@@ -1810,6 +1516,9 @@ const Favorites = (props) => {
                     }
                     onChange={(e) => handleY(parseFloat(e.target.value))}
                     sx={sliderStyle}
+                    disabled={
+                      chosenComp[focTab ? "images" : "texts"].length === 0
+                    }
                   />
 
                   <div className="sliderValTxt">
@@ -1826,8 +1535,9 @@ const Favorites = (props) => {
         <div className="modelObjHolder">
           <div className="objPosHolder">
             <div className="posImgListHolder">
-              {sidePosses.map((item) => (
+              {sidePosses.map((item, ind) => (
                 <div
+                  key={ind}
                   onClick={onItemMeshClick.bind(this, item)}
                   style={{
                     backgroundColor:
@@ -1848,7 +1558,8 @@ const Favorites = (props) => {
               antialias: true,
               toneMappingExposure: 1.5,
             }}
-            camera={{ fov: 35, position: [0, 1.5, 4] }}
+            // camera={{ fov: 35, position: [0, 1.5, 4] }}
+            camera={{ fov: 45, position: [0, 1, 3.6] }}
             shadows
             className="threeDHolder"
           >
