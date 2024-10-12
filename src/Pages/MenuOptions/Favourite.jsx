@@ -121,6 +121,11 @@ const Favorites = (props) => {
   const uploadImgInpRef = useRef(null);
   const [isChipHover, setChipHover] = useState(null);
 
+  const [chosenInd, setChosenInd] = useState(0);
+  const imgIndHold = useRef(0);
+  const txtIndHold = useRef(0);
+  const prinTxtInpRef = useRef(null);
+
   const [chosenComp, setChosenComp] = useState({
     id: 2,
     part: "Front",
@@ -136,10 +141,20 @@ const Favorites = (props) => {
     texts: [],
   });
 
-  const [chosenInd, setChosenInd] = useState(0);
-  const imgIndHold = useRef(0);
-  const txtIndHold = useRef(0);
-  const prinTxtInpRef = useRef(null);
+  const [chosenMesh, setChosenMesh] = useState({
+    id: 2,
+    part: "Front",
+    geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
+    mat: materials.Hoodie,
+    txture: null,
+    color: "",
+    ref: useRef(null),
+    defPos: { x: 610.7, y: 333.5 },
+    defRot: 87.7,
+    defScal: 3.1,
+    images: [],
+    texts: [],
+  });
 
   const [texture, setTexture] = useState([
     {
@@ -269,25 +284,25 @@ const Favorites = (props) => {
     },
   ]);
 
-  const [images, setImages] = useState([
-    { src: userImg, position: { x: 50, y: 50 }, rotation: 0, scale: 1 },
-    { src: ecomImg, position: { x: 150, y: 150 }, rotation: 0, scale: 1 },
-  ]);
+  // const [images, setImages] = useState([
+  //   { src: userImg, position: { x: 50, y: 50 }, rotation: 0, scale: 1 },
+  //   { src: ecomImg, position: { x: 150, y: 150 }, rotation: 0, scale: 1 },
+  // ]);
 
-  const [texts, setTexts] = useState([
-    {
-      text: "Sample Text 1",
-      position: { x: 300, y: 300 },
-      rotation: 0,
-      scale: 1,
-    },
-    {
-      text: "Sample Text 2",
-      position: { x: 500, y: 500 },
-      rotation: 0,
-      scale: 1,
-    },
-  ]);
+  // const [texts, setTexts] = useState([
+  //   {
+  //     text: "Sample Text 1",
+  //     position: { x: 300, y: 300 },
+  //     rotation: 0,
+  //     scale: 1,
+  //   },
+  //   {
+  //     text: "Sample Text 2",
+  //     position: { x: 500, y: 500 },
+  //     rotation: 0,
+  //     scale: 1,
+  //   },
+  // ]);
 
   const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" }); // State to hold the selected color
   const imgElements = useRef([]);
@@ -302,6 +317,9 @@ const Favorites = (props) => {
       opacity: 0.8,
       blur: 1,
       img: frontSide,
+      defPos: { x: 610.7, y: 333.5 },
+      defRot: 87.7,
+      defScal: 3.1,
     },
     {
       id: 4,
@@ -311,6 +329,9 @@ const Favorites = (props) => {
       opacity: 0.8,
       blur: 2,
       img: backSide,
+      defPos: { x: 1250.8, y: 974.5 },
+      defRot: 87.7,
+      defScal: 3.6,
     },
     {
       id: 5,
@@ -320,6 +341,9 @@ const Favorites = (props) => {
       opacity: 0.2,
       blur: 0.8,
       img: leftSide,
+      defPos: { x: 652.4, y: 300 },
+      defRot: 87.7,
+      defScal: 3.6,
     },
     {
       id: 6,
@@ -329,43 +353,41 @@ const Favorites = (props) => {
       opacity: 0.2,
       blur: 0.8,
       img: rightSide,
+      defPos: { x: 1527, y: 333.5 },
+      defRot: 95.3,
+      defScal: 1,
     },
   ];
 
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+  // useEffect(() => {
+  //   window.addEventListener("mousemove", handleMouseMove);
+  //   window.addEventListener("mouseup", handleMouseUp);
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDragging, mousePos]);
+  //   return () => {
+  //     window.removeEventListener("mousemove", handleMouseMove);
+  //     window.removeEventListener("mouseup", handleMouseUp);
+  //   };
+  // }, [isDragging, mousePos]);
 
-  useEffect(() => {
-    const imgsList = texture.map((item) => item.images).flat();
-
-    console.log("imgsList :", imgsList);
-
-    const madeTxtures = texture.map((item, index) => {
-      item.images.map((img, ind) => {
-        const imgElem = new Image();
-        imgElem.src = img.src;
-        imgElem.crossOrigin = "anonymous";
-        imgElem.onload = () => {
-          if (index === madeTxtures.length - 1) {
-            setImageLoaded(true);
-          }
-        };
-
-        img.ref.current = imgElem;
-      });
-
-      return item;
-    });
-
-    console.log("madeTxtures :", madeTxtures);
-  }, [incre, chosenInd]);
+  // useEffect(() => {
+  //   const imgsList = texture.map((item) => item.images).flat();
+  //   console.log("imgsList :", imgsList);
+  //   const madeTxtures = texture.map((item, index) => {
+  //     item.images.map((img, ind) => {
+  //       const imgElem = new Image();
+  //       imgElem.src = img.src;
+  //       imgElem.crossOrigin = "anonymous";
+  //       imgElem.onload = () => {
+  //         if (index === madeTxtures.length - 1) {
+  //           setImageLoaded(true);
+  //         }
+  //       };
+  //       img.ref.current = imgElem;
+  //     });
+  //     return item;
+  //   });
+  //   console.log("madeTxtures :", madeTxtures);
+  // }, [incre, chosenInd]);
 
   const renderCanvas = () => {
     // if (!imageLoaded) return;
@@ -474,7 +496,7 @@ const Favorites = (props) => {
     // images,
     imageLoaded,
     color.hex,
-    texts,
+    // texts,
     // partName,
     // chosenComp.images[chosenInd].scale,
     incre,
@@ -490,102 +512,102 @@ const Favorites = (props) => {
     });
   }, [texture]);
 
-  const handleMouseDown = (e) => {
-    const { clientX, clientY } = e;
-    setMousePos({ x: clientX, y: clientY });
+  // const handleMouseDown = (e) => {
+  //   const { clientX, clientY } = e;
+  //   setMousePos({ x: clientX, y: clientY });
 
-    let foundIndex = null;
-    let isText = false;
+  //   let foundIndex = null;
+  //   let isText = false;
 
-    // Check if an image is clicked
-    images.forEach((img, index) => {
-      const imgWidth = imgElements.current[index].width * img.scale;
-      const imgHeight = imgElements.current[index].height * img.scale;
+  //   // Check if an image is clicked
+  //   images.forEach((img, index) => {
+  //     const imgWidth = imgElements.current[index].width * img.scale;
+  //     const imgHeight = imgElements.current[index].height * img.scale;
 
-      if (
-        clientX >= img.position.x - imgWidth / 2 &&
-        clientX <= img.position.x + imgWidth / 2 &&
-        clientY >= img.position.y - imgHeight / 2 &&
-        clientY <= img.position.y + imgHeight / 2
-      ) {
-        foundIndex = index;
-      }
-    });
+  //     if (
+  //       clientX >= img.position.x - imgWidth / 2 &&
+  //       clientX <= img.position.x + imgWidth / 2 &&
+  //       clientY >= img.position.y - imgHeight / 2 &&
+  //       clientY <= img.position.y + imgHeight / 2
+  //     ) {
+  //       foundIndex = index;
+  //     }
+  //   });
 
-    // Check if a text is clicked
-    if (foundIndex === null) {
-      texts.forEach((text, index) => {
-        const textWidth = 100 * text.scale; // Approximate text width
-        const textHeight = 30 * text.scale; // Approximate text height
+  //   // Check if a text is clicked
+  //   if (foundIndex === null) {
+  //     texts.forEach((text, index) => {
+  //       const textWidth = 100 * text.scale; // Approximate text width
+  //       const textHeight = 30 * text.scale; // Approximate text height
 
-        if (
-          clientX >= text.position.x - textWidth / 2 &&
-          clientX <= text.position.x + textWidth / 2 &&
-          clientY >= text.position.y - textHeight / 2 &&
-          clientY <= text.position.y + textHeight / 2
-        ) {
-          foundIndex = index;
-          isText = true;
-        }
-      });
-    }
+  //       if (
+  //         clientX >= text.position.x - textWidth / 2 &&
+  //         clientX <= text.position.x + textWidth / 2 &&
+  //         clientY >= text.position.y - textHeight / 2 &&
+  //         clientY <= text.position.y + textHeight / 2
+  //       ) {
+  //         foundIndex = index;
+  //         isText = true;
+  //       }
+  //     });
+  //   }
 
-    if (foundIndex !== null) {
-      setDraggingIndex(foundIndex);
-      setIsDragging(true);
-      if (isText) {
-        setDraggingText(true); // New state to track text dragging
-      }
-    }
-  };
+  //   if (foundIndex !== null) {
+  //     setDraggingIndex(foundIndex);
+  //     setIsDragging(true);
+  //     if (isText) {
+  //       setDraggingText(true); // New state to track text dragging
+  //     }
+  //   }
+  // };
 
-  const handleMouseMove = (e) => {
-    // console.log("handleMouseMove :", e);
-    if (isDragging && draggingIndex !== null) {
-      const { clientX, clientY } = e;
-      const movementX = clientX - mousePos.x;
-      const movementY = clientY - mousePos.y;
+  // const handleMouseMove = (e) => {
+  //   // console.log("handleMouseMove :", e);
+  //   if (isDragging && draggingIndex !== null) {
+  //     const { clientX, clientY } = e;
+  //     const movementX = clientX - mousePos.x;
+  //     const movementY = clientY - mousePos.y;
 
-      if (isDraggingText) {
-        // Update text position
-        setTexts((prevTexts) =>
-          prevTexts.map((text, i) =>
-            i === draggingIndex
-              ? {
-                  ...text,
-                  position: {
-                    x: text.position.x + movementX,
-                    y: text.position.y + movementY,
-                  },
-                }
-              : text
-          )
-        );
-      } else {
-        // Update image position
-        setImages((prevImages) =>
-          prevImages.map((img, i) =>
-            i === draggingIndex
-              ? {
-                  ...img,
-                  position: {
-                    x: img.position.x + movementX,
-                    y: img.position.y + movementY,
-                  },
-                }
-              : img
-          )
-        );
-      }
+  //     if (isDraggingText) {
+  //       // Update text position
+  //       setTexts((prevTexts) =>
+  //         prevTexts.map((text, i) =>
+  //           i === draggingIndex
+  //             ? {
+  //                 ...text,
+  //                 position: {
+  //                   x: text.position.x + movementX,
+  //                   y: text.position.y + movementY,
+  //                 },
+  //               }
+  //             : text
+  //         )
+  //       );
+  //     } else {
+  //       // Update image position
+  //       setImages((prevImages) =>
+  //         prevImages.map((img, i) =>
+  //           i === draggingIndex
+  //             ? {
+  //                 ...img,
+  //                 position: {
+  //                   x: img.position.x + movementX,
+  //                   y: img.position.y + movementY,
+  //                 },
+  //               }
+  //             : img
+  //         )
+  //       );
+  //     }
 
-      setMousePos({ x: clientX, y: clientY });
-    }
-  };
+  //     setMousePos({ x: clientX, y: clientY });
+  //   }
+  // };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    setDraggingIndex(null);
-  };
+  // const handleMouseUp = () => {
+  //   setIsDragging(false);
+  //   setDraggingIndex(null);
+  // };
 
   const handleScaleChange = (newScale) => {
     console.log("handleScaleChange", chosenInd);
@@ -622,14 +644,34 @@ const Favorites = (props) => {
   };
 
   const handleX = (newPos) => {
+    console.log("handleX chosen index :", chosenInd);
+
     const updatedTextures = texture.map((item) => {
-      if (item.part === chosenComp.part) {
-        item[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
-        chosenComp[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
-        return item;
+      if (item.id === chosenComp.id) {
+        // item[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
+        // chosenComp[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
+        // return item;
+
+        const updatedItem = { ...item };
+        updatedItem[focTab ? "images" : "texts"] = [
+          ...item[focTab ? "images" : "texts"],
+        ];
+
+        // Update the position of the selected text/image only
+        updatedItem[focTab ? "images" : "texts"][chosenInd] = {
+          ...updatedItem[focTab ? "images" : "texts"][chosenInd],
+          position: {
+            ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
+            x: newPos,
+          },
+        };
+
+        return updatedItem;
       }
       return item;
     });
+
+    console.log("updating item :", updatedTextures);
 
     setTexture(updatedTextures);
     setIncre(incre + 1);
@@ -688,15 +730,6 @@ const Favorites = (props) => {
       [0, (3 * Math.PI) / 2, 0], // 270 degrees
     ];
 
-    // id: 2,
-    // part: "Front",
-    // id: 4,
-    // part: "Back",
-    // id: 5,
-    // part: "Left Hand",
-    // id: 6,
-    // part: "Right Hand",
-
     switch (val.id) {
       case 2:
         setdefMeshRot(rots[0]);
@@ -720,6 +753,8 @@ const Favorites = (props) => {
 
     const meshItem = texture.find((item) => item.id === val.id);
     setChosenComp(meshItem);
+
+    setChosenMesh(meshItem);
     // setChosenInd(0);
     setIsValid(false);
     setPrintFont({ id: "", name: "" });
@@ -727,6 +762,8 @@ const Favorites = (props) => {
   };
 
   const onComImgClick = (ind, item) => {
+    console.log("clicked item index :", ind);
+    console.log("clicked item item :", item);
     // setIsImg(img);
     if (focTab) imgIndHold.current = ind;
     else txtIndHold.current = ind;
@@ -754,9 +791,12 @@ const Favorites = (props) => {
         // color: fontColor,
         color: fontColor.hex,
         fontStyle: fontStyle,
-        position: chosenComp.defPos,
-        rotation: chosenComp.defRot,
-        scale: chosenComp.defScal,
+        // position: chosenComp.defPos,
+        // rotation: chosenComp.defRot,
+        // scale: chosenComp.defScal,
+        position: chosenMesh.defPos,
+        rotation: chosenMesh.defRot,
+        scale: chosenMesh.defScal,
       };
 
       console.log("builded text :", textSamp);
@@ -764,6 +804,8 @@ const Favorites = (props) => {
       const updatedTextures = texture.map((item) => {
         if (item.id === chosenComp.id) {
           item.texts.push(textSamp);
+          // item.texts = item.texts.concat([textSamp]);
+          // console.log("concated data :", item.texts);
           return item;
         }
         return item;
@@ -777,7 +819,6 @@ const Favorites = (props) => {
       setIncre(incre + 1);
 
       setChosenComp(updatedItem);
-      // console.log("current text items index :", updatedItem.texts.length - 1);
       setChosenInd(updatedItem.texts.length - 1);
 
       setIsValid(false);
@@ -844,7 +885,7 @@ const Favorites = (props) => {
         <canvas
           ref={canvasRef}
           id="uvCanvas"
-          onMouseDown={handleMouseDown}
+          // onMouseDown={handleMouseDown}
           style={{
             width: "100%",
             display: "none",
@@ -859,178 +900,6 @@ const Favorites = (props) => {
           style={{ display: "none" }}
         />
         <div className="editorHolder">
-          {/* <div className="txtureListHolder">
-            <div className="txtFlexCont">
-              <div className="imgGridListHolder">
-                {chosenComp.images.map((item, ind) => (
-                  <div className="comImgHolder">
-                    <img
-                      key={ind}
-                      src={item.src}
-                      className="imgItem"
-                      onClick={onComImgClick.bind(this, ind, true)}
-                      style={{
-                        border:
-                          isImg && chosenInd === ind ? "1px solid grey" : "",
-                        borderRadius: "8px",
-                      }}
-                    />
-                  </div>
-                ))}
-                <div className="comImgHolder">
-                  <IconButton onClick={() => uploadImgInpRef.current.click()}>
-                    <LuImagePlus color="#1665C0" />
-                  </IconButton>
-                </div>
-              </div>
-            </div>
-
-            <div className="txtFlexCont">
-              <div className="txtListHolder">
-                {chosenComp.texts.map((item, ind) => (
-                  <div
-                    className="comTxtItem"
-                    onClick={onComImgClick.bind(this, ind, false, item)}
-                    style={{
-                      border:
-                        !isImg && chosenInd === ind ? "1px solid grey" : "",
-                      borderRadius: "8px",
-                      fontFamily: item.font,
-                      width: "fit-content",
-                    }}
-                  >
-                    {item.text}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="editingPallateHolder">
-            <div className="printTxtHolder">
-              <TextField
-                size="small"
-                label="Print Text"
-                variant="standard"
-                fullWidth
-                sx={inpStye}
-                onChange={(e) => setPrintTxt(e.target.value)}
-                value={printTxt}
-                error={isValid && !printTxt}
-              />
-
-              <Autocomplete
-                freeSolo
-                options={fonts}
-                size="small"
-                getOptionLabel={(option) => (option.name ? option.name : "")}
-                fullWidth
-                renderInput={(param) => (
-                  <TextField
-                    {...param}
-                    size="small"
-                    label="Fonts"
-                    fullWidth
-                    variant="standard"
-                    placeholder="Search"
-                    sx={inpStye}
-                    error={isValid && !printFont.name}
-                  />
-                )}
-                value={printFont}
-                onChange={(e, val) => {
-                  console.log("onChange font : ", val);
-                  setPrintFont(val);
-                }}
-                renderOption={(props, item, { selected }) => (
-                  <MenuItem
-                    style={{ fontFamily: item.name }}
-                    {...props}
-                    id={item.id}
-                    value={item.name}
-                  >
-                    {item.name}
-                  </MenuItem>
-                )}
-              />
-
-              <IconButton
-                style={{
-                  backgroundColor: "green",
-                  boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
-                }}
-                onClick={onTxtPrintConfirm}
-              >
-                <AiOutlineCheck size={12} color={"white"} />
-              </IconButton>
-            </div>
-
-            <div className="rangesHolder">
-              <div className="rangeItem">
-                <label className="rangeLabel">Scale</label>
-                <Slider
-                  size="small"
-                  step={0.1}
-                  min={0.1}
-                  max={10}
-                  value={
-                    chosenComp[isImg ? "images" : "texts"][chosenInd]?.scale ??
-                    0
-                  }
-                  onChange={(e) =>
-                    handleScaleChange(parseFloat(e.target.value))
-                  }
-                />
-              </div>
-
-              <div className="rangeItem">
-                <label className="rangeLabel">Rotation</label>
-                <Slider
-                  size="small"
-                  step={0.1}
-                  min={1}
-                  max={1000}
-                  value={
-                    chosenComp[isImg ? "images" : "texts"][chosenInd]
-                      ?.rotation ?? 0
-                  }
-                  onChange={(e) =>
-                    handleRotationChange(parseFloat(e.target.value))
-                  }
-                />
-              </div>
-
-              <div className="rangeItem">
-                <label className="rangeLabel">Vertical</label>
-                <Slider
-                  size="small"
-                  step={0.1}
-                  min={1}
-                  max={3000}
-                  value={
-                    chosenComp[isImg ? "images" : "texts"][chosenInd]?.position
-                      .x ?? 0
-                  }
-                  onChange={(e) => handleX(parseFloat(e.target.value))}
-                />
-              </div>
-
-              <div className="rangeItem">
-                <label className="rangeLabel">Horizondal</label>
-                <Slider
-                  size="small"
-                  step={0.1}
-                  min={1}
-                  max={3000}
-                  value={
-                    chosenComp[isImg ? "images" : "texts"][chosenInd]?.position
-                      .y ?? 0
-                  }
-                  onChange={(e) => handleY(parseFloat(e.target.value))}
-                />
-              </div>
-            </div>
-          </div> */}
           {/* Tabs here */}
 
           <div className="tabsHolder">
@@ -1296,7 +1165,7 @@ const Favorites = (props) => {
                           key={ind}
                           label={item.text}
                           variant="filled"
-                          onClick={onComImgClick.bind(this, ind)}
+                          onClick={onComImgClick.bind(this, ind, item)}
                           sx={{
                             m: 0.1,
                             height: "25px",
@@ -1387,7 +1256,7 @@ const Favorites = (props) => {
                         <img
                           src={item.src}
                           className="imgItem"
-                          onClick={onComImgClick.bind(this, ind)}
+                          onClick={onComImgClick.bind(this, ind, item)}
                           style={{
                             border:
                               focTab && chosenInd === ind
@@ -1541,7 +1410,7 @@ const Favorites = (props) => {
                   onClick={onItemMeshClick.bind(this, item)}
                   style={{
                     backgroundColor:
-                      chosenComp.id === item.id ? "#e4e4e4" : "transparent",
+                      chosenMesh.id === item.id ? "#e4e4e4" : "transparent",
                   }}
                   className="posImgItemHolder"
                 >
