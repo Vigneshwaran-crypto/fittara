@@ -1,0 +1,76 @@
+:root {
+  --mildGrey: #f6f6f6;
+}
+
+.homeContainer {
+  /* border: 1px solid black; */
+  display: flex;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  padding: 0 !important;
+}
+
+.homeBodyHolder {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+
+.carouselHolder {
+  /* border: 1px solid red; */
+  height: 60%;
+}
+
+.carousel {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  /* border: 1px solid green; */
+}
+
+.carouselItem {
+  /* border: 1px solid blue; */
+  display: flex !important;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--mildGrey);
+}
+
+.carouselTxtHolder {
+  display: flex;
+  flex: 2;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid blue; */
+}
+
+.carouselItemTexts {
+  /* border: 1px solid blue; */
+  width: 50%;
+  text-wrap: pretty;
+  font-size: xx-large;
+  font-weight: 700;
+  color: black;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}
+
+.carouselImgHolder {
+  display: flex;
+  flex: 1;
+  /* border: 1px solid red; */
+}
+
+.carouselItemImg {
+  object-fit: contain;
+  height: 100%;
+  width: 100%;
+}

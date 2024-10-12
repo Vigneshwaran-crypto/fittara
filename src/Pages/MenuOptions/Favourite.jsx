@@ -648,16 +648,11 @@ const Favorites = (props) => {
 
     const updatedTextures = texture.map((item) => {
       if (item.id === chosenComp.id) {
-        // item[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
-        // chosenComp[focTab ? "images" : "texts"][chosenInd].position.x = newPos;
-        // return item;
-
         const updatedItem = { ...item };
         updatedItem[focTab ? "images" : "texts"] = [
           ...item[focTab ? "images" : "texts"],
         ];
 
-        // Update the position of the selected text/image only
         updatedItem[focTab ? "images" : "texts"][chosenInd] = {
           ...updatedItem[focTab ? "images" : "texts"][chosenInd],
           position: {
@@ -665,7 +660,6 @@ const Favorites = (props) => {
             x: newPos,
           },
         };
-
         return updatedItem;
       }
       return item;
@@ -680,9 +674,24 @@ const Favorites = (props) => {
   const handleY = (newPos) => {
     const updatedTextures = texture.map((item) => {
       if (item.part === chosenComp.part) {
-        item[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
-        chosenComp[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
-        return item;
+        // item[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
+        // chosenComp[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
+        // return item;
+
+        const updatedItem = { ...item };
+        updatedItem[focTab ? "images" : "texts"] = [
+          ...item[focTab ? "images" : "texts"],
+        ];
+
+        updatedItem[focTab ? "images" : "texts"][chosenInd] = {
+          ...updatedItem[focTab ? "images" : "texts"][chosenInd],
+          position: {
+            ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
+            y: newPos,
+          },
+        };
+
+        return updatedItem;
       }
       return item;
     });
