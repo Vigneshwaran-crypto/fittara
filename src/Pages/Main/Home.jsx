@@ -47,25 +47,21 @@ const Home = () => {
   const slidesList = [
     {
       title: "Be Bold, Be You – The Power to Customize is Yours!",
-      //   img: customs,
       bg: modelBG,
       txtColor: "#3C3D37",
     },
     {
       title: "Turn Your Imagination into the Ultimate Fashion Statement!",
-      //   img: hood,
       bg: coolBG,
       txtColor: "white",
     },
     {
       title: "Fashion Isn’t One-Size-Fits-All – It’s One-of-a-Kind!",
-      //   img: blueWoman,
       bg: greenBG,
       txtColor: "white",
     },
     {
       title: "Redefine Fashion with Pieces as Unique as You Are!",
-      //   img: greenWoman,
       bg: girlBG,
       txtColor: "#3C3D37",
     },
@@ -81,18 +77,73 @@ const Home = () => {
   ];
 
   const prods = [
-    { prod: "Hoodie", desc: "New brand hoodie  , unisex", img: hoodie2 },
-    { prod: "Tshirt", desc: "Customized classy", img: tshirt2 },
-    { prod: "Tshirt", desc: "Customized classy", img: tshirt3 },
-    { prod: "Tshirt", desc: "Customized classy", img: tshirt4 },
-    { prod: "Tshirt", desc: "Customized classy", img: tshirt5 },
-    { prod: "Cup", desc: "Cup by your name", img: cup2 },
-    { prod: "Cup", desc: "Cup by your name", img: cup3 },
-    { prod: "Cup", desc: "Cup by your name", img: cup4 },
-    { prod: "Tote Bag", desc: "The Customized Tote bag", img: bag2 },
-    { prod: "Tote Bag", desc: "The Customized Tote bag", img: bag3 },
-    { prod: "Tote Bag", desc: "The Customized Tote bag", img: bag4 },
-    { prod: "Tote Bag", desc: "The Customized Tote bag", img: bag5 },
+    {
+      prod: "Printed Hoodie",
+      desc: "New brand hoodie  , unisex",
+      img: hoodie2,
+      price: "499 ₹",
+    },
+    {
+      price: "399 ₹",
+      prod: "Blue Tshirt",
+      desc: "Customized classy",
+      img: tshirt2,
+    },
+    {
+      price: "499 ₹",
+      prod: "Green Tshirt",
+      desc: "Customized classy",
+      img: tshirt3,
+    },
+    {
+      price: "299 ₹",
+      prod: "Quoted Tshirt",
+      desc: "Customized classy",
+      img: tshirt4,
+    },
+    {
+      price: "459 ₹",
+      prod: "Custom Tshirt",
+      desc: "Customized classy",
+      img: tshirt5,
+    },
+    {
+      price: "499 ₹",
+      prod: "Designed Cup",
+      desc: "Cup by your name",
+      img: cup2,
+    },
+    {
+      price: "399 ₹",
+      prod: "Printed Cup",
+      desc: "Cup by your name",
+      img: cup3,
+    },
+    { price: "699 ₹", prod: "Quoted Cup", desc: "Cup by your name", img: cup4 },
+    {
+      price: "199 ₹",
+      prod: "Printed Totes",
+      desc: "The Customized Tote bag",
+      img: bag2,
+    },
+    {
+      price: "499 ₹",
+      prod: "Textured Totes",
+      desc: "The Customized Tote bag",
+      img: bag3,
+    },
+    {
+      price: "999 ₹",
+      prod: "Strippy Totes",
+      desc: "The Customized Tote bag",
+      img: bag4,
+    },
+    {
+      price: "299 ₹",
+      prod: "Stylish Totes",
+      desc: "The Customized Tote bag",
+      img: bag5,
+    },
   ];
 
   return (
@@ -156,7 +207,12 @@ const Home = () => {
         <div className="prodList">
           {prods.map((item) => (
             <div className="prodItem">
-              <img className="categoryImg" src={item.img} />
+              <img className="prodImg" src={item.img} />
+              <div className="namePriceTag">
+                {item.prod}
+
+                <span>{item.price}</span>
+              </div>
             </div>
           ))}
         </div>
