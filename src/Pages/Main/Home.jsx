@@ -8,17 +8,14 @@ import { CiFacebook } from "react-icons/ci";
 import { FaWhatsapp } from "react-icons/fa";
 import { CiInstagram } from "react-icons/ci";
 import { AiOutlinePinterest } from "react-icons/ai";
-
-import hood from "../../Assets/carousel/hoodie.png";
-import greenWoman from "../../Assets/carousel/greenAlone.png";
-import blueWoman from "../../Assets/carousel/womanBlue.png";
-import customs from "../../Assets/carousel/customs.png";
-import fashBG from "../../Assets/carousel/fashBG.jpg";
+import { TbCube3dSphere } from "react-icons/tb";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
+import { SlSpeedometer } from "react-icons/sl";
 
 import greenBG from "../../Assets/carousel/greenBG.png";
 import girlBG from "../../Assets/carousel/girlBG.png";
 import coolBG from "../../Assets/carousel/coolBG.png";
-import modelBG from "../../Assets/carousel/womanBG.png";
+import blueBg from "../../Assets/carousel/darkBlueBg.png";
 
 import apron from "../../Assets/products/apron.png";
 import bag from "../../Assets/products/bag.png";
@@ -43,12 +40,29 @@ import bag3 from "../../Assets/products/bag3.png";
 import bag4 from "../../Assets/products/bag4.png";
 import bag5 from "../../Assets/products/bag5.png";
 
+import offer1 from "../../Assets/offers/offer1.png";
+import offer2 from "../../Assets/offers/offer2.png";
+import offer3 from "../../Assets/offers/offer3.png";
+import offer4 from "../../Assets/offers/offer4.png";
+import offer5 from "../../Assets/offers/offer5.png";
+import offer6 from "../../Assets/offers/offer6.png";
+import offer7 from "../../Assets/offers/offer7.png";
+import offer8 from "../../Assets/offers/offer8.png";
+import offer9 from "../../Assets/offers/offer9.png";
+import offer10 from "../../Assets/offers/offer10.png";
+import offer11 from "../../Assets/offers/offer11.png";
+import offer12 from "../../Assets/offers/offer12.png";
+import offer13 from "../../Assets/offers/offer13.png";
+import offer14 from "../../Assets/offers/offer14.png";
+import offer15 from "../../Assets/offers/offer15.png";
+
 const Home = () => {
   const slidesList = [
     {
       title: "Be Bold, Be You – The Power to Customize is Yours!",
-      bg: modelBG,
-      txtColor: "#3C3D37",
+      bg: blueBg,
+      // txtColor: "#3C3D37",
+      txtColor: "white",
     },
     {
       title: "Turn Your Imagination into the Ultimate Fashion Statement!",
@@ -146,6 +160,24 @@ const Home = () => {
     },
   ];
 
+  const offersList = [
+    // offer5,
+    offer8,
+    offer4,
+    offer13,
+    offer12,
+    offer3,
+    offer2,
+    offer14,
+    offer1,
+    offer6,
+    offer9,
+    offer7,
+    offer15,
+    offer10,
+    offer11,
+  ];
+
   return (
     <Container fluid className="homeContainer">
       <TopBar onMenuClick={() => {}} onUserClick={() => {}} />
@@ -190,6 +222,27 @@ const Home = () => {
           </Carousel>
         </div>
 
+        <div className="highlightsHolder">
+          <div>
+            <span>
+              <MdOutlinePublishedWithChanges size={22} />
+            </span>
+            Highly Customizable
+          </div>
+          <div>
+            <span>
+              <TbCube3dSphere size={22} />
+            </span>
+            3D Customization
+          </div>
+          <div>
+            <span>
+              <SlSpeedometer size={20} />
+            </span>
+            Fast Delivary
+          </div>
+        </div>
+
         <div className="customizeTitle">
           Customize all as you want <span className="in3dTxt">IN 3D</span>
         </div>
@@ -217,10 +270,22 @@ const Home = () => {
           ))}
         </div>
 
+        <div className="offersList">
+          <div className="offerConst">
+            {offersList.map((item) => (
+              <img className="offerImg" src={item} />
+            ))}
+            {offersList.map((item) => (
+              <img className="offerImg" src={item} />
+            ))}
+          </div>
+        </div>
+
         <div className="footer">
           <div>
             <div className="brandText">SOMOYA</div>
           </div>
+
           <div>
             <span className="footerTitle">Information</span>
 

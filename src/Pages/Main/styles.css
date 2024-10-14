@@ -62,7 +62,7 @@
   /* border: 1px solid blue; */
   width: 50%;
   text-wrap: pretty;
-  font-size: xx-large;
+  font-size: clamp(1rem, 2vw + 1rem, 2rem); /* highly responsive text */
   font-weight: 700;
   color: black;
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
@@ -87,11 +87,51 @@
   border-bottom: none !important;
 }
 
+.highlightsHolder {
+  border: 1px solid #dddddd;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: 1fr;
+  row-gap: 5px;
+  align-self: center;
+  color: var(--subColor);
+  cursor: pointer;
+  font-size: large;
+  font-size: clamp(1rem, 1vw + 1rem, 0.3rem);
+  font-weight: 500;
+  padding-block: 20px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1;
+}
+
+.highlightsHolder > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  /* border: 1px solid red; */
+}
+
+.highlightsHolder > div > span {
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 1.1rem;
+  background-color: var(--mildGrey);
+}
+
 .customizeTitle {
   /* border: 1px solid red; */
   padding-block: 20px;
   text-align: center;
   font-size: xx-large;
+  font-size: clamp(1rem, 2vw + 1rem, 2rem);
   font-family: var(--mainFont);
 }
 .in3dTxt {
@@ -113,6 +153,9 @@
 
 @media screen and (max-width: 576px) {
   .categoryList {
+    justify-content: start;
+  }
+  .highlightsHolder > div {
     justify-content: start;
   }
 }
@@ -180,6 +223,37 @@
   font-size: large;
 }
 
+.offersList {
+  display: flex;
+  height: 30%;
+  width: 100%;
+  overflow-x: hidden;
+  flex-shrink: 0;
+  margin-top: 25px;
+  white-space: nowrap;
+}
+
+.offerConst {
+  display: inline-block;
+  height: 100%;
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.offerImg {
+  height: 100%;
+  width: fit-content;
+  object-fit: contain;
+}
+
 .footer {
   /* border: 1px solid red; */
   display: grid;
@@ -195,9 +269,6 @@
   flex-direction: column;
   align-items: start;
   padding: 10px;
-}
-.footer > div:first-child {
-  /* grid-column: 2 span; */
 }
 
 .footerTitle {
