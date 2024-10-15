@@ -130,7 +130,7 @@ const Register = () => {
       .then((res) => {
         console.log("verifyUser res :", res);
         if (res.data.status === 1) {
-          navigation("/menu/home");
+          navigation("/dashboard/products");
           toast.success("Login successfully");
         } else {
           console.log("verifyUser err : ");

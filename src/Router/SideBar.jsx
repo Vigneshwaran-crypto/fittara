@@ -124,76 +124,25 @@ const SideBar = () => {
         }}
       >
         <MenuItem
-          active={curUrl === "home"}
-          component={<Link to="/menu/home" />}
+          active={curUrl === "products"}
+          component={<Link to="/dashboard/products" />}
           style={menuButtonsStyles}
           onClick={onMenuItemClick}
         >
           <ListItemButton
             className="MenuButton"
-            sx={curUrl === "home" ? buttonAct : buttonInAct}
+            sx={curUrl === "products" ? buttonAct : buttonInAct}
           >
             <div>
               <CiShop size={23} descent={20} />
             </div>
-            {!isollapsed && <div>Market</div>}
-          </ListItemButton>
-        </MenuItem>
-
-        <MenuItem
-          active={curUrl === "crafting"}
-          component={<Link to="/menu/crafting" />}
-          style={menuButtonsStyles}
-          onClick={onMenuItemClick}
-        >
-          <ListItemButton
-            className="MenuButton"
-            sx={curUrl === "crafting" ? buttonAct : buttonInAct}
-          >
-            <div>
-              <CiGift size={23} />
-            </div>
-            {!isollapsed && <div>Crafting</div>}
+            {!isollapsed && <div>Products</div>}
           </ListItemButton>
         </MenuItem>
 
         <MenuItem
           active={curUrl === "home"}
-          component={<Link to="/menu/explore" />}
-          style={menuButtonsStyles}
-          onClick={onMenuItemClick}
-        >
-          <ListItemButton
-            className="MenuButton"
-            sx={curUrl === "explore" ? buttonAct : buttonInAct}
-          >
-            <div>
-              <CiGrid41 size={23} />
-            </div>
-            {!isollapsed && <div>Explore</div>}
-          </ListItemButton>
-        </MenuItem>
-
-        <MenuItem
-          active={curUrl === "home"}
-          component={<Link to="/menu/favorite" />}
-          style={menuButtonsStyles}
-          onClick={onMenuItemClick}
-        >
-          <ListItemButton
-            className="MenuButton"
-            sx={curUrl === "favorite" ? buttonAct : buttonInAct}
-          >
-            <div>
-              <CiBookmark size={22} />
-            </div>
-            {!isollapsed && <div>Favorites</div>}
-          </ListItemButton>
-        </MenuItem>
-
-        <MenuItem
-          active={curUrl === "home"}
-          component={<Link to="/menu/orders" />}
+          component={<Link to="/dashboard/orders" />}
           style={menuButtonsStyles}
           onClick={onMenuItemClick}
         >
@@ -207,11 +156,45 @@ const SideBar = () => {
             {!isollapsed && <div>Orders</div>}
           </ListItemButton>
         </MenuItem>
+
+        <MenuItem
+          active={curUrl === "analytics"}
+          component={<Link to="/dashboard/analytics" />}
+          style={menuButtonsStyles}
+          onClick={onMenuItemClick}
+        >
+          <ListItemButton
+            className="MenuButton"
+            sx={curUrl === "analytics" ? buttonAct : buttonInAct}
+          >
+            <div>
+              <CiGift size={23} />
+            </div>
+            {!isollapsed && <div>Analytics</div>}
+          </ListItemButton>
+        </MenuItem>
+
+        <MenuItem
+          active={curUrl === "home"}
+          component={<Link to="/dashboard/customers" />}
+          style={menuButtonsStyles}
+          onClick={onMenuItemClick}
+        >
+          <ListItemButton
+            className="MenuButton"
+            sx={curUrl === "explore" ? buttonAct : buttonInAct}
+          >
+            <div>
+              <CiGrid41 size={23} />
+            </div>
+            {!isollapsed && <div>Customers</div>}
+          </ListItemButton>
+        </MenuItem>
       </Menu>
 
       <div className="sideBarUserContainer">
         <Link
-          to="/menu/userAccount"
+          to="/dashboard/userAccount"
           style={{ textDecoration: "none", color: "black" }}
         >
           <ListItemButton

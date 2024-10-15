@@ -218,7 +218,7 @@ const UserAccount = (props) => {
             className="addProductBt"
             variant="outlined"
             // onClick={() => setFlags({ ...flags, addProduct: true })}
-            onClick={() => navigation("/menu/addProduct")}
+            onClick={() => navigation("/dashboard/addProduct")}
           >
             Add Product
           </Button>

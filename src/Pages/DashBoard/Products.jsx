@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import "./MenuOptionsStyles.css";
 
-const Home = (props) => {
+const Products = (props) => {
   const dispatch = useDispatch();
   const [products, setProds] = useState([]);
 
@@ -17,9 +17,9 @@ const Home = (props) => {
   return (
     <Container fluid className="navigationScreens">
       <Toaster position="top-center" />
-      Home
+      Products
     </Container>
   );
 };
 
-export default Home;
+export default Products;

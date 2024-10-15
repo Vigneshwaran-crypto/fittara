@@ -1,5 +1,91 @@
 import toast from "react-hot-toast";
 
+import tshirt2 from "../../Assets/products/tshirt2.png";
+import tshirt3 from "../../Assets/products/tshirt3.png";
+import tshirt4 from "../../Assets/products/tshirt4.png";
+import tshirt5 from "../../Assets/products/tshirt5.png";
+
+import hoodie2 from "../../Assets/products/hoodie2.png";
+
+import cup2 from "../../Assets/products/cup2.png";
+import cup3 from "../../Assets/products/cup3.png";
+import cup4 from "../../Assets/products/cup4.png";
+
+import bag2 from "../../Assets/products/bag2.png";
+import bag3 from "../../Assets/products/bag3.png";
+import bag4 from "../../Assets/products/bag4.png";
+import bag5 from "../../Assets/products/bag5.png";
+
+export const prods = [
+  {
+    prod: "Printed Hoodie",
+    desc: "New brand hoodie  , unisex",
+    img: hoodie2,
+    price: "499 ₹",
+  },
+  {
+    price: "399 ₹",
+    prod: "Blue Tshirt",
+    desc: "Customized classy",
+    img: tshirt2,
+  },
+  {
+    price: "499 ₹",
+    prod: "Green Tshirt",
+    desc: "Customized classy",
+    img: tshirt3,
+  },
+  {
+    price: "299 ₹",
+    prod: "Quoted Tshirt",
+    desc: "Customized classy",
+    img: tshirt4,
+  },
+  {
+    price: "459 ₹",
+    prod: "Custom Tshirt",
+    desc: "Customized classy",
+    img: tshirt5,
+  },
+  {
+    price: "499 ₹",
+    prod: "Designed Cup",
+    desc: "Cup by your name",
+    img: cup2,
+  },
+  {
+    price: "399 ₹",
+    prod: "Printed Cup",
+    desc: "Cup by your name",
+    img: cup3,
+  },
+  { price: "699 ₹", prod: "Quoted Cup", desc: "Cup by your name", img: cup4 },
+  {
+    price: "199 ₹",
+    prod: "Printed Totes",
+    desc: "The Customized Tote bag",
+    img: bag2,
+  },
+  {
+    price: "499 ₹",
+    prod: "Textured Totes",
+    desc: "The Customized Tote bag",
+    img: bag3,
+  },
+  {
+    price: "999 ₹",
+    prod: "Strippy Totes",
+    desc: "The Customized Tote bag",
+    img: bag4,
+  },
+  {
+    price: "299 ₹",
+    prod: "Stylish Totes",
+    desc: "The Customized Tote bag",
+    img: bag5,
+  },
+];
+
 export const iconButtonStyle = {
   color: "black",
   padding: 0,

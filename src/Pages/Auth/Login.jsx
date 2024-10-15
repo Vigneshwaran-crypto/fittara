@@ -70,7 +70,7 @@ const LogIn = () => {
             if (res.data.status === 1) {
               dispatch(reduxStore(saveUser(res.data.data)));
               setUserToken(res.data.data.token);
-              navigation("/menu/home");
+              navigation("/dashboard/products");
               toast.success("Login successfully");
             } else if (res.data.status === 2) {
               //first time Gauth user
@@ -112,7 +112,7 @@ const LogIn = () => {
           if (res.data.status === 1) {
             dispatch(reduxStore(saveUser(res.data.data)));
             setUserToken(res.data.data.token);
-            navigation("/menu/home");
+            navigation("/dashboard/products");
             toast.success("Login successfully");
           } else {
             console.log("authenticateUser err : ");
@@ -154,7 +154,7 @@ const LogIn = () => {
         if (res.data.status === 1) {
           dispatch(reduxStore(saveUser(changedUser)));
           setUserToken(changedUser.token);
-          navigation("/menu/home");
+          navigation("/dashboard/products");
         } else {
           console.log("authenticateUser err : ");
           toast.error("Something went wrong");

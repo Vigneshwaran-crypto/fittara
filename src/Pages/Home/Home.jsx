@@ -24,27 +24,10 @@ import cup from "../../Assets/products/cup.png";
 import hoodie from "../../Assets/products/hoodie.png";
 import tshirt from "../../Assets/products/tshirt.png";
 
-import tshirt2 from "../../Assets/products/tshirt2.png";
-import tshirt3 from "../../Assets/products/tshirt3.png";
-import tshirt4 from "../../Assets/products/tshirt4.png";
-import tshirt5 from "../../Assets/products/tshirt5.png";
-
-import hoodie2 from "../../Assets/products/hoodie2.png";
-
-import cup2 from "../../Assets/products/cup2.png";
-import cup3 from "../../Assets/products/cup3.png";
-import cup4 from "../../Assets/products/cup4.png";
-
-import bag2 from "../../Assets/products/bag2.png";
-import bag3 from "../../Assets/products/bag3.png";
-import bag4 from "../../Assets/products/bag4.png";
-import bag5 from "../../Assets/products/bag5.png";
-
 import offer1 from "../../Assets/offers/offer1.png";
 import offer2 from "../../Assets/offers/offer2.png";
 import offer3 from "../../Assets/offers/offer3.png";
 import offer4 from "../../Assets/offers/offer4.png";
-import offer5 from "../../Assets/offers/offer5.png";
 import offer6 from "../../Assets/offers/offer6.png";
 import offer7 from "../../Assets/offers/offer7.png";
 import offer8 from "../../Assets/offers/offer8.png";
@@ -61,6 +44,7 @@ import { FaCcMastercard } from "react-icons/fa";
 import { FaCcVisa } from "react-icons/fa";
 import { FaGooglePay } from "react-icons/fa";
 import { GiTakeMyMoney } from "react-icons/gi";
+import { prods } from "../Components/utils";
 
 const Home = () => {
   const slidesList = [
@@ -94,76 +78,6 @@ const Home = () => {
     { prod: "Tshirt", img: tshirt },
     { prod: "Apron", img: apron },
     { prod: "Coat", img: chefCoat },
-  ];
-
-  const prods = [
-    {
-      prod: "Printed Hoodie",
-      desc: "New brand hoodie  , unisex",
-      img: hoodie2,
-      price: "499 ₹",
-    },
-    {
-      price: "399 ₹",
-      prod: "Blue Tshirt",
-      desc: "Customized classy",
-      img: tshirt2,
-    },
-    {
-      price: "499 ₹",
-      prod: "Green Tshirt",
-      desc: "Customized classy",
-      img: tshirt3,
-    },
-    {
-      price: "299 ₹",
-      prod: "Quoted Tshirt",
-      desc: "Customized classy",
-      img: tshirt4,
-    },
-    {
-      price: "459 ₹",
-      prod: "Custom Tshirt",
-      desc: "Customized classy",
-      img: tshirt5,
-    },
-    {
-      price: "499 ₹",
-      prod: "Designed Cup",
-      desc: "Cup by your name",
-      img: cup2,
-    },
-    {
-      price: "399 ₹",
-      prod: "Printed Cup",
-      desc: "Cup by your name",
-      img: cup3,
-    },
-    { price: "699 ₹", prod: "Quoted Cup", desc: "Cup by your name", img: cup4 },
-    {
-      price: "199 ₹",
-      prod: "Printed Totes",
-      desc: "The Customized Tote bag",
-      img: bag2,
-    },
-    {
-      price: "499 ₹",
-      prod: "Textured Totes",
-      desc: "The Customized Tote bag",
-      img: bag3,
-    },
-    {
-      price: "999 ₹",
-      prod: "Strippy Totes",
-      desc: "The Customized Tote bag",
-      img: bag4,
-    },
-    {
-      price: "299 ₹",
-      prod: "Stylish Totes",
-      desc: "The Customized Tote bag",
-      img: bag5,
-    },
   ];
 
   const offersList = [
