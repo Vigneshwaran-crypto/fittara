@@ -27,7 +27,7 @@
 }
 
 .carouselHolder {
-  height: 45dvh;
+  height: 55dvh;
   flex-shrink: 0;
   margin: 10px;
 }
@@ -151,15 +151,6 @@
   padding-block: 10px;
 }
 
-@media screen and (max-width: 576px) {
-  .categoryList {
-    justify-content: start;
-  }
-  .highlightsHolder > div {
-    justify-content: start;
-  }
-}
-
 .categoryItem {
   display: flex;
   align-items: center;
@@ -229,7 +220,7 @@
   width: 100%;
   overflow-x: hidden;
   flex-shrink: 0;
-  margin-top: 25px;
+  margin-top: 40px;
   white-space: nowrap;
 }
 
@@ -239,14 +230,14 @@
   animation: marquee 32s linear infinite;
 }
 
-@keyframes marquee {
+/* @keyframes marquee {
   from {
     transform: translateX(0);
   }
   to {
     transform: translateX(-50%);
   }
-}
+} */
 
 .offerImg {
   height: 100%;
@@ -255,13 +246,13 @@
 }
 
 .footer {
-  /* border: 1px solid red; */
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 1fr;
+  /* grid-auto-rows: 1fr; */
   background-color: var(--mildGrey);
   margin-top: 25px;
   padding-top: 20px;
+  padding-inline: 15px;
 }
 
 .footer > div {
@@ -278,11 +269,25 @@
   padding-bottom: 10px;
 }
 
+.shopIcon {
+  /* border: 1px solid red; */
+  width: 100%;
+  height: 30%;
+}
+
+.shopIcon > img {
+  /* border: 1px solid red; */
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
 .footer > div > a {
   text-decoration: none;
   color: var(--subColor);
   padding-block: 7px;
   cursor: pointer;
+  /* border: 1px solid red; */
 }
 
 .footer > div > a:hover {
@@ -294,4 +299,67 @@
   align-items: center;
   gap: 10px;
   padding-block: 4px;
+}
+
+.bottomBar {
+  display: flex;
+  width: 100%;
+  background-color: var(--mildGrey);
+  padding-block: 10px;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid black; */
+}
+
+.trushConts {
+  display: grid;
+  width: 70%;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  row-gap: 15px;
+  border: 0.5px solid var(--subColor);
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+  padding: 20px 20px;
+}
+
+.trushConts > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.trushConts > div > div {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.trushConts > div > span {
+  text-align: center;
+}
+
+.trushConts > div:last-child {
+  /* border: 1px solid blue; */
+}
+
+.trushConts > div > :last-child {
+  align-self: center;
+}
+
+.sslIcon {
+  height: 45px;
+  width: 45px;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 576px) {
+  .categoryList {
+    justify-content: start;
+  }
+  .highlightsHolder > div {
+    justify-content: start;
+  }
+  .footer > div {
+    align-items: center;
+  }
 }

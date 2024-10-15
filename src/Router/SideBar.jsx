@@ -21,7 +21,7 @@ import { Link, Outlet, useLocation } from "react-router-dom";
 import userImage from "../Assets/auth/userProfile.png";
 import TopBar from "../Pages/Components/TopBar";
 import { iconButtonStyle } from "../Pages/Components/utils";
-import "../Pages/MenuOptions/MenuOptionsStyles.css";
+import "../Pages/DashBoard/MenuOptionsStyles.css";
 import UserDetails from "../Pages/Components/UserDetails";
 
 const buttonAct = {

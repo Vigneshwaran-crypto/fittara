@@ -56,6 +56,12 @@ import offer13 from "../../Assets/offers/offer13.png";
 import offer14 from "../../Assets/offers/offer14.png";
 import offer15 from "../../Assets/offers/offer15.png";
 
+import ssl from "../../Assets/icons/ssl.png";
+import { FaCcMastercard } from "react-icons/fa";
+import { FaCcVisa } from "react-icons/fa";
+import { FaGooglePay } from "react-icons/fa";
+import { GiTakeMyMoney } from "react-icons/gi";
+
 const Home = () => {
   const slidesList = [
     {
@@ -185,12 +191,9 @@ const Home = () => {
       <div className="homeBodyHolder">
         <div className="carouselHolder">
           <Carousel
-            //   activeIndex={0}
             className="carousel"
             controls={false}
-            // indicators={false}
             fade
-            // slide
             draggable
             // interval={1000}
           >
@@ -283,37 +286,28 @@ const Home = () => {
 
         <div className="footer">
           <div>
-            <div className="brandText">SOMOYA</div>
-          </div>
-
-          <div>
             <span className="footerTitle">Information</span>
 
             <a href="#"> About Us</a>
-            <a href="#"> More Search</a>
             <a href="#"> Blog</a>
-            <a href="#"> Testimonials</a>
-            <a href="#"> Events</a>
           </div>
           <div>
-            <span className="footerTitle">Help</span>
+            <span className="footerTitle">Legal Links</span>
 
-            <a href="#"> Service</a>
-            <a href="#"> Supports</a>
-            <a href="#"> Terms & Conditions</a>
             <a href="#"> Privacy Policy</a>
+            <a href="#"> Terms & Conditions</a>
           </div>
           <div>
             <span className="footerTitle">Service</span>
 
-            <a href="#"> Brand List</a>
-            <a href="#"> Orders</a>
-            <a href="#"> Return & Exchange</a>
-            <a href="#"> Fashion List</a>
-            <a href="#"> Blog</a>
+            <a href="#"> FAQ's</a>
+            <a href="#"> Shipping & Return Policy</a>
+            <a href="#"> Track My Order</a>
           </div>
           <div>
-            <span className="footerTitle">Contacts</span>
+            <span className="shopIcon">
+              <div className="brandText">SOMOYA</div>
+            </span>
 
             <div className="contactstItem">
               <SlCallIn size={17} /> 8807207198
@@ -335,6 +329,27 @@ const Home = () => {
               <FaWhatsapp size={25} color="#25D366" />
               <CiInstagram size={25} color="#F56040" />
               <AiOutlinePinterest size={25} color="#E60023" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bottomBar">
+          <div className="trushConts">
+            <div>
+              <span className="footerTitle">Payment Methods</span>
+
+              <div>
+                <FaCcMastercard size={43} />
+                <FaCcVisa size={40} />
+                <FaGooglePay size={50} />
+                <GiTakeMyMoney size={38} />
+              </div>
+            </div>
+
+            <div>
+              <span className="footerTitle">Secure Systems</span>
+
+              <img className="sslIcon" src={ssl} />
             </div>
           </div>
         </div>

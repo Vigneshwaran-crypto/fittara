@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../MenuOptions/MenuOptionsStyles.css";
+import "../DashBoard/MenuOptionsStyles.css";
 import userImage from "../../Assets/auth/userProfile.png";
 import { Button, InputAdornment, styled, TextField } from "@mui/material";
 import { FloatingLabel, Form } from "react-bootstrap";
