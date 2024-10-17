@@ -22,14 +22,6 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
         </div>
       </Col>
 
-      {/* Search Bar with Icon */}
-      {/* <Col md={3} lg={3} sm={12} xs={12} className="searchBarHolder">
-        <div className="searchBar">
-          <CiSearch size={20} style={{ marginLeft: 10, marginRight: 3 }} />
-          <input className="searchInput" placeholder="Search for anything" />
-        </div>
-      </Col> */}
-
       {/* Top menu dropdowns */}
       <Col md={6} lg={6} sm={12} xs={12} className="dropMenuHolder">
         <div className="dropdown">

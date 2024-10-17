@@ -15,6 +15,7 @@ import {
   CiGrid41,
   CiShop,
   CiViewList,
+  CiPen,
 } from "react-icons/ci";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -158,6 +159,23 @@ const SideBar = () => {
         </MenuItem>
 
         <MenuItem
+          active={curUrl === "home"}
+          component={<Link to="/dashboard/customers" />}
+          style={menuButtonsStyles}
+          onClick={onMenuItemClick}
+        >
+          <ListItemButton
+            className="MenuButton"
+            sx={curUrl === "customers" ? buttonAct : buttonInAct}
+          >
+            <div>
+              <CiGrid41 size={23} />
+            </div>
+            {!isollapsed && <div>Customers</div>}
+          </ListItemButton>
+        </MenuItem>
+
+        <MenuItem
           active={curUrl === "analytics"}
           component={<Link to="/dashboard/analytics" />}
           style={menuButtonsStyles}
@@ -175,19 +193,19 @@ const SideBar = () => {
         </MenuItem>
 
         <MenuItem
-          active={curUrl === "home"}
-          component={<Link to="/dashboard/customers" />}
+          active={curUrl === "analytics"}
+          component={<Link to="/dashboard/analytics" />}
           style={menuButtonsStyles}
           onClick={onMenuItemClick}
         >
           <ListItemButton
             className="MenuButton"
-            sx={curUrl === "explore" ? buttonAct : buttonInAct}
+            sx={curUrl === "analytics" ? buttonAct : buttonInAct}
           >
             <div>
-              <CiGrid41 size={23} />
+              <CiPen size={23} />
             </div>
-            {!isollapsed && <div>Customers</div>}
+            {!isollapsed && <div>Policies</div>}
           </ListItemButton>
         </MenuItem>
       </Menu>

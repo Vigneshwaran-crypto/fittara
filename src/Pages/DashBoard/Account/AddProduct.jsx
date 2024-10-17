@@ -410,7 +410,11 @@ const AddProduct = () => {
       <Row className="addProdBodyCont">
         <Col className="productElementCont" sm={12} md={12} lg={12} xl={12}>
           <div className="backContent">
-            <Button variant="outlined" style={{ border: "1px solid #DADADA" }}>
+            <Button
+              variant="outlined"
+              style={{ border: "1px solid #DADADA" }}
+              onClick={() => navigation(-1)}
+            >
               <GoArrowLeft size={20} color="black" />
             </Button>
 

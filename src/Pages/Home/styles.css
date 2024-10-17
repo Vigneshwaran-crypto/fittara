@@ -174,15 +174,16 @@
 }
 
 .prodList {
-  /* border: 1px solid red; */
   display: grid;
   width: 80%;
   align-self: center;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-auto-rows: 1fr;
+  overflow: hidden;
   height: auto;
   flex-shrink: 0;
   gap: 10px;
+  box-sizing: border-box;
 }
 
 .prodItem {
