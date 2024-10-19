@@ -20,6 +20,7 @@ import {
   Pagination,
   Paper,
   Select,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -39,8 +40,29 @@ import {
   selStyle,
 } from "../Components/utils";
 
+const papStyle = {
+  display: "table",
+  tableLayout: "fixed",
+  width: "100%",
+  maxWidth: "100%",
+  height: "100%",
+  maxHeight: "100%",
+  overflow: "hidden",
+  boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
+};
+
+const tableContStyle = {
+  height: "100%",
+  maxWidth: "100%",
+  maxHeight: "100% !important",
+  overflow: "scroll",
+  flexGrow: 1,
+};
+
 const Orders = () => {
   const fSize = "clamp(1rem, 1vw + 1rem, 2rem)";
+
+  const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
 
   const menuGridList = [
     {
@@ -74,11 +96,7 @@ const Orders = () => {
   ];
 
   return (
-    <Container
-      fluid
-      className="tabScreens"
-      // style={{ border: "1px solid black" ,}}
-    >
+    <Container fluid className="tabScreens">
       <div className="orderGridHolder">
         <RadioGroup
           aria-labelledby="storage-label"
@@ -88,16 +106,13 @@ const Orders = () => {
             gap: 1,
             display: "grid",
             boxSizing: "border-box",
-            // gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))",
             gridTemplateColumns: "repeat(auto-fit,minmax(130px,1fr))",
             gridAutoRows: "1fr",
-            // border: "1px solid black",
             width: "100%",
           }}
           onChange={(e) => {
             console.log("onChange radioGrp :", e.target.value);
             const val = e.target.value;
-            // setFontStyle(fStyle);
           }}
         >
           {menuGridList.map((value) => (
@@ -173,10 +188,15 @@ const Orders = () => {
                   gap: "5px",
                   height: "fit-content",
                   flex: 1.5,
+                  backgroundColor: "#f6f6f6",
                 }}
               >
                 <CiSearch size={20} />
-                <input className="searchInput" placeholder="Search" />
+                <input
+                  className="searchInput"
+                  placeholder="Search"
+                  style={{ backgroundColor: "#f6f6f6" }}
+                />
               </div>
 
               <FormControl size="small" className="orderFilterSelectHolder">
@@ -210,31 +230,22 @@ const Orders = () => {
           </div>
         </div>
         <div className="orderListHolder">
-          <Paper
-            sx={{
-              display: "table",
-              tableLayout: "fixed",
-              width: "100%",
-              maxWidth: "100%",
-              height: "100%",
-              maxHeight: "100%",
-              overflow: "hidden",
-            }}
-          >
-            <TableContainer
-              style={{
-                height: "100%",
-                maxWidth: "100%",
-                maxHeight: "100% !important",
-                overflow: "scroll",
-                flexGrow: 1,
-              }}
-            >
-              <Table stickyHeader padding="normal">
+          <Paper sx={papStyle}>
+            <TableContainer style={tableContStyle}>
+              <Table stickyHeader padding="normal" size="small">
                 <TableHead>
                   <TableRow>
-                    {Object.keys(sampleOrders[0]).map((item, ind) => (
-                      <TableCell align="center" key={ind}>
+                    {orderColumns.map((item, ind) => (
+                      <TableCell
+                        style={{
+                          fontSize: "medium",
+                          fontWeight: "500",
+                          fontFamily: "Lucida Sans Regular",
+                          // backgroundColor: "#f6f6f6",
+                        }}
+                        align="center"
+                        key={ind}
+                      >
                         {item}
                       </TableCell>
                     ))}
@@ -243,7 +254,7 @@ const Orders = () => {
 
                 <TableBody>
                   {sampleOrders.map((obj, ind) => (
-                    <TableRow key={ind}>
+                    <TableRow hover key={ind}>
                       {Object.keys(sampleOrders[0]).map((key, dex) => (
                         <TableCell align="center" key={dex}>
                           {obj[key]}
@@ -257,7 +268,7 @@ const Orders = () => {
           </Paper>
         </div>
         <div className="paginationHolder">
-          <Pagination count={10} />
+          <Pagination count={10} size="small" />
         </div>
       </div>
     </Container>

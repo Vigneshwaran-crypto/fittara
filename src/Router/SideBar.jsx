@@ -12,6 +12,10 @@ import { CgChevronDoubleRight } from "react-icons/cg";
 import {
   CiBookmark,
   CiGift,
+  CiCircleList,
+  CiSliderVertical,
+  CiShare1,
+  CiAlignBottom,
   CiGrid41,
   CiShop,
   CiViewList,
@@ -152,7 +156,8 @@ const SideBar = () => {
             sx={curUrl === "orders" ? buttonAct : buttonInAct}
           >
             <div>
-              <CiViewList size={23} />
+              {/* <CiViewList size={23} /> */}
+              <CiCircleList size={22} />
             </div>
             {!isollapsed && <div>Orders</div>}
           </ListItemButton>
@@ -186,21 +191,21 @@ const SideBar = () => {
             sx={curUrl === "analytics" ? buttonAct : buttonInAct}
           >
             <div>
-              <CiGift size={23} />
+              <CiAlignBottom size={23} />
             </div>
             {!isollapsed && <div>Analytics</div>}
           </ListItemButton>
         </MenuItem>
 
         <MenuItem
-          active={curUrl === "analytics"}
-          component={<Link to="/dashboard/analytics" />}
+          active={curUrl === "policies"}
+          component={<Link to="/dashboard/policies" />}
           style={menuButtonsStyles}
           onClick={onMenuItemClick}
         >
           <ListItemButton
             className="MenuButton"
-            sx={curUrl === "analytics" ? buttonAct : buttonInAct}
+            sx={curUrl === "policies" ? buttonAct : buttonInAct}
           >
             <div>
               <CiPen size={23} />

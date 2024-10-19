@@ -9,6 +9,7 @@ import AddProduct from "../Pages/DashBoard/Account/AddProduct";
 import Products from "../Pages/DashBoard/Products";
 import Analytics from "../Pages/DashBoard/Analytics/Analytics";
 import Customers from "../Pages/DashBoard/Customers";
+import Policy from "../Pages/DashBoard/Policy";
 
 const NavigationRouter = () => {
   return (
@@ -18,6 +19,7 @@ const NavigationRouter = () => {
         <Route path="explore" element={<Explore />} />
         <Route path="customers" element={<Customers />} />
         <Route path="analytics" element={<Analytics />} />
+        <Route path="policies" element={<Policy />} />
         <Route path="orders" element={<Orders />} />
         <Route path="settings" element={<Settings />} />
         <Route path="userAccount" element={<UserAccount />} />
