@@ -9,7 +9,7 @@ import AddProduct from "../Pages/DashBoard/Account/AddProduct";
 import Products from "../Pages/DashBoard/Products";
 import Analytics from "../Pages/DashBoard/Analytics/Analytics";
 import Customers from "../Pages/DashBoard/Customers";
-import Policy from "../Pages/DashBoard/Policy";
+import Policy from "../Pages/DashBoard/Policy/Policy";
 
 const NavigationRouter = () => {
   return (

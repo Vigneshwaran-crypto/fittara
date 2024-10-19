@@ -913,7 +913,7 @@
 .exploreHolder {
   display: flex;
   flex: 1;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   align-items: center;
   justify-content: center;
 }
@@ -1018,7 +1018,7 @@
 .orderGridItem {
   display: flex;
   flex: 1;
-  /* border: 1px solid red; */
+  /* border: 1px solid red !important; */
   align-items: center;
   justify-content: space-around;
 }
@@ -1065,7 +1065,7 @@
 
 .filterHolder {
   display: flex;
-  border: 1px solid rebeccapurple;
+  /* border: 1px solid rebeccapurple; */
   box-sizing: border-box !important;
   height: auto;
   max-height: auto;
@@ -1130,46 +1130,162 @@
 }
 
 .analiticsGridHolder {
-  border: 1px solid green;
+  /* border: 1px solid green; */
   display: grid;
   height: 100%;
   width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-template-rows: 3;
   grid-auto-flow: dense;
   grid-auto-rows: auto;
-  gap: 5px;
+  gap: 10px;
   box-sizing: border-box;
   overflow: auto;
-}
-
-.analiticsGridHolder > div {
-  display: flex;
-  border: 1px solid black;
 }
 
 .analiticsGridHolder > div:nth-child(1),
 .analiticsGridHolder > div:nth-child(2),
 .analiticsGridHolder > div:nth-child(3),
 .analiticsGridHolder > div:nth-child(4) {
-  /* grid: span 1; */
+  padding: 0px 10px;
+  border-radius: 8px;
 }
 
 .analiticsGridHolder > div:nth-child(5) {
   grid-row: span 7;
+  grid-row: span 11;
   grid-column: span 2;
+  display: flex;
+  flex: 1;
+  height: 100%;
+  gap: 10px;
 }
 
-.analiticsGridHolder > div:nth-child(6),
+.analiticsGridHolder > div:nth-child(5) > span {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  border-radius: 8px;
+  border: 1px solid brown;
+}
+
+.analiticsGridHolder > div:nth-child(5) > span > div {
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.chartItems > div:first-child {
+  border: 1px solid brown;
+  display: flex;
+  flex: 1;
+  font-weight: 400;
+  font-family: var(--subFont);
+  font-size: clamp(1rem, 0.2vw + 0.9rem, 1.2rem);
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  height: 10%;
+}
+.chartItems > div:nth-child(2) {
+  border: 1px solid brown;
+  display: flex;
+  flex: 3;
+  max-height: 80%;
+  height: 100%;
+}
+.chartItems > div:last-child {
+  border: 1px solid brown;
+  display: flex;
+  flex: 1;
+  height: 10%;
+}
+
+.analiticsGridHolder > div:nth-child(6) {
+  grid-column: span 4;
+  grid-row: span 5;
+}
 .analiticsGridHolder > div:nth-child(7) {
   grid-column: span 4;
-  grid-row: span 3;
+  grid-row: span 5;
+}
+
+.analiticsGridHolder > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  border: 1px solid green;
+  height: 100%;
+}
+
+.analysGridItem {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  /* border: 1px solid palevioletred; */
+}
+
+.analysIconCombo {
+  display: flex;
+  flex: 1;
+  /* border: 1px solid orange; */
+  align-items: center;
+  box-sizing: border-box !important;
+}
+
+.analysGridIconHolder {
+  display: flex;
+  /* border: 1px solid gray; */
+
+  border-radius: 50%;
+  flex-grow: 0;
+  overflow: hidden;
+  padding: 5px;
+  box-sizing: border-box !important;
+}
+
+.analysGridItemTexts {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding-inline-start: 5px;
+  font-family: var(--subFont);
+  font-weight: 400;
+  color: #626262;
+}
+
+.analysTxtHolder {
+  /* border: 1px solid red; */
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding-inline: 5px;
+}
+
+.analysTxtHolder > span:first-child {
+  /* border: 1px solid green; */
+  font-size: clamp(1rem, 1vw + 1rem, 1.1rem);
+  font-weight: 600;
+  line-height: normal;
+}
+
+.analysTxtHolder > span:nth-child(2) {
+  display: flex;
+  align-items: center;
+  font-size: clamp(0.8rem, 0.8vw + 0.5rem, 1rem);
+  font-weight: 400;
+  color: #8f949e;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 600px) {
   .analiticsGridHolder > div:nth-child(5) {
     grid-column: 1/-1;
-    grid-row: span 4;
+    grid-row: span 5;
   }
 
   .analiticsGridHolder > div:nth-child(6) {
@@ -1178,5 +1294,24 @@
 
   .analiticsGridHolder > div:nth-child(7) {
     grid-column: 1/-1;
+  }
+
+  .analysIconCombo {
+    align-items: flex-end;
+  }
+
+  .analysTxtHolder {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filterConts {
+    padding-inline: 0;
+  }
+
+  .analiticsGridHolder > div:nth-child(5) {
+    flex-direction: row;
   }
 }
