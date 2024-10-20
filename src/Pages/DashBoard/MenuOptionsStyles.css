@@ -167,12 +167,12 @@
   flex: 1;
   /* padding: 0 !important; */
   background-color: #f6f6f6 !important;
-  background-color: white !important;
+  /* background-color: white !important; */
   padding: 4px 8px !important;
   overflow: hidden;
   box-sizing: border-box !important;
   height: 100%;
-  border: 1px solid greenyellow !important;
+  /* border: 1px solid greenyellow !important; */
 }
 
 .sideBarUserContainer {
@@ -1149,6 +1149,8 @@
 .analiticsGridHolder > div:nth-child(4) {
   padding: 0px 10px;
   border-radius: 8px;
+  min-height: 70px;
+  background-color: white;
 }
 
 .analiticsGridHolder > div:nth-child(5) {
@@ -1167,7 +1169,8 @@
   flex: 1;
   height: 100%;
   border-radius: 8px;
-  border: 1px solid brown;
+  /* border: 1px solid brown; */
+  background-color: white;
 }
 
 .analiticsGridHolder > div:nth-child(5) > span > div {
@@ -1177,37 +1180,73 @@
 }
 
 .chartItems > div:first-child {
-  border: 1px solid brown;
+  /* border: 1px solid brown; */
   display: flex;
-  flex: 1;
-  font-weight: 400;
+  flex: 0.5;
+  font-weight: 500;
   font-family: var(--subFont);
   font-size: clamp(1rem, 0.2vw + 0.9rem, 1.2rem);
   text-overflow: ellipsis;
   text-wrap: nowrap;
-  height: 10%;
+  /* height: 10%; */
 }
 .chartItems > div:nth-child(2) {
-  border: 1px solid brown;
+  /* border: 1px solid brown; */
   display: flex;
   flex: 3;
-  max-height: 80%;
   height: 100%;
 }
 .chartItems > div:last-child {
-  border: 1px solid brown;
+  /* border: 1px solid pink; */
   display: flex;
-  flex: 1;
-  height: 10%;
+  flex: 0.7;
+  justify-content: space-around;
 }
 
-.analiticsGridHolder > div:nth-child(6) {
-  grid-column: span 4;
-  grid-row: span 5;
+.pieRange {
+  display: flex;
+  justify-content: space-evenly !important;
+  font-size: 2dvh;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  gap: 2px !important;
 }
+
+.analysHeadings {
+  font-family: var(--subFont);
+  font-size: 2dvh;
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  font-weight: 500;
+}
+
+.pieRange > span {
+  display: flex;
+  /* border: 1px solid green !important; */
+  align-items: center;
+  gap: 6px;
+}
+
+.pieRange > span > div {
+  height: 2dvh !important;
+  width: 2dvh !important;
+  border-radius: 2px;
+  background-color: antiquewhite;
+}
+
+.analiticsGridHolder > div:nth-child(6),
 .analiticsGridHolder > div:nth-child(7) {
   grid-column: span 4;
   grid-row: span 5;
+  display: flex;
+  flex: 1 0 auto !important;
+  flex-basis: 0 !important;
+  min-height: 0;
+  flex-direction: column;
+  border-radius: 8px;
+  padding: 5px 10px;
+  min-height: 130px;
+  background-color: white;
 }
 
 .analiticsGridHolder > div {
@@ -1215,7 +1254,7 @@
   flex-direction: column;
   flex: 1;
   overflow: hidden;
-  border: 1px solid green;
+  /* border: 1px solid green; */
   height: 100%;
 }
 
@@ -1282,6 +1321,89 @@
   text-overflow: ellipsis;
 }
 
+.topProductsHolder > div:first-child {
+  /* border: 1px solid black; */
+  display: flex;
+  flex: 1;
+  padding-inline: 10px;
+  justify-content: flex-start !important;
+}
+.topProductsHolder > div:last-child {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  flex: 7 0 auto;
+  flex-basis: 0;
+  height: 100%;
+  /* min-height: 0; */
+  max-height: 100% !important;
+  overflow: hidden;
+  padding-bottom: 3px;
+}
+
+.analysProdList {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  flex-basis: 0;
+  height: 100%;
+  width: 100% !important;
+  /* min-height: 0; */
+  max-height: 100% !important;
+  overflow: auto !important;
+  padding: 5px;
+  gap: 5px;
+}
+
+.analysProdItem {
+  display: flex;
+  flex-direction: row !important;
+  height: 100%;
+  width: 100%;
+  /* border: 1px solid palevioletred; */
+  align-items: center;
+  border-radius: 5px;
+  background-color: var(--mildGrey);
+  /* margin-bottom: 3px; */
+}
+.prodImageCont {
+  height: 100%;
+  width: 15%;
+}
+.prodImageCont > img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.prodtxtsCont {
+  display: flex;
+  flex-direction: column;
+}
+
+.prodtxtsCont > span {
+  font-family: var(--subFont);
+}
+.prodtxtsCont > span:first-child {
+  color: #3c3d37;
+  font-size: clamp(0.8rem, 0.4vw + 0.5rem, 1rem);
+}
+.prodtxtsCont > span:last-child {
+  color: #757575;
+  font-size: clamp(0.6rem, 0.2vw + 0.5rem, 1rem);
+}
+
+.analiticsGridHolder > div:nth-child(6) > span {
+  /* border: 1px solid palevioletred !important; */
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  flex-basis: 0;
+  height: 100%;
+  max-height: 100% !important;
+  overflow: hidden;
+}
+
 @media screen and (max-width: 600px) {
   .analiticsGridHolder > div:nth-child(5) {
     grid-column: 1/-1;
@@ -1313,5 +1435,21 @@
 
   .analiticsGridHolder > div:nth-child(5) {
     flex-direction: row;
+  }
+
+  .pieRange {
+    font-size: small;
+    font-size: clamp(0.6rem, 0.1vw + 0.5rem, 1rem);
+  }
+
+  .pieRange > span > div {
+    height: 1.5dvh !important;
+    width: 1.5dvh !important;
+    border-radius: 2px;
+    background-color: antiquewhite;
+  }
+  .prodtxtsCont > span {
+    font-size: clamp(0.7rem, 0.4vw + 0.5rem, 1rem);
+    font-family: var(--subFont);
   }
 }

@@ -10,8 +10,39 @@ import {
 } from "react-icons/ci";
 import { BsArrowUpShort, BsArrowDownShort } from "react-icons/bs";
 import { PieChart } from "@mui/x-charts/PieChart";
+import { sampleOrders } from "../../Components/utils";
+import { LineChart } from "@mui/x-charts/LineChart";
+import sampImg from "../../../Assets/auth/flower.png";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 const fSize = "clamp(1rem, 1vw + 1rem, 2rem)";
+
+const papStyle = {
+  display: "table",
+  tableLayout: "fixed",
+  width: "100%",
+  maxWidth: "100%",
+  height: "100%",
+  maxHeight: "100%",
+  overflow: "hidden",
+  boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
+};
+
+const tableContStyle = {
+  height: "100%",
+  maxWidth: "100%",
+  maxHeight: "100% !important",
+  overflow: "scroll",
+  flexGrow: 1,
+};
 
 const Analytics = () => {
   const menuGridList = [
@@ -57,8 +88,14 @@ const Analytics = () => {
     },
   ];
 
+  const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
+
   return (
-    <Container fluid className="tabScreens">
+    <Container
+      fluid
+      className="tabScreens"
+      style={{ backgroundColor: "#f6f6f6 !important" }}
+    >
       <div className="filterHolder">
         <div className="filterConts">
           <div className="gridTitle">Analytics</div>
@@ -122,24 +159,134 @@ const Analytics = () => {
                 series={[
                   {
                     data: [
-                      { id: 0, value: 10, label: "series A" },
-                      { id: 1, value: 15, label: "series B" },
-                      { id: 2, value: 20, label: "series C" },
+                      { id: 0, value: 10, label: "Sales" },
+                      { id: 1, value: 15, label: "Orders" },
+                      { id: 2, value: 20, label: "Others" },
                     ],
                   },
                 ]}
                 axisHighlight={{ x: "none", y: "none" }}
-                sx={{ height: "100%", width: "100%" }}
-                // width={"100%"}
-                // height={"100%"}
+                sx={{ height: "100%", width: "100%", flex: 1 }}
+                margin={{ right: "10" }}
+                slotProps={{
+                  legend: {
+                    position: { vertical: "bottom" },
+                    direction: "row",
+                  },
+                }}
               />
             </div>
-            <div> range value </div>
+            <div className="pieRange">
+              <span>
+                <div style={{ backgroundColor: "#B800D8" }}></div> Sales
+              </span>
+              <span>
+                <div style={{ backgroundColor: "#03B2AF" }}></div> Orders
+              </span>
+              <span>
+                <div style={{ backgroundColor: "#2E96FF" }}></div> Others
+              </span>
+            </div>
           </span>
-          <span>c2</span>
+          <span className="topProductsHolder">
+            <div className="analysHeadings">Top Products</div>
+            <div>
+              <div className="analysProdList">
+                {sampleOrders.map((prods) => (
+                  <div className="analysProdItem">
+                    <div className="prodImageCont">
+                      <img src={sampImg} />
+                    </div>
+                    <div className="prodtxtsCont">
+                      <span>{prods.name}</span>
+                      <span>{prods.cash}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </span>
         </div>
-        <div>item6</div>
-        <div>item7</div>
+
+        {/* Line chart */}
+        <div>
+          <div
+            className="analysHeadings"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            Revenue Vs Order
+            <div
+              className="pieRange"
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+                width: "45%",
+              }}
+            >
+              <span>
+                <div style={{ backgroundColor: "#2E96FF" }}></div> Revenue
+              </span>
+              <span>
+                <div style={{ backgroundColor: "#03B2AF" }}></div> Order
+              </span>
+            </div>
+          </div>
+          <span>
+            <LineChart
+              // xAxis={[{ dataKey: "x" }]}
+              series={[
+                { curve: "natural", data: [0, 5, 2, 6, 3, 9.3] },
+                { curve: "natural", data: [6, 3, 7, 9.5, 4, 2] },
+              ]}
+              margin={{ left: 20, right: 5, top: 7, bottom: 20 }}
+              grid={{ vertical: true, horizontal: true }}
+            />
+          </span>
+        </div>
+
+        <div>
+          <div className="analysHeadings">Recent Invoice</div>
+          <Paper sx={papStyle}>
+            <TableContainer style={tableContStyle}>
+              <Table stickyHeader padding="normal" size="small">
+                <TableHead>
+                  <TableRow>
+                    {orderColumns.map((item, ind) => (
+                      <TableCell
+                        style={{
+                          fontSize: "medium",
+                          fontWeight: "500",
+                          fontFamily: "Lucida Sans Regular",
+                        }}
+                        align="center"
+                        key={ind}
+                      >
+                        {item}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {sampleOrders.map((obj, ind) => (
+                    <TableRow hover key={ind}>
+                      {Object.keys(sampleOrders[0]).map((key, dex) => (
+                        <TableCell align="center" key={dex}>
+                          {obj[key]}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </div>
       </div>
     </Container>
   );
