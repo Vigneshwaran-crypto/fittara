@@ -1,18 +1,3 @@
-import React from "react";
-import { CiSearch } from "react-icons/ci";
-import "../MenuOptionsStyles.css";
-import { Container } from "react-bootstrap";
-import {
-  CiMedicalClipboard,
-  CiBoxes,
-  CiTrophy,
-  CiDeliveryTruck,
-} from "react-icons/ci";
-import { BsArrowUpShort, BsArrowDownShort } from "react-icons/bs";
-import { PieChart } from "@mui/x-charts/PieChart";
-import { sampleOrders } from "../../Components/utils";
-import { LineChart } from "@mui/x-charts/LineChart";
-import sampImg from "../../../Assets/auth/flower.png";
 import {
   Paper,
   Table,
@@ -22,8 +7,27 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { LineChart } from "@mui/x-charts/LineChart";
+import { PieChart } from "@mui/x-charts/PieChart";
+import React from "react";
+import { Container } from "react-bootstrap";
+import { BsArrowDownShort, BsArrowUpShort } from "react-icons/bs";
+import {
+  CiBoxes,
+  CiDeliveryTruck,
+  CiMedicalClipboard,
+  CiSearch,
+  CiTrophy,
+} from "react-icons/ci";
+import sampImg from "../../../Assets/auth/flower.png";
+import { sampleOrders } from "../../Components/utils";
+import "../MenuOptionsStyles.css";
+import DatePicker from "react-multi-date-picker";
+import DatePanel from "react-multi-date-picker/plugins/date_panel";
+import { CiCalendarDate } from "react-icons/ci";
 
 const fSize = "clamp(1rem, 1vw + 1rem, 2rem)";
+// const { RangePicker } = DatePicker;
 
 const papStyle = {
   display: "table",
@@ -91,16 +95,12 @@ const Analytics = () => {
   const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
 
   return (
-    <Container
-      fluid
-      className="tabScreens"
-      style={{ backgroundColor: "#f6f6f6 !important" }}
-    >
+    <Container fluid className="tabScreens">
       <div className="filterHolder">
         <div className="filterConts">
           <div className="gridTitle">Analytics</div>
 
-          <div className="filterInps">
+          {/* <div className="filterInps">
             <div
               className="searchBar"
               style={{
@@ -118,6 +118,23 @@ const Analytics = () => {
                 style={{ backgroundColor: "#f6f6f6" }}
               />
             </div>
+          </div> */}
+
+          <div className="dateRangeHolder">
+            {/* <CiCalendarDate size={22} className="dtIcon" /> */}
+            <DatePicker
+              containerStyle={{
+                display: "flex",
+                // flex: 0.6,
+                width: "100%",
+              }}
+              inputClass="rangeInput"
+              range={true}
+              // placeholder="From - To"
+              // dateSeparator=" - "
+              plugins={[<DatePanel />]}
+              // format="DD/MM/YYYY"
+            />
           </div>
         </div>
       </div>

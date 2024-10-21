@@ -129,8 +129,8 @@ const Orders = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 "&:hover": {
-                  backgroundColor: "transparent !important",
-                  opacity: " 1 !important",
+                  backgroundColor: "white !important",
+                  opacity: "1 !important",
                 },
               }}
             >
@@ -143,14 +143,15 @@ const Orders = () => {
                   action: ({ checked }) => ({
                     sx: (theme) => ({
                       ...(checked && {
-                        "--variant-borderWidth": "1px",
+                        "--variant-borderWidth": "1.3px",
                         "&&": {
                           borderColor: theme.vars.palette.primary[500],
                         },
                       }),
                       "&:hover": {
+                        // Keep the hover style clean, no color mess-up
                         borderColor: theme.vars.palette.primary[0],
-                        backgroundColor: "transparent",
+                        backgroundColor: "transparent !important",
                         opacity: "1 !important",
                       },
                     }),
