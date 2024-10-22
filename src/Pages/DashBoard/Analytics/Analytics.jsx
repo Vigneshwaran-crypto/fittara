@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Paper,
   Table,
@@ -9,7 +10,6 @@ import {
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { PieChart } from "@mui/x-charts/PieChart";
-import React from "react";
 import { Container } from "react-bootstrap";
 import { BsArrowDownShort, BsArrowUpShort } from "react-icons/bs";
 import {
@@ -22,9 +22,11 @@ import {
 import sampImg from "../../../Assets/auth/flower.png";
 import { sampleOrders } from "../../Components/utils";
 import "../MenuOptionsStyles.css";
-import DatePicker from "react-multi-date-picker";
-import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import { CiCalendarDate } from "react-icons/ci";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+
+const { RangePicker } = DatePicker;
 
 const fSize = "clamp(1rem, 1vw + 1rem, 2rem)";
 // const { RangePicker } = DatePicker;
@@ -47,6 +49,17 @@ const tableContStyle = {
   overflow: "scroll",
   flexGrow: 1,
 };
+const dateFormate = { format: "DD-MMM-YYYY", type: "unmask" };
+
+const thisDay = [dayjs(), ""];
+const thisWeek = [dayjs().add(-7, "d"), dayjs()];
+const thisMonth = [dayjs().startOf("month"), dayjs()];
+
+const rangePreset = [
+  { label: "Today", value: thisDay },
+  { label: "This Week", value: thisWeek },
+  { label: "This Month", value: thisMonth },
+];
 
 const Analytics = () => {
   const menuGridList = [
@@ -121,19 +134,19 @@ const Analytics = () => {
           </div> */}
 
           <div className="dateRangeHolder">
-            {/* <CiCalendarDate size={22} className="dtIcon" /> */}
-            <DatePicker
-              containerStyle={{
-                display: "flex",
-                // flex: 0.6,
-                width: "100%",
+            <RangePicker
+              // getPopupContainer={(trigger) => trigger.parentElement}
+              // className="formFields filterItems"
+              placeholder={["From Date", "To Date"]}
+              // suffixIcon={<FaFilter color="#2981a8" size={12} />}
+              format={dateFormate}
+              allowEmpty
+              picker="date"
+              // presets={rangePreset}
+              onChange={(val, dtStr) => {
+                console.log("RangePicker dates Test on: ", val);
+                console.log("RangePicker dates Test on str : ", dtStr);
               }}
-              inputClass="rangeInput"
-              range={true}
-              // placeholder="From - To"
-              // dateSeparator=" - "
-              plugins={[<DatePanel />]}
-              // format="DD/MM/YYYY"
             />
           </div>
         </div>
