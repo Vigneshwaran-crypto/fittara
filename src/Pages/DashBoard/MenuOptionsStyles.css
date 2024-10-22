@@ -242,32 +242,47 @@
 .screenContainer {
   /* border: 1px solid black; */
   display: flex;
-  /* padding: 5px; */
+  flex-direction: column;
   flex: 1;
   flex: 1 0 auto;
   flex-basis: 0;
+  height: 100%;
+  width: 100%;
   min-height: 0;
-  overflow: hidden;
-  /* gap: 5px; */
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.rowHolder {
+  display: flex;
+  flex: 1 0 auto;
+  flex-basis: 0;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
 }
 
 .userProductHolder {
-  border: 1px solid burlywood;
+  /* border: 1px solid burlywood; */
+
+  display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   flex-basis: 0;
   overflow: hidden;
   height: 100%;
   min-height: 0;
-  width: 100%;
-  max-height: 100%;
-  padding: 0;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
-.userProductHolder > * {
-  overflow: auto; /* Allow child to scroll if it overflows */
-  max-height: 100%; /* Ensure the child respects parent's height */
-  min-height: 0; /* Prevent child from breaking the parent */
+
+.homeCont {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  overflow: auto;
 }
 
 .userAccDetailsHolder {

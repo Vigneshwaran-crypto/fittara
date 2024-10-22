@@ -33,44 +33,7 @@ import { MuiColorInput } from "mui-color-input";
 import { AiOutlineCheck } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import Home from "../../Home/Home";
-
-const inpStye = {
-  "& .MuiInput-underline:after": {
-    borderWidth: "1px !important",
-  },
-  "&:hover .MuiInput-underline:before": {
-    borderWidth: "1px !important",
-  },
-  "& .MuiInputLabel-root": {
-    borderWidth: "1px !important",
-  },
-};
-
-const selStyle = {
-  color: "black",
-  ".MuiOutlinedInput-notchedOutline": {
-    borderWidth: "1px",
-  },
-  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-    borderWidth: "1px",
-  },
-  "&:hover .MuiOutlinedInput-notchedOutline": {
-    borderWidth: "1px",
-  },
-};
-
-const curencySelStyle = {
-  color: "black",
-  ".MuiOutlinedInput-notchedOutline": {
-    borderWidth: "0px",
-  },
-  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-    borderWidth: "0px",
-  },
-  "&:hover .MuiOutlinedInput-notchedOutline": {
-    borderWidth: "0px",
-  },
-};
+import "../../Home/styles.css";
 
 const UserAccount = (props) => {
   const navigation = useNavigate();
@@ -212,12 +175,16 @@ const UserAccount = (props) => {
 
   return (
     <div className="screenContainer">
-      <div className="userProductHolder">
-        <Home noTopBar={true} />
-      </div>
+      <div className="rowHolder">
+        <div className="userProductHolder">
+          <div className="homeCont">
+            <Home noTopBar={true} />
+          </div>
+        </div>
 
-      <div className="userAccDetailsHolder">
-        <UserDetails />
+        <div className="userAccDetailsHolder">
+          <UserDetails />
+        </div>
       </div>
     </div>
   );

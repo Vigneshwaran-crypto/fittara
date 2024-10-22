@@ -113,172 +113,178 @@ const Home = ({ noTopBar = false }) => {
       </div>
 
       <div className="homeBodyHolder">
-        <div className="carouselHolder">
-          <Carousel
-            className="carousel"
-            controls={false}
-            fade
-            draggable
-            // interval={1000}
-          >
-            {slidesList.map((item) => (
-              <Carousel.Item
-                className="carouselItem"
+        <div className="scrollArea">
+          <div className="carouselHolder">
+            <Carousel
+              className="carousel"
+              controls={false}
+              fade
+              draggable
+              // interval={1000}
+            >
+              {slidesList.map((item) => (
+                <Carousel.Item
+                  className="carouselItem"
+                  style={{
+                    backgroundImage: `url(${item.bg})`,
+                    backgroundSize: "100% 100%",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                >
+                  <div className="carouselTxtHolder">
+                    <div
+                      className="carouselItemTexts"
+                      style={{ color: item.txtColor }}
+                    >
+                      {item.title}
+                    </div>
+                  </div>
+                  <div className="carouselImgHolder">
+                    {item.img ? (
+                      <img className="carouselItemImg" src={item.img} />
+                    ) : null}
+                  </div>
+                </Carousel.Item>
+              ))}
+            </Carousel>
+          </div>
+
+          <div className="highlightsHolder">
+            <div>
+              <span>
+                <MdOutlinePublishedWithChanges size={22} />
+              </span>
+              Highly Customizable
+            </div>
+            <div>
+              <span>
+                <TbCube3dSphere size={22} />
+              </span>
+              3D Customization
+            </div>
+            <div>
+              <span>
+                <SlSpeedometer size={20} />
+              </span>
+              Fast Delivary
+            </div>
+          </div>
+
+          <div className="customizeTitle">
+            Customize all as you want <span className="in3dTxt">IN 3D</span>
+          </div>
+
+          <div className="categoryListHolder">
+            <div className="listScrollArea">
+              <div className="categoryList">
+                {cateList.map((item) => (
+                  <div
+                    className="categoryItem"
+                    onClick={onCatItemClick.bind(this, item)}
+                  >
+                    <img className="categoryImg" src={item.img} />
+
+                    <div className="catCustBt customizeTitle">Customize</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="customizeTitle">New Arrivals</div>
+
+          <div className="prodList">
+            {prods.map((item) => (
+              <div className="prodItem">
+                <img className="prodImg" src={item.img} />
+                <div className="namePriceTag">
+                  {item.prod}
+
+                  <span>{item.price}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="offersList">
+            <div className="offerConst">
+              {offersList.map((item) => (
+                <img className="offerImg" src={item} />
+              ))}
+              {offersList.map((item) => (
+                <img className="offerImg" src={item} />
+              ))}
+            </div>
+          </div>
+
+          <div className="footer">
+            <div>
+              <span className="footerTitle">Information</span>
+
+              <a href="#"> About Us</a>
+              <a href="#"> Blog</a>
+            </div>
+            <div>
+              <span className="footerTitle">Legal Links</span>
+
+              <a href="#"> Privacy Policy</a>
+              <a href="#"> Terms & Conditions</a>
+            </div>
+            <div>
+              <span className="footerTitle">Service</span>
+
+              <a href="#"> FAQ's</a>
+              <a href="#"> Shipping & Return Policy</a>
+              <a href="#"> Track My Order</a>
+            </div>
+            <div>
+              <span className="shopIcon">
+                <div className="brandText">SOMOYA</div>
+              </span>
+
+              <div className="contactstItem">
+                <SlCallIn size={17} /> 8807207198
+              </div>
+
+              <div className="contactstItem">
+                <CiMail size={20} /> Vickytata619@gmail.com
+              </div>
+
+              <div
+                className="contactstItem"
                 style={{
-                  backgroundImage: `url(${item.bg})`,
-                  backgroundSize: "100% 100%",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
+                  marginTop: "5px",
+                  alignItems: "center",
+                  gap: "15px",
                 }}
               >
-                <div className="carouselTxtHolder">
-                  <div
-                    className="carouselItemTexts"
-                    style={{ color: item.txtColor }}
-                  >
-                    {item.title}
-                  </div>
-                </div>
-                <div className="carouselImgHolder">
-                  {item.img ? (
-                    <img className="carouselItemImg" src={item.img} />
-                  ) : null}
-                </div>
-              </Carousel.Item>
-            ))}
-          </Carousel>
-        </div>
-
-        <div className="highlightsHolder">
-          <div>
-            <span>
-              <MdOutlinePublishedWithChanges size={22} />
-            </span>
-            Highly Customizable
-          </div>
-          <div>
-            <span>
-              <TbCube3dSphere size={22} />
-            </span>
-            3D Customization
-          </div>
-          <div>
-            <span>
-              <SlSpeedometer size={20} />
-            </span>
-            Fast Delivary
-          </div>
-        </div>
-
-        <div className="customizeTitle">
-          Customize all as you want <span className="in3dTxt">IN 3D</span>
-        </div>
-
-        <div className="categoryList">
-          {cateList.map((item) => (
-            <div
-              className="categoryItem"
-              onClick={onCatItemClick.bind(this, item)}
-            >
-              <img className="categoryImg" src={item.img} />
-
-              <div className="catCustBt customizeTitle">Customize</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="customizeTitle">New Arrivals</div>
-
-        <div className="prodList">
-          {prods.map((item) => (
-            <div className="prodItem">
-              <img className="prodImg" src={item.img} />
-              <div className="namePriceTag">
-                {item.prod}
-
-                <span>{item.price}</span>
+                <CiFacebook size={27} color="#1877F2" />
+                <FaWhatsapp size={25} color="#25D366" />
+                <CiInstagram size={25} color="#F56040" />
+                <AiOutlinePinterest size={25} color="#E60023" />
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="offersList">
-          <div className="offerConst">
-            {offersList.map((item) => (
-              <img className="offerImg" src={item} />
-            ))}
-            {offersList.map((item) => (
-              <img className="offerImg" src={item} />
-            ))}
           </div>
-        </div>
 
-        <div className="footer">
-          <div>
-            <span className="footerTitle">Information</span>
+          <div className="bottomBar">
+            <div className="trushConts">
+              <div>
+                <span className="footerTitle">Payment Methods</span>
 
-            <a href="#"> About Us</a>
-            <a href="#"> Blog</a>
-          </div>
-          <div>
-            <span className="footerTitle">Legal Links</span>
-
-            <a href="#"> Privacy Policy</a>
-            <a href="#"> Terms & Conditions</a>
-          </div>
-          <div>
-            <span className="footerTitle">Service</span>
-
-            <a href="#"> FAQ's</a>
-            <a href="#"> Shipping & Return Policy</a>
-            <a href="#"> Track My Order</a>
-          </div>
-          <div>
-            <span className="shopIcon">
-              <div className="brandText">SOMOYA</div>
-            </span>
-
-            <div className="contactstItem">
-              <SlCallIn size={17} /> 8807207198
-            </div>
-
-            <div className="contactstItem">
-              <CiMail size={20} /> Vickytata619@gmail.com
-            </div>
-
-            <div
-              className="contactstItem"
-              style={{
-                marginTop: "5px",
-                alignItems: "center",
-                gap: "15px",
-              }}
-            >
-              <CiFacebook size={27} color="#1877F2" />
-              <FaWhatsapp size={25} color="#25D366" />
-              <CiInstagram size={25} color="#F56040" />
-              <AiOutlinePinterest size={25} color="#E60023" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bottomBar">
-          <div className="trushConts">
-            <div>
-              <span className="footerTitle">Payment Methods</span>
+                <div>
+                  <FaCcMastercard size={43} />
+                  <FaCcVisa size={40} />
+                  <FaGooglePay size={50} />
+                  <GiTakeMyMoney size={38} />
+                </div>
+              </div>
 
               <div>
-                <FaCcMastercard size={43} />
-                <FaCcVisa size={40} />
-                <FaGooglePay size={50} />
-                <GiTakeMyMoney size={38} />
+                <span className="footerTitle">Secure Systems</span>
+
+                <img className="sslIcon" src={ssl} />
               </div>
-            </div>
-
-            <div>
-              <span className="footerTitle">Secure Systems</span>
-
-              <img className="sslIcon" src={ssl} />
             </div>
           </div>
         </div>
