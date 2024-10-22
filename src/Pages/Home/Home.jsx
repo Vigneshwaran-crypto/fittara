@@ -45,8 +45,11 @@ import { FaCcVisa } from "react-icons/fa";
 import { FaGooglePay } from "react-icons/fa";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { prods } from "../Components/utils";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const Home = () => {
+const Home = ({ noTopBar = false }) => {
+  const navigation = useNavigate();
   const slidesList = [
     {
       title: "Be Bold, Be You – The Power to Customize is Yours!",
@@ -98,9 +101,16 @@ const Home = () => {
     offer11,
   ];
 
+  const onCatItemClick = (item) => {
+    console.log("onCatItemClick item :", item);
+    navigation("/editor");
+  };
+
   return (
     <Container fluid className="homeContainer">
-      <TopBar onMenuClick={() => {}} onUserClick={() => {}} />
+      <div style={{ display: noTopBar ? "none" : "block" }}>
+        <TopBar onMenuClick={() => {}} onUserClick={() => {}} />
+      </div>
 
       <div className="homeBodyHolder">
         <div className="carouselHolder">
@@ -166,8 +176,13 @@ const Home = () => {
 
         <div className="categoryList">
           {cateList.map((item) => (
-            <div className="categoryItem">
+            <div
+              className="categoryItem"
+              onClick={onCatItemClick.bind(this, item)}
+            >
               <img className="categoryImg" src={item.img} />
+
+              <div className="catCustBt customizeTitle">Customize</div>
             </div>
           ))}
         </div>

@@ -1,7 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import "../MenuOptionsStyles.css";
-import "./styles.css";
 import { Button } from "@mui/material";
 const Policy = () => {
   return (

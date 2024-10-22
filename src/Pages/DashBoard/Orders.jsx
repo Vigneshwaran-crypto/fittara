@@ -34,30 +34,13 @@ import {
 import {
   gender,
   inpStye,
+  papStyle,
   productCategories,
   sampleOrders,
   sampleProducts,
   selStyle,
+  tableContStyle,
 } from "../Components/utils";
-
-const papStyle = {
-  display: "table",
-  tableLayout: "fixed",
-  width: "100%",
-  maxWidth: "100%",
-  height: "100%",
-  maxHeight: "100%",
-  overflow: "hidden",
-  boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
-};
-
-const tableContStyle = {
-  height: "100%",
-  maxWidth: "100%",
-  maxHeight: "100% !important",
-  overflow: "scroll",
-  flexGrow: 1,
-};
 
 const Orders = () => {
   const fSize = "clamp(1rem, 1vw + 1rem, 2rem)";

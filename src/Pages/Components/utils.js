@@ -1443,3 +1443,22 @@ export const sampleOrders = [
     cash: "$822.53",
   },
 ];
+
+export const papStyle = {
+  display: "table",
+  tableLayout: "fixed",
+  width: "100%",
+  maxWidth: "100%",
+  height: "100%",
+  maxHeight: "100%",
+  overflow: "hidden",
+  boxShadow: "rgba(0, 0, 0, 0.04) 0px 3px 5px",
+};
+
+export const tableContStyle = {
+  height: "100%",
+  maxWidth: "100%",
+  maxHeight: "100% !important",
+  overflow: "scroll",
+  flexGrow: 1,
+};

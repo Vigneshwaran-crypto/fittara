@@ -244,14 +244,30 @@
   display: flex;
   /* padding: 5px; */
   flex: 1;
+  flex: 1 0 auto;
+  flex-basis: 0;
+  min-height: 0;
+  overflow: hidden;
   /* gap: 5px; */
 }
 
 .userProductHolder {
   border: 1px solid burlywood;
-  display: flex;
   flex-direction: column;
+  flex: 1 0 auto;
+  flex-basis: 0;
+  overflow: hidden;
+  height: 100%;
+  min-height: 0;
   width: 100%;
+  max-height: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+.userProductHolder > * {
+  overflow: auto; /* Allow child to scroll if it overflows */
+  max-height: 100%; /* Ensure the child respects parent's height */
+  min-height: 0; /* Prevent child from breaking the parent */
 }
 
 .userAccDetailsHolder {

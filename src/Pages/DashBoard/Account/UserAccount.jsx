@@ -32,6 +32,7 @@ import {
 import { MuiColorInput } from "mui-color-input";
 import { AiOutlineCheck } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import Home from "../../Home/Home";
 
 const inpStye = {
   "& .MuiInput-underline:after": {
@@ -211,7 +212,9 @@ const UserAccount = (props) => {
 
   return (
     <div className="screenContainer">
-      <div className="userProductHolder"></div>
+      <div className="userProductHolder">
+        <Home noTopBar={true} />
+      </div>
 
       <div className="userAccDetailsHolder">
         <UserDetails />
