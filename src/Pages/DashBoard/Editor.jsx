@@ -87,6 +87,7 @@ import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
+import { Joystick } from "react-joystick-component";
 
 const Editor = (props) => {
   const { nodes, materials } = useGLTF(modelObj);
@@ -284,29 +285,13 @@ const Editor = (props) => {
     },
   ]);
 
-  // const [images, setImages] = useState([
-  //   { src: userImg, position: { x: 50, y: 50 }, rotation: 0, scale: 1 },
-  //   { src: ecomImg, position: { x: 150, y: 150 }, rotation: 0, scale: 1 },
-  // ]);
-
-  // const [texts, setTexts] = useState([
-  //   {
-  //     text: "Sample Text 1",
-  //     position: { x: 300, y: 300 },
-  //     rotation: 0,
-  //     scale: 1,
-  //   },
-  //   {
-  //     text: "Sample Text 2",
-  //     position: { x: 500, y: 500 },
-  //     rotation: 0,
-  //     scale: 1,
-  //   },
-  // ]);
-
   const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" }); // State to hold the selected color
-  const imgElements = useRef([]);
   const [defMeshRot, setdefMeshRot] = useState([0, 0, 0]);
+
+  const [joyPos, setJoyPos] = useState({ direction: "FORWARD" });
+  const [isMove, setIsMove] = useState(0);
+  const moveIntervel = useRef(null);
+  let moveSpeed = 10;
 
   const sidePosses = [
     {
@@ -359,6 +344,57 @@ const Editor = (props) => {
     },
   ];
 
+  useEffect(() => {
+    if (isMove) {
+      if (moveIntervel.current) clearInterval(moveIntervel.current);
+
+      moveIntervel.current = setInterval(() => {
+        const updatedTextures = texture.map((item) => {
+          if (item.id === chosenComp.id) {
+            const updatedItem = { ...item };
+            const itemArray = updatedItem[focTab ? "images" : "texts"];
+            const chosenItem = itemArray[chosenInd];
+
+            let xVal = chosenItem.position.x;
+            let yVal = chosenItem.position.y;
+
+            switch (joyPos?.direction) {
+              case "FORWARD":
+                xVal += moveSpeed;
+                break;
+              case "BACKWARD":
+                xVal -= moveSpeed;
+                break;
+              case "LEFT":
+                yVal -= moveSpeed;
+                break;
+              case "RIGHT":
+                yVal += moveSpeed;
+                break;
+              default:
+                break;
+            }
+
+            itemArray[chosenInd] = {
+              ...chosenItem,
+              position: { ...chosenItem.position, x: xVal, y: yVal },
+            };
+
+            updatedItem[focTab ? "images" : "texts"] = itemArray;
+            return updatedItem;
+          }
+          return item;
+        });
+
+        console.log("updating item:", updatedTextures);
+        setTexture(updatedTextures);
+        setIncre((prev) => prev + 1);
+      }, 5);
+    }
+
+    return () => clearInterval(moveIntervel.current);
+  }, [isMove, joyPos, chosenComp, chosenInd, focTab, texture, moveSpeed]);
+
   // useEffect(() => {
   //   window.addEventListener("mousemove", handleMouseMove);
   //   window.addEventListener("mouseup", handleMouseUp);
@@ -369,25 +405,25 @@ const Editor = (props) => {
   //   };
   // }, [isDragging, mousePos]);
 
-  // useEffect(() => {
-  //   const imgsList = texture.map((item) => item.images).flat();
-  //   console.log("imgsList :", imgsList);
-  //   const madeTxtures = texture.map((item, index) => {
-  //     item.images.map((img, ind) => {
-  //       const imgElem = new Image();
-  //       imgElem.src = img.src;
-  //       imgElem.crossOrigin = "anonymous";
-  //       imgElem.onload = () => {
-  //         if (index === madeTxtures.length - 1) {
-  //           setImageLoaded(true);
-  //         }
-  //       };
-  //       img.ref.current = imgElem;
-  //     });
-  //     return item;
-  //   });
-  //   console.log("madeTxtures :", madeTxtures);
-  // }, [incre, chosenInd]);
+  useEffect(() => {
+    const imgsList = texture.map((item) => item.images).flat();
+    console.log("imgsList :", imgsList);
+    const madeTxtures = texture.map((item, index) => {
+      item.images.map((img, ind) => {
+        const imgElem = new Image();
+        imgElem.src = img.src;
+        imgElem.crossOrigin = "anonymous";
+        imgElem.onload = () => {
+          if (index === madeTxtures.length - 1) {
+            setImageLoaded(true);
+          }
+        };
+        img.ref.current = imgElem;
+      });
+      return item;
+    });
+    console.log("madeTxtures :", madeTxtures);
+  }, [incre, chosenInd]);
 
   const renderCanvas = () => {
     // if (!imageLoaded) return;
@@ -494,11 +530,8 @@ const Editor = (props) => {
     renderCanvas();
   }, [
     // images,
-    imageLoaded,
+    // imageLoaded,
     color.hex,
-    // texts,
-    // partName,
-    // chosenComp.images[chosenInd].scale,
     incre,
     chosenInd,
   ]);
@@ -511,103 +544,6 @@ const Editor = (props) => {
       }
     });
   }, [texture]);
-
-  // const handleMouseDown = (e) => {
-  //   const { clientX, clientY } = e;
-  //   setMousePos({ x: clientX, y: clientY });
-
-  //   let foundIndex = null;
-  //   let isText = false;
-
-  //   // Check if an image is clicked
-  //   images.forEach((img, index) => {
-  //     const imgWidth = imgElements.current[index].width * img.scale;
-  //     const imgHeight = imgElements.current[index].height * img.scale;
-
-  //     if (
-  //       clientX >= img.position.x - imgWidth / 2 &&
-  //       clientX <= img.position.x + imgWidth / 2 &&
-  //       clientY >= img.position.y - imgHeight / 2 &&
-  //       clientY <= img.position.y + imgHeight / 2
-  //     ) {
-  //       foundIndex = index;
-  //     }
-  //   });
-
-  //   // Check if a text is clicked
-  //   if (foundIndex === null) {
-  //     texts.forEach((text, index) => {
-  //       const textWidth = 100 * text.scale; // Approximate text width
-  //       const textHeight = 30 * text.scale; // Approximate text height
-
-  //       if (
-  //         clientX >= text.position.x - textWidth / 2 &&
-  //         clientX <= text.position.x + textWidth / 2 &&
-  //         clientY >= text.position.y - textHeight / 2 &&
-  //         clientY <= text.position.y + textHeight / 2
-  //       ) {
-  //         foundIndex = index;
-  //         isText = true;
-  //       }
-  //     });
-  //   }
-
-  //   if (foundIndex !== null) {
-  //     setDraggingIndex(foundIndex);
-  //     setIsDragging(true);
-  //     if (isText) {
-  //       setDraggingText(true); // New state to track text dragging
-  //     }
-  //   }
-  // };
-
-  // const handleMouseMove = (e) => {
-  //   // console.log("handleMouseMove :", e);
-  //   if (isDragging && draggingIndex !== null) {
-  //     const { clientX, clientY } = e;
-  //     const movementX = clientX - mousePos.x;
-  //     const movementY = clientY - mousePos.y;
-
-  //     if (isDraggingText) {
-  //       // Update text position
-  //       setTexts((prevTexts) =>
-  //         prevTexts.map((text, i) =>
-  //           i === draggingIndex
-  //             ? {
-  //                 ...text,
-  //                 position: {
-  //                   x: text.position.x + movementX,
-  //                   y: text.position.y + movementY,
-  //                 },
-  //               }
-  //             : text
-  //         )
-  //       );
-  //     } else {
-  //       // Update image position
-  //       setImages((prevImages) =>
-  //         prevImages.map((img, i) =>
-  //           i === draggingIndex
-  //             ? {
-  //                 ...img,
-  //                 position: {
-  //                   x: img.position.x + movementX,
-  //                   y: img.position.y + movementY,
-  //                 },
-  //               }
-  //             : img
-  //         )
-  //       );
-  //     }
-
-  //     setMousePos({ x: clientX, y: clientY });
-  //   }
-  // };
-
-  // const handleMouseUp = () => {
-  //   setIsDragging(false);
-  //   setDraggingIndex(null);
-  // };
 
   const handleScaleChange = (newScale) => {
     console.log("handleScaleChange", chosenInd);
@@ -658,6 +594,39 @@ const Editor = (props) => {
           position: {
             ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
             x: newPos,
+          },
+        };
+        return updatedItem;
+      }
+      return item;
+    });
+
+    console.log("updating item :", updatedTextures);
+
+    setTexture(updatedTextures);
+    setIncre(incre + 1);
+  };
+
+  const handleJoyStik = (loc) => {
+    console.log("handleX chosen index :", chosenInd);
+
+    const updatedTextures = texture.map((item) => {
+      if (item.id === chosenComp.id) {
+        const updatedItem = { ...item };
+        updatedItem[focTab ? "images" : "texts"] = [
+          ...item[focTab ? "images" : "texts"],
+        ];
+
+        updatedItem[focTab ? "images" : "texts"][chosenInd] = {
+          ...updatedItem[focTab ? "images" : "texts"][chosenInd],
+          position: {
+            ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
+            x:
+              updatedItem[focTab ? "images" : "texts"][chosenInd].position.x +
+              loc.x,
+            y:
+              updatedItem[focTab ? "images" : "texts"][chosenInd].position.y +
+              loc.y,
           },
         };
         return updatedItem;
@@ -1294,6 +1263,83 @@ const Editor = (props) => {
               >
                 Alignment
               </div>
+
+              {/* <div className="rangeItem">
+                <label className="rangeLabel">Vertical</label>
+                <div className="sliderHolder">
+                  <Slider
+                    size="small"
+                    className="sliders"
+                    step={0.01}
+                    min={1}
+                    max={3000}
+                    value={
+                      chosenComp[focTab ? "images" : "texts"][chosenInd]
+                        ?.position.x ?? 0
+                    }
+                    onChange={(e) => handleX(parseFloat(e.target.value))}
+                    sx={sliderStyle}
+                    disabled={
+                      chosenComp[focTab ? "images" : "texts"].length === 0
+                    }
+                  />
+
+                  <div className="sliderValTxt">
+                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
+                      ?.position.x ?? 0}
+                  </div>
+                </div>
+              </div> */}
+
+              {/* <div className="rangeItem">
+                <label className="rangeLabel">Horizondal</label>
+                <div className="sliderHolder">
+                  <Slider
+                    size="small"
+                    className="sliders"
+                    step={0.01}
+                    min={1}
+                    max={3000}
+                    value={
+                      chosenComp[focTab ? "images" : "texts"][chosenInd]
+                        ?.position.y ?? 0
+                    }
+                    onChange={(e) => handleY(parseFloat(e.target.value))}
+                    sx={sliderStyle}
+                    disabled={
+                      chosenComp[focTab ? "images" : "texts"].length === 0
+                    }
+                  />
+
+                  <div className="sliderValTxt">
+                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
+                      ?.position.y ?? 0}
+                  </div>
+                </div>
+              </div> */}
+              <div className="rangeItem" style={{ alignItems: "center" }}>
+                <Joystick
+                  size={70}
+                  baseColor="black"
+                  stickColor="#1665C0"
+                  throttle={50}
+                  // minDistance={0.1}
+                  start={(e) => {
+                    console.log("joy start :", e);
+                    setIsMove(1);
+                  }}
+                  move={(e) => {
+                    console.log("JoyStik Moving :", e);
+                    // handleJoyStik(e);
+                    setJoyPos(e);
+                  }}
+                  stop={(e) => {
+                    console.log("joy Stop :", e);
+                    setIsMove(0);
+                  }}
+                />
+              </div>
+
               <div className="rangeItem">
                 <label className="rangeLabel">Scale</label>
 
@@ -1348,60 +1394,6 @@ const Editor = (props) => {
                   <div className="sliderValTxt">
                     {chosenComp[focTab ? "images" : "texts"][chosenInd]
                       ?.rotation ?? 0}
-                  </div>
-                </div>
-              </div>
-
-              <div className="rangeItem">
-                <label className="rangeLabel">Vertical</label>
-                <div className="sliderHolder">
-                  <Slider
-                    size="small"
-                    className="sliders"
-                    step={0.01}
-                    min={1}
-                    max={3000}
-                    value={
-                      chosenComp[focTab ? "images" : "texts"][chosenInd]
-                        ?.position.x ?? 0
-                    }
-                    onChange={(e) => handleX(parseFloat(e.target.value))}
-                    sx={sliderStyle}
-                    disabled={
-                      chosenComp[focTab ? "images" : "texts"].length === 0
-                    }
-                  />
-
-                  <div className="sliderValTxt">
-                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
-                      ?.position.x ?? 0}
-                  </div>
-                </div>
-              </div>
-
-              <div className="rangeItem">
-                <label className="rangeLabel">Horizondal</label>
-                <div className="sliderHolder">
-                  <Slider
-                    size="small"
-                    className="sliders"
-                    step={0.01}
-                    min={1}
-                    max={3000}
-                    value={
-                      chosenComp[focTab ? "images" : "texts"][chosenInd]
-                        ?.position.y ?? 0
-                    }
-                    onChange={(e) => handleY(parseFloat(e.target.value))}
-                    sx={sliderStyle}
-                    disabled={
-                      chosenComp[focTab ? "images" : "texts"].length === 0
-                    }
-                  />
-
-                  <div className="sliderValTxt">
-                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
-                      ?.position.y ?? 0}
                   </div>
                 </div>
               </div>
