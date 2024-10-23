@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import Mug from "../../Component/Mug";
 import { Canvas, useFrame } from "@react-three/fiber";
 import modelObj from "../../Assets/3dFiles/swater.glb";
 import {
@@ -14,9 +13,6 @@ import {
   RandomizedLight,
   useGLTF,
 } from "@react-three/drei";
-
-import ecomImg from "../../Assets/auth/ecomVector.jpg";
-import userImg from "../../Assets/auth/userProfile.png";
 
 import frontSide from "../../Assets/sides/front2.png";
 import backSide from "../../Assets/sides/back.png";
@@ -293,6 +289,14 @@ const Editor = (props) => {
   const moveIntervel = useRef(null);
   let moveSpeed = 10;
 
+  const [xValue, setXValue] = useState(
+    chosenComp?.[focTab ? "images" : "texts"]?.[chosenInd]?.position?.x || 0
+  );
+  const [posVal, setPosVal] = useState({
+    x: chosenComp?.[focTab ? "images" : "texts"]?.[chosenInd]?.position?.x || 0,
+    y: chosenComp?.[focTab ? "images" : "texts"]?.[chosenInd]?.position?.y || 0,
+  });
+
   const sidePosses = [
     {
       id: 2,
@@ -379,7 +383,8 @@ const Editor = (props) => {
               ...chosenItem,
               position: { ...chosenItem.position, x: xVal, y: yVal },
             };
-
+            // setXValue(xVal?.toFixed(1));
+            setPosVal({ x: xVal?.toFixed(1), y: yVal?.toFixed(1) });
             updatedItem[focTab ? "images" : "texts"] = itemArray;
             return updatedItem;
           }
@@ -395,16 +400,6 @@ const Editor = (props) => {
     return () => clearInterval(moveIntervel.current);
   }, [isMove, joyPos, chosenComp, chosenInd, focTab, texture, moveSpeed]);
 
-  // useEffect(() => {
-  //   window.addEventListener("mousemove", handleMouseMove);
-  //   window.addEventListener("mouseup", handleMouseUp);
-
-  //   return () => {
-  //     window.removeEventListener("mousemove", handleMouseMove);
-  //     window.removeEventListener("mouseup", handleMouseUp);
-  //   };
-  // }, [isDragging, mousePos]);
-
   useEffect(() => {
     const imgsList = texture.map((item) => item.images).flat();
     console.log("imgsList :", imgsList);
@@ -415,7 +410,7 @@ const Editor = (props) => {
         imgElem.crossOrigin = "anonymous";
         imgElem.onload = () => {
           if (index === madeTxtures.length - 1) {
-            setImageLoaded(true);
+            // setImageLoaded(true);
           }
         };
         img.ref.current = imgElem;
@@ -579,65 +574,67 @@ const Editor = (props) => {
     setIncre(incre + 1);
   };
 
-  const handleX = (newPos) => {
+  // const handleX = (newPos) => {
+  //   console.log("handleX chosen index :", chosenInd);
+
+  //   const updatedTextures = texture.map((item) => {
+  //     if (item.id === chosenComp.id) {
+  //       const updatedItem = { ...item };
+  //       updatedItem[focTab ? "images" : "texts"] = [
+  //         ...item[focTab ? "images" : "texts"],
+  //       ];
+
+  //       updatedItem[focTab ? "images" : "texts"][chosenInd] = {
+  //         ...updatedItem[focTab ? "images" : "texts"][chosenInd],
+  //         position: {
+  //           ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
+  //           x: newPos,
+  //         },
+  //       };
+  //       return updatedItem;
+  //     }
+  //     return item;
+  //   });
+
+  //   console.log("updating item :", updatedTextures);
+
+  //   setTexture(updatedTextures);
+  //   setIncre((pre) => pre + 1);
+  // };
+
+  const handlePosInp = (newPos, mot) => {
     console.log("handleX chosen index :", chosenInd);
 
     const updatedTextures = texture.map((item) => {
       if (item.id === chosenComp.id) {
         const updatedItem = { ...item };
-        updatedItem[focTab ? "images" : "texts"] = [
-          ...item[focTab ? "images" : "texts"],
-        ];
+        const arrayToUpdate = updatedItem[focTab ? "images" : "texts"];
 
-        updatedItem[focTab ? "images" : "texts"][chosenInd] = {
-          ...updatedItem[focTab ? "images" : "texts"][chosenInd],
-          position: {
-            ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
-            x: newPos,
-          },
-        };
+        if (chosenInd >= 0 && chosenInd < arrayToUpdate.length) {
+          const updatedElement = {
+            ...arrayToUpdate[chosenInd],
+            position: {
+              ...arrayToUpdate[chosenInd].position,
+              x: mot ? newPos : arrayToUpdate[chosenInd].position.x,
+              y: !mot ? newPos : arrayToUpdate[chosenInd].position.y,
+            },
+          };
+
+          arrayToUpdate[chosenInd] = updatedElement;
+        }
+
+        updatedItem[focTab ? "images" : "texts"] = arrayToUpdate;
         return updatedItem;
       }
       return item;
     });
 
     console.log("updating item :", updatedTextures);
-
     setTexture(updatedTextures);
-    setIncre(incre + 1);
-  };
+    setIncre((prev) => prev + 1);
+    // setXValue(newPos);
 
-  const handleJoyStik = (loc) => {
-    console.log("handleX chosen index :", chosenInd);
-
-    const updatedTextures = texture.map((item) => {
-      if (item.id === chosenComp.id) {
-        const updatedItem = { ...item };
-        updatedItem[focTab ? "images" : "texts"] = [
-          ...item[focTab ? "images" : "texts"],
-        ];
-
-        updatedItem[focTab ? "images" : "texts"][chosenInd] = {
-          ...updatedItem[focTab ? "images" : "texts"][chosenInd],
-          position: {
-            ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
-            x:
-              updatedItem[focTab ? "images" : "texts"][chosenInd].position.x +
-              loc.x,
-            y:
-              updatedItem[focTab ? "images" : "texts"][chosenInd].position.y +
-              loc.y,
-          },
-        };
-        return updatedItem;
-      }
-      return item;
-    });
-
-    console.log("updating item :", updatedTextures);
-
-    setTexture(updatedTextures);
-    setIncre(incre + 1);
+    setPosVal({ x: mot ? newPos : posVal.x, y: !mot ? newPos : posVal.y });
   };
 
   const handleY = (newPos) => {
@@ -799,6 +796,8 @@ const Editor = (props) => {
       setChosenComp(updatedItem);
       setChosenInd(updatedItem.texts.length - 1);
 
+      setPosVal({ x: chosenMesh.defPos.x, y: chosenMesh.defPos.y });
+
       setIsValid(false);
       setPrintTxt("");
       setPrintFont({
@@ -837,6 +836,8 @@ const Editor = (props) => {
     });
     setChosenComp(updatedTextures.find((item) => item.id === chosenComp.id));
     setTexture(updatedTextures);
+    setPosVal({ x: chosenComp.defPos.x, y: chosenComp.defPos.y });
+
     setIncre(incre + 1);
   };
 
@@ -1317,27 +1318,63 @@ const Editor = (props) => {
                   </div>
                 </div>
               </div> */}
-              <div className="rangeItem" style={{ alignItems: "center" }}>
-                <Joystick
-                  size={70}
-                  baseColor="black"
-                  stickColor="#1665C0"
-                  throttle={50}
-                  // minDistance={0.1}
-                  start={(e) => {
-                    console.log("joy start :", e);
-                    setIsMove(1);
-                  }}
-                  move={(e) => {
-                    console.log("JoyStik Moving :", e);
-                    // handleJoyStik(e);
-                    setJoyPos(e);
-                  }}
-                  stop={(e) => {
-                    console.log("joy Stop :", e);
-                    setIsMove(0);
-                  }}
-                />
+              <div
+                className="rangeItem"
+                style={{ alignItems: "center", flexDirection: "row" }}
+              >
+                <div className="posInpHolder">
+                  <TextField
+                    size="small"
+                    label="X"
+                    variant="standard"
+                    sx={inpStye}
+                    type="number"
+                    // value={xValue}
+                    value={posVal.x}
+                    onChange={(e) => {
+                      const newX = parseFloat(e.target.value);
+                      // setXValue(newX); // Update local state
+                      handlePosInp(newX, true); // Trigger handleX to update textures
+                    }}
+                  />
+
+                  <TextField
+                    size="small"
+                    label="Y"
+                    variant="standard"
+                    sx={inpStye}
+                    type="number"
+                    value={posVal.y}
+                    onChange={(e) => {
+                      const newY = parseFloat(e.target.value);
+                      // setXValue(newX); // Update local state
+                      handlePosInp(newY, false); // Trigger handleX to update textures
+                    }}
+                  />
+                </div>
+
+                <div className="analogHolder">
+                  <Joystick
+                    size={70}
+                    baseColor="black"
+                    stickColor="#1665C0"
+                    throttle={50}
+                    // minDistance={0.1}
+                    start={(e) => {
+                      console.log("joy start :", e);
+                      setIsMove(1);
+                    }}
+                    move={(e) => {
+                      console.log("JoyStik Moving :", e);
+                      // handleJoyStik(e);
+                      setJoyPos(e);
+                    }}
+                    stop={(e) => {
+                      console.log("joy Stop :", e);
+                      setIsMove(0);
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="rangeItem">

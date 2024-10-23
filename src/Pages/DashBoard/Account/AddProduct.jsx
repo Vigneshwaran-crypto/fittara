@@ -1083,7 +1083,13 @@ const AddProduct = () => {
           <div className="inputGroup">
             <div className="groupHeadTxt">Inventory</div>
 
-            <div className="inputItems" style={{ flexDirection: "row" }}>
+            <div
+              className="inputItems"
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around !important",
+              }}
+            >
               <TextField
                 size="small"
                 label="Quantity"
