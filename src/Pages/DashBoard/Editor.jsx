@@ -860,13 +860,15 @@ const Editor = (w) => {
     }, 1);
   };
 
-  const onChipTxtDelClick = (ind) => {
+  const onChipTxtDelClick = (ind, is) => {
     console.log("clicked chip for delete :", ind);
     const updatedtxture = texture.map((item) => {
       if (item.id === chosenComp.id) {
         const newItem = { ...chosenComp };
-        const txts = chosenComp.texts?.filter((ite, dex) => ind !== dex);
-        newItem.texts = txts;
+        const comps = chosenComp[is ? "images" : "texts"]?.filter(
+          (ite, dex) => ind !== dex
+        );
+        newItem[is ? "images" : "texts"] = comps;
         setChosenComp(newItem);
         return newItem;
       } else {
@@ -1052,13 +1054,11 @@ const Editor = (w) => {
                                     ...(checked && {
                                       "--variant-borderWidth": "1.3px",
                                       "&&": {
-                                        // && to increase the specificity to win the base :hover styles
                                         borderColor:
                                           theme.vars.palette.primary[500],
                                       },
                                     }),
                                     "&:hover": {
-                                      // Keep the hover style clean, no color mess-up
                                       borderColor:
                                         theme.vars.palette.primary[0],
                                       backgroundColor: "transparent",
@@ -1100,7 +1100,6 @@ const Editor = (w) => {
                           const selCol = fontColors.find(
                             (ite) => ite.id == e.target.value
                           );
-                          // setFontColor(selCol.hex || "#000000");
                           setFontColor(selCol);
                         }}
                       >
@@ -1215,7 +1214,7 @@ const Editor = (w) => {
                               color: "red",
                             },
                           }}
-                          onClick={onChipTxtDelClick.bind(this, ind)}
+                          onClick={onChipTxtDelClick.bind(this, ind, 0)}
                         />
 
                         <EditIcon
@@ -1271,7 +1270,12 @@ const Editor = (w) => {
                 <div className="addedImgHolder">
                   <div className="imgGridListHolder">
                     {chosenComp.images.map((item, ind) => (
-                      <div className="comImgHolder" key={ind}>
+                      <div
+                        className="comImgHolder"
+                        key={ind}
+                        onMouseEnter={() => setChipHover(ind)}
+                        onMouseLeave={() => setChipHover(null)}
+                      >
                         <img
                           src={item.src}
                           className="imgItem"
@@ -1283,6 +1287,24 @@ const Editor = (w) => {
                                 : "",
                             borderRadius: "8px",
                           }}
+                        />
+
+                        <ClearIcon
+                          fontSize="10px"
+                          sx={{
+                            display:
+                              isChipHover === ind && chosenInd === ind
+                                ? "block"
+                                : "none",
+                            position: "absolute",
+                            zIndex: 10,
+                            left: "-5px",
+                            top: "-6px",
+                            "&:hover": {
+                              color: "red",
+                            },
+                          }}
+                          onClick={onChipTxtDelClick.bind(this, ind, 1)}
                         />
                       </div>
                     ))}
@@ -1305,59 +1327,6 @@ const Editor = (w) => {
                 Alignment
               </div>
 
-              {/* <div className="rangeItem">
-                <label className="rangeLabel">Vertical</label>
-                <div className="sliderHolder">
-                  <Slider
-                    size="small"
-                    className="sliders"
-                    step={0.01}
-                    min={1}
-                    max={3000}
-                    value={
-                      chosenComp[focTab ? "images" : "texts"][chosenInd]
-                        ?.position.x ?? 0
-                    }
-                    onChange={(e) => handleX(parseFloat(e.target.value))}
-                    sx={sliderStyle}
-                    disabled={
-                      chosenComp[focTab ? "images" : "texts"].length === 0
-                    }
-                  />
-
-                  <div className="sliderValTxt">
-                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
-                      ?.position.x ?? 0}
-                  </div>
-                </div>
-              </div> */}
-
-              {/* <div className="rangeItem">
-                <label className="rangeLabel">Horizondal</label>
-                <div className="sliderHolder">
-                  <Slider
-                    size="small"
-                    className="sliders"
-                    step={0.01}
-                    min={1}
-                    max={3000}
-                    value={
-                      chosenComp[focTab ? "images" : "texts"][chosenInd]
-                        ?.position.y ?? 0
-                    }
-                    onChange={(e) => handleY(parseFloat(e.target.value))}
-                    sx={sliderStyle}
-                    disabled={
-                      chosenComp[focTab ? "images" : "texts"].length === 0
-                    }
-                  />
-
-                  <div className="sliderValTxt">
-                    {chosenComp[focTab ? "images" : "texts"][chosenInd]
-                      ?.position.y ?? 0}
-                  </div>
-                </div>
-              </div> */}
               <div
                 className="rangeItem"
                 style={{ alignItems: "center", flexDirection: "row" }}
