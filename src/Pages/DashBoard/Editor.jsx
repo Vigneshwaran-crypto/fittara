@@ -85,18 +85,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Joystick } from "react-joystick-component";
 
-const Editor = (props) => {
+const Editor = (w) => {
   const { nodes, materials } = useGLTF(modelObj);
 
   const canvasRef = useRef(null);
   const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry);
   const uv = geometry.attributes.uv.array;
-
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [draggingIndex, setDraggingIndex] = useState(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isDraggingText, setDraggingText] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const [incre, setIncre] = useState(0);
 
@@ -122,6 +116,8 @@ const Editor = (props) => {
   const imgIndHold = useRef(0);
   const txtIndHold = useRef(0);
   const prinTxtInpRef = useRef(null);
+
+  const [isTxtEdit, setIsTxtEdit] = useState(false);
 
   const [chosenComp, setChosenComp] = useState({
     id: 2,
@@ -287,7 +283,6 @@ const Editor = (props) => {
   const [joyPos, setJoyPos] = useState({ direction: "FORWARD" });
   const [isMove, setIsMove] = useState(0);
   const moveIntervel = useRef(null);
-  let moveSpeed = 10;
 
   const [xValue, setXValue] = useState(
     chosenComp?.[focTab ? "images" : "texts"]?.[chosenInd]?.position?.x || 0
@@ -359,6 +354,8 @@ const Editor = (props) => {
             const itemArray = updatedItem[focTab ? "images" : "texts"];
             const chosenItem = itemArray[chosenInd];
 
+            let moveSpeed = focTab ? 5 : 15;
+
             let xVal = chosenItem.position.x;
             let yVal = chosenItem.position.y;
 
@@ -398,7 +395,7 @@ const Editor = (props) => {
     }
 
     return () => clearInterval(moveIntervel.current);
-  }, [isMove, joyPos, chosenComp, chosenInd, focTab, texture, moveSpeed]);
+  }, [isMove, joyPos, chosenComp, chosenInd, focTab, texture]);
 
   // Don't remove some kinda important
   // useEffect(() => {
@@ -765,24 +762,26 @@ const Editor = (props) => {
       const textSamp = {
         text: printTxt,
         font: printFont.name,
-        // color: fontColor,
         color: fontColor.hex,
         fontStyle: fontStyle,
-        // position: chosenComp.defPos,
-        // rotation: chosenComp.defRot,
-        // scale: chosenComp.defScal,
-        position: chosenMesh.defPos,
-        rotation: chosenMesh.defRot,
-        scale: chosenMesh.defScal,
+        position: isTxtEdit
+          ? chosenComp.texts[chosenInd].position
+          : chosenMesh.defPos,
+        rotation: isTxtEdit
+          ? chosenComp.texts[chosenInd].rotation
+          : chosenMesh.defRot,
+        scale: isTxtEdit
+          ? chosenComp.texts[chosenInd].scale
+          : chosenMesh.defScal,
       };
 
       console.log("builded text :", textSamp);
 
       const updatedTextures = texture.map((item) => {
         if (item.id === chosenComp.id) {
-          item.texts.push(textSamp);
-          // item.texts = item.texts.concat([textSamp]);
-          // console.log("concated data :", item.texts);
+          isTxtEdit
+            ? (item.texts[chosenInd] = textSamp)
+            : item.texts.push(textSamp);
           return item;
         }
         return item;
@@ -801,6 +800,7 @@ const Editor = (props) => {
       setPosVal({ x: chosenMesh.defPos.x, y: chosenMesh.defPos.y });
 
       setIsValid(false);
+      setIsTxtEdit(false);
       setPrintTxt("");
       setPrintFont({
         id: 1,
@@ -878,6 +878,26 @@ const Editor = (props) => {
     setIncre(incre + 1);
   };
 
+  const onChipTxtEditClick = (ind) => {
+    setIsTxtEdit(true);
+
+    const edibleTxt = texture.find((item) => item.id === chosenComp.id).texts[
+      ind
+    ];
+
+    console.log("edibale txt :", edibleTxt);
+
+    setPrintTxt(edibleTxt.text);
+
+    setFontStyle(edibleTxt.fontStyle);
+
+    const fontVal = fonts.find((item) => item.name === edibleTxt.font);
+    setPrintFont(fontVal);
+
+    const selCol = fontColors.find((ite) => ite.hex == edibleTxt.color);
+    setFontColor(selCol);
+  };
+
   return (
     <Container fluid className="editorHolder">
       <div className="favConts">
@@ -924,7 +944,6 @@ const Editor = (props) => {
                 <div className="printTxtHolder">
                   <div className="txtInputsHolder">
                     <TextField
-                      // ref={prinTxtInpRef}
                       inputRef={prinTxtInpRef}
                       size="small"
                       label="Print Text"
@@ -1143,14 +1162,14 @@ const Editor = (props) => {
                         size="small"
                         onClick={onTxtPrintConfirm}
                       >
-                        Add
+                        {isTxtEdit ? "Edit" : " Add"}
                       </Button>
                     </div>
                   </div>
                 </div>
 
                 <div className="txtRangesHolder">
-                  <div className="subTitle">Added Text</div>
+                  <div className="subTitle">Printed Text</div>
 
                   <div className="printedTextList">
                     {chosenComp.texts.map((item, ind) => (
@@ -1201,6 +1220,7 @@ const Editor = (props) => {
 
                         <EditIcon
                           fontSize="15px"
+                          onClick={onChipTxtEditClick.bind(this, ind)}
                           sx={{
                             display:
                               isChipHover === ind && chosenInd === ind

@@ -271,6 +271,7 @@ const SideBar = () => {
       >
         <UserDetails />
       </Drawer>
+
       <Row
         lg={12}
         md={12}
