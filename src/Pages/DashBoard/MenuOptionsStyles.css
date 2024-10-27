@@ -609,6 +609,37 @@
   gap: 5px;
 }
 
+.meshcolorPallate {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute;
+  width: 80%;
+  height: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 10px;
+  z-index: 10;
+  overflow-y: hidden;
+}
+
+.meshColList {
+  display: flex;
+  flex-wrap: nowrap;
+  height: 100%;
+  overflow: auto !important;
+  scrollbar-width: thin;
+  white-space: nowrap;
+  width: 100%;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  align-items: center;
+  /* justify-content: center; */
+  margin: 0 auto;
+}
+
 .posImgItemHolder {
   display: flex;
   align-items: center;
@@ -629,7 +660,7 @@
   filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
 }
 
-.editorHolder {
+.editorHolderPallate {
   /* border: 1px solid red; */
   display: flex;
   flex: 1;
@@ -640,6 +671,7 @@
   flex-direction: column;
   background-color: #f6f6f6;
   overflow: hidden;
+  /* background-color: #cfbcba; */
 }
 
 .editorMainTitle {
@@ -695,6 +727,8 @@
 
 .threeDHolder {
   background-color: #fbf9f1;
+  background-color: #f6f6f6;
+
   cursor: grab;
 }
 
@@ -706,7 +740,10 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 5px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  background-color: white;
   /* border: 1px solid black; */
 }
 

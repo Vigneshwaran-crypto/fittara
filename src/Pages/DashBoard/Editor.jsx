@@ -85,6 +85,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Joystick } from "react-joystick-component";
 
+const meshColListStyle = {
+  gap: 0.5,
+  padding: "3px",
+  display: "flex",
+  flexWrap: "nowrap",
+  flexDirection: "row",
+  boxSizing: "border-box",
+  width: "fit-content",
+  maxWidth: "100%",
+  margin: "auto",
+  flexgrow: 1,
+};
+
 const Editor = (w) => {
   const { nodes, materials } = useGLTF(modelObj);
 
@@ -104,6 +117,11 @@ const Editor = (w) => {
     id: 1,
     color: "Black",
     hex: "#000000",
+  });
+  const [meshColor, setMeshColor] = useState({
+    id: 1,
+    color: "White",
+    hex: "#ffffff",
   });
 
   const [focTab, setFoctab] = useState(0);
@@ -227,6 +245,7 @@ const Editor = (w) => {
       mat: materials.right,
       txture: null,
       ref: useRef(null),
+      color: "#FFFEFE",
       defPos: { x: 1527, y: 333.5 },
       defRot: 95.3,
       defScal: 1,
@@ -418,8 +437,23 @@ const Editor = (w) => {
   //   console.log("madeTxtures :", madeTxtures);
   // }, [incre, chosenInd]);
 
-  const renderCanvas = () => {
+  useEffect(() => {
+    renderCanvas();
+  }, [color.hex, incre, chosenInd, posVal]);
+
+  useEffect(() => {
+    texture.forEach((item) => {
+      if (item.ref.current && item.txture) {
+        item.ref.current.material.map = item.txture;
+        item.ref.current.material.needsUpdate = true;
+      }
+    });
+  }, [texture]);
+
+  const renderCanvas = (col) => {
     // if (!imageLoaded) return;
+
+    console.log("renderCanvas called");
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -431,8 +465,15 @@ const Editor = (w) => {
 
     const meshItem = texture.find((item) => item.id === chosenComp.id);
 
-    ctx.fillStyle = meshItem.color;
-    // ctx.fillStyle = color;
+    // don't remove
+    // ctx.fillStyle = meshItem.color;
+    // ctx.fillStyle = "#FFFFFF00";
+    // ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    // ctx.fillStyle = meshItem.color;
+    ctx.fillStyle = meshColor.hex;
+    // ctx.fillStyle = undefined;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     // Draw UV wireframe
@@ -453,9 +494,7 @@ const Editor = (w) => {
       ctx.lineTo(x3, y3);
       ctx.lineTo(x1, y1);
     }
-
-    // ctx.fill();
-    // ctx.stroke();
+    // ctx.closePath();
 
     texture.forEach((item) => {
       // Render images
@@ -495,23 +534,9 @@ const Editor = (w) => {
     newTexture.minFilter = LinearFilter;
     newTexture.magFilter = NearestFilter;
 
-    // newTexture.minFilter = sRGBEncoding;
-    // newTexture.magFilter = THREE.ACESFilmicToneMapping;
-
-    // const madetxture = texture.map((item) => {
-    //   if (partName === item.part) {
-    //     item.txture = newTexture;
-    //     return item;
-    //   } else {
-    //     return item;
-    //   }
-    // });
-    // setTexture(madetxture);
-
     const madetxture = texture.map((item) => {
-      if (chosenComp.part === item.part) {
-        item.txture = newTexture;
-        return item;
+      if (chosenComp.id === item.id) {
+        return { ...item, txture: newTexture };
       } else {
         return item;
       }
@@ -519,25 +544,77 @@ const Editor = (w) => {
     setTexture(madetxture);
   };
 
-  useEffect(() => {
-    renderCanvas();
-  }, [
-    // images,
-    // imageLoaded,
-    color.hex,
-    incre,
-    chosenInd,
-    posVal,
-  ]);
+  const meshColChanger = (col, uv) => {
+    // const canvas = canvasRef.current;
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
 
-  useEffect(() => {
+    const canvasWidth = 2048;
+    const canvasHeight = 2048;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.fillStyle = col;
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    ctx.beginPath();
+
+    for (let i = 0; i < uv.length; i += 6) {
+      const x1 = uv[i] * canvasWidth;
+      const y1 = (1 - uv[i + 1]) * canvasHeight;
+      const x2 = uv[i + 2] * canvasWidth;
+      const y2 = (1 - uv[i + 3]) * canvasHeight;
+      const x3 = uv[i + 4] * canvasWidth;
+      const y3 = (1 - uv[i + 5]) * canvasHeight;
+
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x3, y3);
+      ctx.lineTo(x1, y1);
+    }
+    // ctx.closePath();
+
     texture.forEach((item) => {
-      if (item.ref.current && item.txture) {
-        item.ref.current.material.map = item.txture; // Ensure the texture is updated
-        item.ref.current.material.needsUpdate = true;
-      }
+      // Render images
+
+      // if (item.id !== chosenComp.id) return;
+
+      item.images.forEach((image, index) => {
+        // const img = imgElements.current[index];
+        const img = image.ref.current;
+        ctx.save();
+        ctx.translate(image.position.x, image.position.y);
+        ctx.rotate((image.rotation * Math.PI) / 180);
+        ctx.scale(image.scale, image.scale);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        ctx.restore();
+      });
+
+      // Render texts
+      item.texts.forEach((textItem) => {
+        ctx.save();
+        ctx.translate(textItem.position.x, textItem.position.y);
+        ctx.rotate((textItem.rotation * Math.PI) / 180);
+        ctx.scale(textItem.scale, textItem.scale);
+        ctx.font = textItem.fontStyle + " 30px " + textItem.font; // Set your desired font
+        ctx.fillStyle = textItem.color; // Text color
+        ctx.fillText(textItem.text, 0, 0);
+        // ctx.strokeText(textItem.text, 0, 0); border
+        ctx.restore();
+      });
     });
-  }, [texture]);
+
+    const newTexture = new CanvasTexture(canvas);
+    newTexture.anisotropy = 16;
+    newTexture.minFilter = LinearFilter;
+    newTexture.magFilter = NearestFilter;
+
+    const madetxture = texture.map((item) => {
+      return { ...item, txture: newTexture };
+    });
+    setTexture(madetxture);
+  };
 
   const handleScaleChange = (newScale) => {
     console.log("handleScaleChange", chosenInd);
@@ -906,7 +983,6 @@ const Editor = (w) => {
         <canvas
           ref={canvasRef}
           id="uvCanvas"
-          // onMouseDown={handleMouseDown}
           style={{
             width: "100%",
             display: "none",
@@ -920,9 +996,8 @@ const Editor = (w) => {
           onChange={getChosenImage}
           style={{ display: "none" }}
         />
-        <div className="editorHolder">
+        <div className="editorHolderPallate">
           {/* Tabs here */}
-
           <div className="tabsHolder">
             <Tabs
               defaultValue={0}
@@ -1472,6 +1547,90 @@ const Editor = (w) => {
             </div>
           </div>
 
+          <div className="meshcolorPallate">
+            <div className="meshColList">
+              <RadioGroup
+                defaultValue={1}
+                value={meshColor.id}
+                sx={meshColListStyle}
+                onChange={(e) => {
+                  console.log("change cols :", e.target.value);
+                  const selCol = fontColors.find(
+                    (ite) => ite.id == e.target.value
+                  );
+
+                  // const updatedColtxture = texture.map((item) => ({
+                  //   ...item,
+                  //   color: selCol.hex,
+                  // }));
+
+                  texture.forEach((item) => {
+                    const uv = item.geo.attributes.uv.array;
+                    meshColChanger(selCol.hex, uv);
+                  });
+
+                  // setTexture(updatedColtxture);
+
+                  // const updatedColtxture = texture.map((item) => {
+                  //   if (item.ref.current) {
+                  //     item.ref.current.material.color.set(selCol.hex);
+                  //     item.ref.current.material.map =
+                  //       item.ref.current.material.map;
+
+                  //     return item;
+                  //   } else return item;
+                  // });
+
+                  // setTexture(updatedColtxture);
+                  // setIncre((pre) => pre + 1);
+                  setMeshColor(selCol);
+                  // updateMeshColor(selCol.hex);
+                }}
+              >
+                {fontColors.map((color) => (
+                  <Sheet
+                    key={color.id}
+                    sx={{
+                      position: "relative",
+                      width: 25,
+                      height: 25,
+                      flexShrink: 0,
+                      bgcolor: color.hex,
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Radio
+                      overlay
+                      variant="solid"
+                      color={color.hex}
+                      checkedIcon={
+                        <Done
+                          fontSize="small"
+                          sx={{
+                            color: isDarkHex(color.hex) ? "white" : "black",
+                          }}
+                        />
+                      }
+                      value={color.id}
+                      slotProps={{
+                        input: { "aria-label": color.color },
+                        radio: {
+                          sx: {
+                            display: "contents",
+                            "--variant-borderWidth": "1px",
+                          },
+                        },
+                      }}
+                    />
+                  </Sheet>
+                ))}
+              </RadioGroup>
+            </div>
+          </div>
+
           <Canvas
             gl={{
               outputEncoding: LinearFilter,
@@ -1479,7 +1638,6 @@ const Editor = (w) => {
               antialias: true,
               toneMappingExposure: 1.5,
             }}
-            // camera={{ fov: 35, position: [0, 1.5, 4] }}
             camera={{ fov: 45, position: [0, 1, 3.6] }}
             shadows
             className="threeDHolder"
@@ -1512,8 +1670,15 @@ const Editor = (w) => {
               >
                 <meshPhysicalMaterial
                   toneMapped={false}
+                  // toneMapped={true}
                   map={item.txture}
-                  color={"#ffffff"}
+                  // color={"#ffffff"}
+                  // color={chosenComp.id === item.id ? undefined : item.color}
+                  // color={meshColor.hex}
+                  // color={item.id === 2 ? item.color + "80" : item.color}
+                  // color={item.id === 2 ? "transparent" : item.color}
+                  // opacity={item.id === 2 ? 0.5 : 1}
+                  // color={"rgba(52, 152, 219,1)"}
                   roughness={0.6}
                   clearcoat={0.1}
                   reflectivity={0.2}
@@ -1523,7 +1688,7 @@ const Editor = (w) => {
             ))}
 
             <OrbitControls />
-            <ContactShadows position={[0, -1.3, 0]} opacity={0.3} blur={3} />
+            <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} />
           </Canvas>
         </div>
       </div>
