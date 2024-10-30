@@ -42,7 +42,15 @@ export const saveProduct = (req) => {
     url: baseURL + "saveProduct",
     headers: HTTP.formDataHeader,
     method: "post",
-    // data: JSON.stringify(req),
+    data: req,
+  });
+};
+
+export const saveModal = (req) => {
+  return apiHit({
+    url: baseURL + "saveModel",
+    headers: HTTP.formDataHeader,
+    method: "post",
     data: req,
   });
 };

@@ -620,9 +620,24 @@
   height: 5%;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 10px;
+  bottom: 8%;
+
   z-index: 10;
   overflow-y: hidden;
+}
+
+.placeOrderBt {
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  /* height: 5%; */
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 8%;
+  bottom: 10px;
+  z-index: 10;
 }
 
 .meshColList {
@@ -1046,7 +1061,6 @@
   flex: 1;
   height: 100%;
   padding: 0 !important;
-  background-color: #f6f6f6 !important;
   background-color: white !important;
   /* border: 1px solid greenyellow !important; */
 }
@@ -1564,6 +1578,35 @@
   text-overflow: ellipsis;
   max-height: 4.5em;
   line-height: 1.5em;
+}
+
+.checkoutParent {
+  display: grid;
+  height: 100%;
+  width: 100%;
+  border: 1px solid black;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 3fr));
+  grid-auto-flow: dense;
+  grid-auto-rows: 1fr;
+  overflow: auto;
+}
+
+.checkoutParent > div {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
+  flex: 1 0 auto;
+  flex-basis: 0;
+  height: 100%;
+  min-height: 50dvh;
+}
+
+.checkoutParent > div:first-child {
+}
+.checkoutParent > div:nth-child(2) {
+  /* grid-column: span; */
+}
+.checkoutParent > div:last-child {
 }
 
 @media screen and (max-width: 600px) {
