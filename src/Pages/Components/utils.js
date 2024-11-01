@@ -1462,3 +1462,11 @@ export const tableContStyle = {
   overflow: "scroll",
   flexGrow: 1,
 };
+
+export const sampleSize = [
+  { size: "M", quantity: 3, price: 150 },
+  { size: "S", quantity: 2, price: 180 },
+  { size: "L", quantity: 1, price: 120 },
+  { size: "XL", quantity: 5, price: 200 },
+  { size: "M", quantity: 4, price: 100 },
+];

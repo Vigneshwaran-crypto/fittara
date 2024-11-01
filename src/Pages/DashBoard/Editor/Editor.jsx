@@ -42,6 +42,12 @@ import {
   rgbToHex,
   Select,
   Slider,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
 } from "@mui/material";
 import { LuImagePlus } from "react-icons/lu";
@@ -51,10 +57,15 @@ import {
   hexToRgba,
   inpStye,
   isDarkHex,
+  numSizes,
   rgbaToHex,
+  sampleOrders,
   sampleProducts,
+  sampleSize,
   selStyle,
+  sizes,
   sliderStyle,
+  tableContStyle,
   wholeColors,
 } from "../../Components/utils";
 import {
@@ -102,6 +113,8 @@ import {
   Group,
   AxesHelper,
 } from "three";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -116,7 +129,7 @@ const meshColListStyle = {
   flexgrow: 1,
 };
 
-const ControlUpdater = ({ controlRef, groupMeshRef, containerRef }) => {
+const ControlUpdater = ({ controlRef, groupMeshRef }) => {
   const { camera } = useThree();
 
   useFrame(() => {
@@ -128,53 +141,8 @@ const ControlUpdater = ({ controlRef, groupMeshRef, containerRef }) => {
     controlRef.current.update();
   });
 
-  useEffect(() => {
-    const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        const { width, height } = entry.contentRect;
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-      }
-    });
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, [camera]);
-
   return null;
 };
-
-// const ControlUpdater = ({ controlRef, groupMeshRef }) => {
-//   useFrame(() => {
-//     if (!controlRef.current || !groupMeshRef.current) return;
-
-//     // Get the world position of the mesh
-//     const meshPos = new THREE.Vector3();
-//     groupMeshRef.current.getWorldPosition(meshPos);
-
-//     // Get the camera from the OrbitControls
-//     const camera = controlRef.current.object; // This gives you access to the camera
-
-//     // Set the control target to mesh position
-//     controlRef.current.target.copy(meshPos);
-
-//     // Calculate the distance between the camera and the mesh
-//     const distance = camera.position.distanceTo(meshPos);
-//     const direction = new THREE.Vector3()
-//       .subVectors(camera.position, meshPos)
-//       .normalize();
-
-//     // Set the new camera position relative to the mesh, maintaining the distance
-//     const newCameraPos = meshPos
-//       .clone()
-//       .add(direction.multiplyScalar(distance));
-//     camera.position.copy(newCameraPos);
-
-//     // Update controls
-//     controlRef.current.update();
-//   });
-
-//   return null;
-// };
 
 const Editor = (w) => {
   const { nodes, materials } = useGLTF(modelObj);
@@ -446,6 +414,11 @@ const Editor = (w) => {
       defScal: 1,
     },
   ];
+
+  const tShirtPrice = 120;
+
+  const [sizesChosen, setSizesChosen] = useState([]);
+  const orderColumns = ["Size", "Quantity", "Price"];
 
   useEffect(() => {
     if (isMove) {
@@ -1169,6 +1142,17 @@ const Editor = (w) => {
     }
   };
 
+  const increDecreHanlder = (flag, ind) => {
+    let sizeList = [...sizesChosen];
+    if (flag) {
+      sizeList[ind].quantity += 1;
+    } else {
+      sizeList[ind].quantity -= 1;
+    }
+    sizeList[ind].price = sizeList[ind].quantity * tShirtPrice;
+    setSizesChosen(sizeList);
+  };
+
   return (
     <Container fluid className="editorHolder">
       <div className="favConts" ref={wholeViewRef}>
@@ -1883,7 +1867,6 @@ const Editor = (w) => {
               <ControlUpdater
                 controlRef={controlRef}
                 groupMeshRef={groupMeshRef}
-                containerRef={objContRef}
               />
               <OrbitControls ref={controlRef} minDistance={3} maxDistance={6} />
               <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} />
@@ -1891,7 +1874,137 @@ const Editor = (w) => {
           </Suspense>
         </div>
 
-        <div className="placeOrderPallet"></div>
+        <div className="placeOrderPallet">
+          <div>
+            <div className="inputGroup">
+              <div className="groupHeadTxt">Size</div>
+
+              <div
+                className="inputItems"
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <FormControl size="small" fullWidth>
+                  <Select
+                    multiple
+                    multiline
+                    labelId="select-label"
+                    size="small"
+                    sx={selStyle}
+                    fullWidth
+                    input={
+                      <OutlinedInput
+                        id="select-multiple-chip"
+                        variant="filled"
+                        fullWidth
+                      />
+                    }
+                    value={sizesChosen?.map((item) => item.size) || []}
+                    onChange={(e, ite) => {
+                      console.log("chosen sizes :", ite.props.value);
+                      const chosenVal = ite.props.value;
+                      let chosenList = [...sizesChosen];
+                      const isHave = chosenList.find(
+                        (item) => item.size === chosenVal
+                      );
+                      const defSize = {
+                        size: chosenVal,
+                        quantity: 1,
+                        price: tShirtPrice,
+                      };
+                      if (isHave) {
+                        chosenList = chosenList.filter(
+                          (item) => item.size !== chosenVal
+                        );
+                      } else {
+                        chosenList.push(defSize);
+                      }
+                      setSizesChosen(chosenList);
+                    }}
+                    renderValue={(selected) => (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        {selected.map((value) => (
+                          <Chip key={value} label={value} />
+                        ))}
+                      </Box>
+                    )}
+                  >
+                    {sizes.map((item) => (
+                      <MenuItem key={item} value={item}>
+                        {item}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
+
+            <TableContainer style={tableContStyle}>
+              <Table stickyHeader padding="normal" size="medium">
+                <TableHead>
+                  <TableRow>
+                    {orderColumns.map((item, ind) => (
+                      <TableCell
+                        style={{
+                          fontSize: "medium",
+                          fontWeight: "500",
+                          fontFamily: "Lucida Sans Regular",
+                        }}
+                        align="center"
+                        key={ind}
+                      >
+                        {item}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+
+                <TableBody>
+                  {sizesChosen.map((obj, ind) => (
+                    <TableRow key={ind}>
+                      <TableCell align="center">{obj.size}</TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          onClick={increDecreHanlder.bind(this, 0, ind)}
+                          disabled={obj.quantity === 1}
+                        >
+                          <RemoveIcon fontSize="small" />
+                        </IconButton>
+                        {/* {obj.quantity} */}
+                        <input
+                          type="number"
+                          value={obj.quantity}
+                          className="quntInput"
+                          min={1}
+                          max={Infinity}
+                          pattern="[0-9]*"
+                          onChange={(e) => {
+                            const val = parseInt(e.target.value);
+                            let sizeList = [...sizesChosen];
+                            sizeList[ind].quantity = val || 1;
+                            sizeList[ind].price =
+                              sizeList[ind].quantity * tShirtPrice;
+                            setSizesChosen(sizeList);
+                          }}
+                        />
+                        <IconButton
+                          onClick={increDecreHanlder.bind(this, 1, ind)}
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="center">{obj.price}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+          <div></div>
+        </div>
       </div>
     </Container>
   );

@@ -584,12 +584,11 @@
   display: flex;
   flex: 1;
   border: 1px solid green;
-  overflow: auto;
   overflow: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  transition: scroll-left 1s ease;
   scroll-behavior: smooth;
+  transition: scroll-behavior 1s ease;
 }
 
 .favConts::-webkit-scrollbar {
@@ -631,6 +630,45 @@
 .placeOrderPallet {
   display: flex;
   min-width: 70%;
+  border: 1px solid red;
+}
+
+/* quantity Holder */
+.placeOrderPallet > div:first-child {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border: 1px solid red;
+  padding: 10px;
+}
+
+.quntInput {
+  width: 45px;
+  min-width: 20px;
+  text-align: center;
+  outline: none;
+  border: 1px solid transparent;
+}
+
+.quntInput:focus {
+  border: 1px solid transparent;
+}
+
+.quntInput::-webkit-outer-spin-button,
+.quntInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quntInput {
+  -moz-appearance: textfield;
+}
+
+/*Payment Holder */
+.placeOrderPallet > div:last-child {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   border: 1px solid red;
 }
 
