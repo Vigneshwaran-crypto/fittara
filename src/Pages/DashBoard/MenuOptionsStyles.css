@@ -583,12 +583,59 @@
 .favConts {
   display: flex;
   flex: 1;
+  border: 1px solid green;
+  overflow: auto;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  transition: scroll-left 1s ease;
+  scroll-behavior: smooth;
+}
+
+.favConts::-webkit-scrollbar {
+  display: none;
 }
 
 .modelObjHolder {
   display: flex;
-  width: 80%;
+
+  min-width: 80%;
   position: relative;
+  border: 1px solid blue;
+  transition: min-width 1s ease;
+}
+
+.editorHolderPallate {
+  /* border: 1px solid red; */
+  display: flex;
+  /* flex: 1 0 auto;
+  flex-basis: 0;
+  min-width: 0; */
+  max-height: 100% !important;
+  /* width: 20%; */
+  min-width: 20%;
+  flex-direction: column;
+  background-color: #f6f6f6;
+  overflow: hidden;
+  /* background-color: #cfbcba; */
+}
+
+.threeDHolder {
+  display: flex;
+  background-color: #fbf9f1;
+  background-color: #f6f6f6;
+
+  cursor: grab;
+}
+
+.placeOrderPallet {
+  display: flex;
+  min-width: 70%;
+  border: 1px solid red;
+}
+
+.threeDHolder:active {
+  cursor: grabbing;
 }
 
 .objPosHolder {
@@ -675,20 +722,6 @@
   filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
 }
 
-.editorHolderPallate {
-  /* border: 1px solid red; */
-  display: flex;
-  flex: 1;
-  flex-grow: 1;
-  flex-shrink: 1;
-  max-height: 100% !important;
-  width: 20%;
-  flex-direction: column;
-  background-color: #f6f6f6;
-  overflow: hidden;
-  /* background-color: #cfbcba; */
-}
-
 .editorMainTitle {
   display: flex;
   font-family: "Segoe UI";
@@ -738,17 +771,6 @@
 .colorPickerHolder {
   display: flex;
   justify-content: center;
-}
-
-.threeDHolder {
-  background-color: #fbf9f1;
-  background-color: #f6f6f6;
-
-  cursor: grab;
-}
-
-.threeDHolder:active {
-  cursor: grabbing;
 }
 
 .tabsHolder {

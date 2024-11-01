@@ -1,5 +1,5 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import modelObj from "../../../Assets/3dFiles/swater.glb";
 import {
   AccumulativeShadows,
@@ -88,9 +88,20 @@ import { Joystick } from "react-joystick-component";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { passMesh } from "../../../ReduxToolKit/Actions";
-import { GLTFExporter } from "three-stdlib";
+import {
+  GLTFExporter,
+  mergeBufferGeometries,
+  SimplifyModifier,
+} from "three-stdlib";
 import { saveModal } from "../../../Api/UsersService";
-import { clone } from "three/examples/jsm/utils/SkeletonUtils"; // Import clone utility
+import {
+  BufferGeometry,
+  Mesh,
+  Material,
+  MeshStandardMaterial,
+  Group,
+  AxesHelper,
+} from "three";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -105,14 +116,78 @@ const meshColListStyle = {
   flexgrow: 1,
 };
 
+const ControlUpdater = ({ controlRef, groupMeshRef, containerRef }) => {
+  const { camera } = useThree();
+
+  useFrame(() => {
+    if (!controlRef.current || !groupMeshRef.current) return;
+
+    const meshPos = new THREE.Vector3();
+    groupMeshRef.current.getWorldPosition(meshPos);
+    controlRef.current.target.copy(meshPos);
+    controlRef.current.update();
+  });
+
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [camera]);
+
+  return null;
+};
+
+// const ControlUpdater = ({ controlRef, groupMeshRef }) => {
+//   useFrame(() => {
+//     if (!controlRef.current || !groupMeshRef.current) return;
+
+//     // Get the world position of the mesh
+//     const meshPos = new THREE.Vector3();
+//     groupMeshRef.current.getWorldPosition(meshPos);
+
+//     // Get the camera from the OrbitControls
+//     const camera = controlRef.current.object; // This gives you access to the camera
+
+//     // Set the control target to mesh position
+//     controlRef.current.target.copy(meshPos);
+
+//     // Calculate the distance between the camera and the mesh
+//     const distance = camera.position.distanceTo(meshPos);
+//     const direction = new THREE.Vector3()
+//       .subVectors(camera.position, meshPos)
+//       .normalize();
+
+//     // Set the new camera position relative to the mesh, maintaining the distance
+//     const newCameraPos = meshPos
+//       .clone()
+//       .add(direction.multiplyScalar(distance));
+//     camera.position.copy(newCameraPos);
+
+//     // Update controls
+//     controlRef.current.update();
+//   });
+
+//   return null;
+// };
+
 const Editor = (w) => {
-  const { nodes, materials, scene } = useGLTF(modelObj);
+  const { nodes, materials } = useGLTF(modelObj);
 
   const navigation = useNavigate();
   const groupMeshRef = useRef(null);
   const [glbData, setGlbData] = useState(null);
 
+  const wholeViewRef = useRef(null);
   const canvasRef = useRef(null);
+  const controlRef = useRef(null);
+  const cameraRef = useRef(null);
+  const objContRef = useRef(null);
   const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry);
   const uv = geometry.attributes.uv.array;
 
@@ -319,6 +394,8 @@ const Editor = (w) => {
     y: chosenComp?.[focTab ? "images" : "texts"]?.[chosenInd]?.position?.y || 0,
   });
 
+  const [isEditor, setIsEditor] = useState(true);
+
   const sidePosses = [
     {
       id: 2,
@@ -446,6 +523,9 @@ const Editor = (w) => {
   // }, [incre, chosenInd]);
 
   useEffect(() => {
+    console.log("materials :", materials);
+    console.log("nodes :", nodes);
+
     renderCanvas();
   }, [color.hex, incre, chosenInd, posVal]);
 
@@ -985,22 +1065,6 @@ const Editor = (w) => {
     setFontColor(selCol);
   };
 
-  // const filterMeshes = (scene) => {
-  //   const meshes = [];
-  //   scene.traverse((object) => {
-  //     if (object.isMesh) {
-  //       const clonedMesh = object.clone();
-
-  //       if (clonedMesh.material && clonedMesh.material.map) {
-  //         clonedMesh.material.map = null;
-  //         clonedMesh.material.needsUpdate = true;
-  //       }
-  //       meshes.push(clonedMesh);
-  //     }
-  //   });
-  //   return meshes;
-  // };
-
   const filterMeshes = (scene, callback, i = 0) => {
     const meshes = [];
     const processNext = () => {
@@ -1029,7 +1093,13 @@ const Editor = (w) => {
   const onPlaceOrder = () => {
     const exporter = new GLTFExporter();
 
-    exportRightHand();
+    // exportRightHand();
+
+    // exportAllTextures();
+
+    setIsEditor(!isEditor);
+
+    smoothRightScroll();
 
     // const meshesToExport = filterMeshes(groupMeshRef.current);
     // const exportScene = new THREE.Scene();
@@ -1057,16 +1127,17 @@ const Editor = (w) => {
 
   const exportRightHand = (rightHandNode) => {
     const exporter = new GLTFExporter();
+
     exporter.parse(
-      // texture[2].ref.current,
-      nodes.g_Hoodie_Hoodie_0_3.geometry,
+      texture[3].ref.current,
+      // exportScene,
       (gltf) => {
         const gltfString = JSON.stringify(gltf); // Convert to JSON string
         const blob = new Blob([gltfString], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "BodyPart.gltf";
+        link.download = "BackPart.gltf";
         link.click();
         URL.revokeObjectURL(url);
       },
@@ -1074,9 +1145,33 @@ const Editor = (w) => {
     );
   };
 
+  const smoothRightScroll = () => {
+    if (!wholeViewRef.current) return;
+
+    // const scrollWidth = wholeViewRef.current.scrollWidth;
+    // const clientWidth = wholeViewRef.current.clientWidth;
+    // const targetScrollLeft = scrollWidth - clientWidth;
+
+    // wholeViewRef.current.scrollLeft = targetScrollLeft;
+
+    const objDiv = document.querySelector(".modelObjHolder");
+
+    if (isEditor) {
+      wholeViewRef.current.scrollTo({
+        left: wholeViewRef.current.scrollWidth,
+        behaviour: "smooth",
+      });
+    } else {
+      wholeViewRef.current.scrollTo({
+        left: 0,
+        behaviour: "smooth",
+      });
+    }
+  };
+
   return (
     <Container fluid className="editorHolder">
-      <div className="favConts">
+      <div className="favConts" ref={wholeViewRef}>
         <canvas
           ref={canvasRef}
           id="uvCanvas"
@@ -1625,7 +1720,11 @@ const Editor = (w) => {
           </div>
         </div>
 
-        <div className="modelObjHolder">
+        <div
+          ref={objContRef}
+          className="modelObjHolder"
+          style={{ minWidth: isEditor ? "80%" : "30%" }}
+        >
           <div className="objPosHolder">
             <div className="posImgListHolder">
               {sidePosses.map((item, ind) => (
@@ -1724,7 +1823,12 @@ const Editor = (w) => {
                 antialias: true,
                 toneMappingExposure: 1.5,
               }}
-              camera={{ fov: 45, position: [0, 1, 3.6] }}
+              camera={{
+                fov: 45,
+                // position: new THREE.Vector3(0, 0, 0),
+                position: new THREE.Vector3(0, 0, 5),
+                ref: cameraRef,
+              }}
               shadows
               className="threeDHolder"
             >
@@ -1745,7 +1849,17 @@ const Editor = (w) => {
                 intensity={0.9}
               />
 
-              <group ref={groupMeshRef}>
+              {/* <primitive
+                object={new THREE.AxesHelper(2)}
+                position={[0, 0, 0]}
+              />
+              <gridHelper /> */}
+
+              <group
+                position={[0, 0, 0]}
+                rotation={[0, 0, 0]}
+                ref={groupMeshRef}
+              >
                 {texture?.map((item) => (
                   <mesh
                     receiveShadow
@@ -1766,12 +1880,18 @@ const Editor = (w) => {
                   </mesh>
                 ))}
               </group>
-
-              <OrbitControls />
+              <ControlUpdater
+                controlRef={controlRef}
+                groupMeshRef={groupMeshRef}
+                containerRef={objContRef}
+              />
+              <OrbitControls ref={controlRef} minDistance={3} maxDistance={6} />
               <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} />
             </Canvas>
           </Suspense>
         </div>
+
+        <div className="placeOrderPallet"></div>
       </div>
     </Container>
   );
