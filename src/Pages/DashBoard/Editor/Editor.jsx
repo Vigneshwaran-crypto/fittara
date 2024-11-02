@@ -128,6 +128,7 @@ const meshColListStyle = {
   margin: "auto",
   flexgrow: 1,
 };
+const noBorder = { borderBottom: "0", paddingBottom: 0, paddingTop: "15px" };
 
 const ControlUpdater = ({ controlRef, groupMeshRef }) => {
   const { camera } = useThree();
@@ -416,6 +417,7 @@ const Editor = (w) => {
   ];
 
   const tShirtPrice = 120;
+  const shippingPrice = 50;
 
   const [sizesChosen, setSizesChosen] = useState([]);
   const orderColumns = ["Size", "Quantity", "Price"];
@@ -1942,7 +1944,14 @@ const Editor = (w) => {
               </div>
             </div>
 
-            <TableContainer style={tableContStyle}>
+            <TableContainer
+              style={{
+                // height: "50%",
+                height: "fit-content",
+                maxWidth: "100%",
+                maxHeight: "100% !important",
+              }}
+            >
               <Table stickyHeader padding="normal" size="medium">
                 <TableHead>
                   <TableRow>
@@ -1963,42 +1972,88 @@ const Editor = (w) => {
                 </TableHead>
 
                 <TableBody>
-                  {sizesChosen.map((obj, ind) => (
-                    <TableRow key={ind}>
-                      <TableCell align="center">{obj.size}</TableCell>
-                      <TableCell align="center">
-                        <IconButton
-                          onClick={increDecreHanlder.bind(this, 0, ind)}
-                          disabled={obj.quantity === 1}
-                        >
-                          <RemoveIcon fontSize="small" />
-                        </IconButton>
-                        {/* {obj.quantity} */}
-                        <input
-                          type="number"
-                          value={obj.quantity}
-                          className="quntInput"
-                          min={1}
-                          max={Infinity}
-                          pattern="[0-9]*"
-                          onChange={(e) => {
-                            const val = parseInt(e.target.value);
-                            let sizeList = [...sizesChosen];
-                            sizeList[ind].quantity = val || 1;
-                            sizeList[ind].price =
-                              sizeList[ind].quantity * tShirtPrice;
-                            setSizesChosen(sizeList);
-                          }}
-                        />
-                        <IconButton
-                          onClick={increDecreHanlder.bind(this, 1, ind)}
-                        >
-                          <AddIcon fontSize="small" />
-                        </IconButton>
+                  {sizesChosen.length > 0 ? (
+                    sizesChosen.map((obj, ind) => (
+                      <TableRow key={ind}>
+                        <TableCell align="center">{obj.size}</TableCell>
+                        <TableCell align="center">
+                          <IconButton
+                            onClick={increDecreHanlder.bind(this, 0, ind)}
+                            disabled={obj.quantity === 1}
+                          >
+                            <RemoveIcon fontSize="small" />
+                          </IconButton>
+                          <input
+                            type="number"
+                            value={obj.quantity}
+                            className="quntInput"
+                            min={1}
+                            max={Infinity}
+                            pattern="[0-9]*"
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value);
+                              let sizeList = [...sizesChosen];
+                              sizeList[ind].quantity = val || 1;
+                              sizeList[ind].price =
+                                sizeList[ind].quantity * tShirtPrice;
+                              setSizesChosen(sizeList);
+                            }}
+                          />
+                          <IconButton
+                            onClick={increDecreHanlder.bind(this, 1, ind)}
+                          >
+                            <AddIcon fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                        <TableCell align="center">{obj.price}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow key={-1}>
+                      <TableCell></TableCell>
+                      <TableCell align="center" sx={{ color: "grey" }}>
+                        No sizes choosen yet
                       </TableCell>
-                      <TableCell align="center">{obj.price}</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
-                  ))}
+                  )}
+
+                  <TableRow key={sizesChosen.length + 1 || 0}>
+                    <TableCell sx={noBorder}></TableCell>
+                    <TableCell sx={noBorder} align="center">
+                      Subtotal
+                    </TableCell>
+                    <TableCell sx={noBorder} align="center">
+                      {sizesChosen
+                        .map((item) => item.price)
+                        .reduce((acc, cur) => acc + cur, 0) || "-"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key={sizesChosen.length + 2 || 1}>
+                    <TableCell sx={noBorder}></TableCell>
+                    <TableCell sx={{ borderBottom: 0 }} align="center">
+                      Shipping
+                    </TableCell>
+                    <TableCell align="center">{shippingPrice}</TableCell>
+                  </TableRow>
+                  <TableRow key={sizesChosen.length + 3 || 2}>
+                    <TableCell sx={noBorder}></TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{ fontWeight: "bold", borderBottom: 0 }}
+                    >
+                      Total
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontWeight: "bold", borderBottom: 0 }}
+                      align="center"
+                    >
+                      {sizesChosen
+                        .map((item) => item.price)
+                        .reduce((acc, cur) => acc + cur, 0) + shippingPrice ||
+                        "-"}
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
