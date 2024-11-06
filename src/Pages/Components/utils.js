@@ -102,6 +102,25 @@ export const inpStye = {
   "& .MuiInputLabel-root": {
     borderWidth: "1px !important",
   },
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "1px !important",
+    },
+  },
+
+  // removing type num icon
+
+  "& input[type=number]": {
+    MozAppearance: "textfield",
+  },
+  "& input[type=number]::-webkit-outer-spin-button": {
+    WebkitAppearance: "none",
+    margin: 0,
+  },
+  "& input[type=number]::-webkit-inner-spin-button": {
+    WebkitAppearance: "none",
+    margin: 0,
+  },
 };
 
 export const selStyle = {

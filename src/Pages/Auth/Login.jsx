@@ -26,12 +26,10 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 const LogIn = () => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
 
-  const [user, setUser] = useState({});
+  const [email, setEmail] = useState("oraisa@mailinator.com");
+  const [pass, setPass] = useState("pass12!@");
 
-  const [showSeller, setShowSeller] = useState(false);
   const [seller, setSeller] = useState(true);
 
   const [loader, setLoader] = useState(false);
@@ -40,54 +38,6 @@ const LogIn = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   const [userData, setUserData] = useState({});
-
-  useEffect(() => {
-    // if (Object.keys(user).length !== 0) {
-    axios
-      .get(
-        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-        {
-          headers: {
-            Authorization: `Bearer ${user.access_token}`,
-            Accept: "application/json",
-          },
-        }
-      )
-      .then((res) => {
-        console.log("Google auth user : ", res);
-        const val = res.data;
-
-        const req = {
-          email: val.email,
-          gAuthId: val.id,
-          profileImage: val.picture,
-          loginType: 1,
-        };
-        setLoader(true);
-        authenticateUser(req)
-          .then((res) => {
-            console.log("authenticateUser gAuth res: ", res);
-            if (res.data.status === 1) {
-              dispatch(reduxStore(saveUser(res.data.data)));
-              setUserToken(res.data.data.token);
-              navigation("/dashboard/products");
-              toast.success("Login successfully");
-            } else if (res.data.status === 2) {
-              //first time Gauth user
-              setIsLogin(false);
-              setUserData(res.data.data);
-            }
-          })
-          .catch((err) => {
-            console.log("authenticateUser gAuth err : ", err);
-          })
-          .finally(() => setLoader(false));
-      })
-      .catch((err) => {
-        console.log("Google auth user err : ", err);
-      });
-    // }
-  }, [user]);
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -127,18 +77,61 @@ const LogIn = () => {
     }
   };
 
+  const makeUserGAuth = (user) => {
+    axios
+      .get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.access_token}`,
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log("Google auth USER : ", res);
+        const val = res.data;
+
+        const req = {
+          email: val.email,
+          gAuthId: val.id,
+          profileImage: val.picture,
+          loginType: 1,
+        };
+        setLoader(true);
+        authenticateUser(req)
+          .then((res) => {
+            console.log("authenticateUser gAuth res: ", res);
+            if (res.data.status !== 0) {
+              dispatch(reduxStore(saveUser(res.data.data)));
+              setUserToken(res.data.data.token);
+              navigation("/dashboard/products");
+              toast.success("Login successfully");
+            } else {
+              //first time Gauth user
+              // setIsLogin(false);
+              // setUserData(res.data.data);
+              toast.error("Something went wrong");
+            }
+          })
+          .catch((err) => {
+            console.log("authenticateUser gAuth err : ", err);
+          })
+          .finally(() => setLoader(false));
+      })
+      .catch((err) => {
+        console.log("Google auth user err : ", err);
+        setIsLogin(false);
+      });
+  };
+
   const onGLogClick = useGoogleLogin({
     onSuccess: (usr) => {
-      console.log("user details :");
-      setUser(usr);
+      console.log("user Token Details :", usr);
+      makeUserGAuth(usr);
     },
     onError: (err) => console.log("onGLogError : ", err),
   });
-
-  const hanleSwicth = (flag) => {
-    console.log("hanleSwicth : ", flag);
-    setSeller(flag);
-  };
 
   const onContinueClick = () => {
     console.log("userData in onContinueClick : ", userData);
@@ -174,115 +167,114 @@ const LogIn = () => {
       {loader && <Loader />}
       <Toaster />
 
-      {!isLogin ? (
-        <Row md={12} sm={12} lg={12} xl={12} className="registerBigCardHolder">
-          <Col md={6} sm={8} lg={6} xl={4} className="registerBigCard">
-            <div className="loginTitle">Login</div>
+      {/* {isLogin ? ( */}
+      <Row md={12} sm={12} lg={12} xl={12} className="registerBigCardHolder">
+        <Col md={6} sm={8} lg={6} xl={4} className="registerBigCard">
+          <div className="loginTitle">Login</div>
 
-            <div className="loginSubText">
-              Login and grow your business in a minimalist way
+          <div className="loginSubText">
+            Login and grow your business in a minimalist way
+          </div>
+
+          <div className="inputsHolder">
+            <TextField
+              label={"Email"}
+              size="small"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <TextField
+              label={"Password"}
+              size="small"
+              value={pass}
+              onChange={(e) => setPass(e.target.value)}
+              type={showPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <a className="loginTroubleLinkText" href="#">
+              Having trouble in login ?
+            </a>
+
+            <Button
+              style={{ textTransform: "none" }}
+              variant="contained"
+              onClick={onSigInClick}
+            >
+              Sign in
+            </Button>
+
+            <div className="orTextHolder">
+              <hr className="divider" />
+              <div className="orText">Or signin with</div>
+
+              <hr className="divider" />
             </div>
 
-            <div className="inputsHolder">
-              <TextField
-                label={"Email"}
-                size="small"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+            <Button
+              startIcon={<FcGoogle />}
+              style={{ textTransform: "none", fontSize: "15px" }}
+              variant="outlined"
+              onClick={onGLogClick}
+            >
+              Google
+            </Button>
 
-              <TextField
-                label={"Password"}
-                size="small"
-                value={pass}
-                onChange={(e) => setPass(e.target.value)}
-                type={showPassword ? "text" : "password"}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <a className="loginTroubleLinkText" href="#">
-                Having trouble in login ?
-              </a>
-
-              <Button
-                style={{ textTransform: "none" }}
-                variant="contained"
-                onClick={onSigInClick}
-              >
-                Sign in
-              </Button>
-
-              <div className="orTextHolder">
-                <hr className="divider" />
-                <div className="orText">Or signin with</div>
-
-                <hr className="divider" />
-              </div>
-
-              <Button
-                startIcon={<FcGoogle />}
-                style={{ textTransform: "none", fontSize: "15px" }}
-                variant="outlined"
-                onClick={onGLogClick}
-              >
-                Google
-              </Button>
-
-              <div className="regText">
-                Don't have an account ?
-                <b>
-                  <a
-                    className="loginTroubleLinkText"
-                    href="#"
-                    onClick={() => navigation("/register")}
-                  >
-                    {" "}
-                    Register Now
-                  </a>
-                </b>
-              </div>
+            <div className="regText">
+              Don't have an account ?
+              <b>
+                <a
+                  className="loginTroubleLinkText"
+                  href="#"
+                  onClick={() => navigation("/register")}
+                >
+                  {" "}
+                  Register Now
+                </a>
+              </b>
             </div>
-          </Col>
-        </Row>
-      ) : (
-        <Row className="registerBigCardHolder fadeInUp-animation">
-          {/* <Row md={12} sm={12} lg={12} xl={12} className="registerBigCardHolder"> */}
-          <Col md={6} sm={8} lg={6} xl={4} className="registerBigCard">
-            <div className="loginTitle">Welcome to our app</div>
+          </div>
+        </Col>
+      </Row>
+      {/* // ) : (
+      //   <Row className="registerBigCardHolder fadeInUp-animation">
+      //     <Col md={6} sm={8} lg={6} xl={4} className="registerBigCard">
+      //       <div className="loginTitle">Welcome to our app</div>
 
-            {seller ? (
-              <div className="loginSubText">Boost Your Business with Us.</div>
-            ) : (
-              <div className="loginSubText">
-                Discover the Best Deals, All in One Place.
-              </div>
-            )}
+      //       {seller ? (
+      //         <div className="loginSubText">Boost Your Business with Us.</div>
+      //       ) : (
+      //         <div className="loginSubText">
+      //           Discover the Best Deals, All in One Place.
+      //         </div>
+      //       )}
 
-            <div className="inputsHolder">
-              <CustomSwitch curSwitch={hanleSwicth} />
+      //       <div className="inputsHolder">
+      //         <CustomSwitch curSwitch={(flag) => setSeller(flag)} />
 
-              <Button
-                style={{ textTransform: "none" }}
-                variant="contained"
-                onClick={onContinueClick}
-              >
-                Continue
-              </Button>
-            </div>
-          </Col>
-        </Row>
-      )}
+      //         <Button
+      //           style={{ textTransform: "none" }}
+      //           variant="contained"
+      //           onClick={onContinueClick}
+      //         >
+      //           Continue
+      //         </Button>
+      //       </div>
+      //     </Col>
+      //   </Row>
+      // )} */}
 
       <div className="copyRightsHolder">
         <div className="copyRightText">Copyright @shopzape2024</div>|

@@ -37,6 +37,15 @@ export const updateUser = (req) => {
   });
 };
 
+export const getUserByDomain = (req) => {
+  return apiHit({
+    url: baseURL + "getUserByDomain",
+    headers: HTTP.HEADERS,
+    method: "post",
+    data: JSON.stringify(req),
+  });
+};
+
 export const saveProduct = (req) => {
   return apiHit({
     url: baseURL + "saveProduct",

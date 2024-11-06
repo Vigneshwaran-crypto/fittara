@@ -11,6 +11,12 @@ makeApi.interceptors.response.use(
     return res;
   },
   (err) => {
+    if (err.response.status === 401) {
+      // Token expires handle all the logout protocols
+      window.location.href = "/login";
+      console.log("TOKEN EXPIRES", err);
+    }
+
     return Promise.reject(err);
   }
 );

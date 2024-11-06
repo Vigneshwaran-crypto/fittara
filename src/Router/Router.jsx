@@ -6,10 +6,12 @@ import NavigationRouter from "./NavigationRouter.jsx";
 import Home from "../Pages/Home/Home.jsx";
 import Editor from "../Pages/DashBoard/Editor/Editor.jsx";
 import CheckOut from "../Pages/DashBoard/Editor/CheckOut.jsx";
+import Splash from "../Application/Splash.jsx";
 const Router = () => {
   return (
     <BrowserRouter basename="/Fittara">
       <Routes>
+        <Route path="/splash" index element={<Splash />} />
         <Route path="/register" index element={<Register />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/home" element={<Home />} />

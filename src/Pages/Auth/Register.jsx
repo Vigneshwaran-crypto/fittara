@@ -18,9 +18,14 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { saveUser } from "../../ReduxToolKit/Actions";
+import { setUserToken } from "../../Common/SessionHandler";
+import { useDispatch } from "react-redux";
+import { reduxStore } from "../../ReduxToolKit/MainSlice";
 
 const Register = () => {
   const navigation = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -73,9 +78,56 @@ const Register = () => {
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
+  const makeUserGAuth = (user) => {
+    axios
+      .get(
+        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.access_token}`,
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log("Google auth USER : ", res);
+        const val = res.data;
+
+        const req = {
+          email: val.email,
+          gAuthId: val.id,
+          profileImage: val.picture,
+          loginType: 1,
+        };
+        setLoader(true);
+        authenticateUser(req)
+          .then((res) => {
+            console.log("authenticateUser gAuth res: ", res);
+            if (res.data.status !== 0) {
+              dispatch(reduxStore(saveUser(res.data.data)));
+              setUserToken(res.data.data.token);
+              navigation("/dashboard/products");
+              toast.success("Login successfully");
+            } else {
+              //first time Gauth user
+
+              toast.error("Something went wrong");
+            }
+          })
+          .catch((err) => {
+            console.log("authenticateUser gAuth err : ", err);
+          })
+          .finally(() => setLoader(false));
+      })
+      .catch((err) => {
+        console.log("Google auth user err : ", err);
+      });
+  };
+
   const onGLogClick = useGoogleLogin({
     onSuccess: (usr) => {
       console.log("user details :");
+      makeUserGAuth(usr);
       setUser(usr);
     },
     onError: (err) => console.log("onGLogError : ", err),
@@ -144,16 +196,6 @@ const Register = () => {
       .finally(() => setLoader(false));
   };
 
-  // buyer
-  //   Discover the Best Deals, All in One Place.
-  // Log in to shop your favorite brands and uncover new treasures!
-
-  // seller
-  // Boost Your Business with Us.
-  // Log in to reach more customers and grow your brand!
-
-  // Log in to expand your reach, boost your sales, and grow your business like never before!
-
   return (
     <Container
       className="registerContainer"
@@ -166,17 +208,9 @@ const Register = () => {
       {isReg ? (
         <Row md={12} sm={12} lg={12} xl={12} className="registerBigCardHolder">
           <Col md={6} sm={8} lg={6} xl={4} className="registerBigCard">
-            <div className="loginTitle">
-              Register as <CustomSwitch curSwitch={hanleSwicth} />
-            </div>
+            <div className="loginTitle">Register</div>
 
-            {seller ? (
-              <div className="loginSubText">Boost Your Business with Us.</div>
-            ) : (
-              <div className="loginSubText">
-                Discover the Best Deals, All in One Place.
-              </div>
-            )}
+            <div className="loginSubText">Boost Your Business with Us.</div>
 
             <div className="inputsHolder">
               <TextField

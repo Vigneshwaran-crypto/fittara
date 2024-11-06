@@ -34,6 +34,9 @@ import {
   Button,
   Chip,
   FormControl,
+  FormControlLabel,
+  Radio as MUIRadio,
+  RadioGroup as MUIRadioGroup,
   hexToRgb,
   IconButton,
   InputLabel,
@@ -1879,7 +1882,9 @@ const Editor = (w) => {
         <div className="placeOrderPallet">
           <div>
             <div className="inputGroup">
-              <div className="groupHeadTxt">Size</div>
+              <div style={{ fontSize: "20px" }} className="groupHeadTxt">
+                Size
+              </div>
 
               <div
                 className="inputItems"
@@ -2005,7 +2010,7 @@ const Editor = (w) => {
                             <AddIcon fontSize="small" />
                           </IconButton>
                         </TableCell>
-                        <TableCell align="center">{obj.price}</TableCell>
+                        <TableCell align="center">{obj.price} ₹</TableCell>
                       </TableRow>
                     ))
                   ) : (
@@ -2026,7 +2031,7 @@ const Editor = (w) => {
                     <TableCell sx={noBorder} align="center">
                       {sizesChosen
                         .map((item) => item.price)
-                        .reduce((acc, cur) => acc + cur, 0) || "-"}
+                        .reduce((acc, cur) => acc + cur, 0) + " ₹" || "-"}
                     </TableCell>
                   </TableRow>
                   <TableRow key={sizesChosen.length + 2 || 1}>
@@ -2034,7 +2039,7 @@ const Editor = (w) => {
                     <TableCell sx={{ borderBottom: 0 }} align="center">
                       Shipping
                     </TableCell>
-                    <TableCell align="center">{shippingPrice}</TableCell>
+                    <TableCell align="center">{shippingPrice} ₹</TableCell>
                   </TableRow>
                   <TableRow key={sizesChosen.length + 3 || 2}>
                     <TableCell sx={noBorder}></TableCell>
@@ -2050,15 +2055,121 @@ const Editor = (w) => {
                     >
                       {sizesChosen
                         .map((item) => item.price)
-                        .reduce((acc, cur) => acc + cur, 0) + shippingPrice ||
-                        "-"}
+                        .reduce((acc, cur) => acc + cur, 0) +
+                        shippingPrice +
+                        " ₹" || "-"}
                     </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
           </div>
-          <div></div>
+          <div>
+            <div style={{ fontSize: "20px" }} className="groupHeadTxt">
+              Payment Info
+            </div>
+
+            <div className="inputItems paymentMethCont">
+              <FormControl size="small" fullWidth>
+                <FormLabel className="paylabel">Payment Method</FormLabel>
+
+                <MUIRadioGroup>
+                  <FormControlLabel
+                    control={<MUIRadio />}
+                    value={0}
+                    label="Credit card"
+                  />
+                  <FormControlLabel
+                    control={<MUIRadio />}
+                    value={1}
+                    label="UPI"
+                  />
+                </MUIRadioGroup>
+              </FormControl>
+            </div>
+
+            <div className="paymentInpCont">
+              <div className="inputItems paymentMethCont">
+                <FormControl size="small" fullWidth>
+                  <FormLabel className="paylabel">Name on card</FormLabel>
+
+                  <TextField
+                    size="small"
+                    // label="Name on card"
+                    variant="outlined"
+                    fullWidth
+                    sx={inpStye}
+                  />
+                </FormControl>
+              </div>
+
+              <div className="inputItems paymentMethCont">
+                <FormControl size="small" fullWidth>
+                  <FormLabel className="paylabel">Card number</FormLabel>
+
+                  <TextField
+                    size="small"
+                    // label="Name on card"
+                    type="number"
+                    variant="outlined"
+                    fullWidth
+                    sx={inpStye}
+                  />
+                </FormControl>
+              </div>
+
+              <div
+                className="inputItems paymentMethCont"
+                style={{ flexDirection: "row" }}
+              >
+                <div>
+                  <FormLabel className="paylabel">Expiration date</FormLabel>
+
+                  <FormControl
+                    size="small"
+                    fullWidth
+                    sx={{ display: "flex", flexDirection: "row", gap: "10px" }}
+                  >
+                    <TextField
+                      size="small"
+                      variant="outlined"
+                      type="number"
+                      // fullWidth
+                      style={{ width: "40%" }}
+                      sx={inpStye}
+                    />
+                    <TextField
+                      size="small"
+                      type="number"
+                      variant="outlined"
+                      fullWidth
+                      sx={inpStye}
+                    />
+                  </FormControl>
+                </div>
+                <div>
+                  <FormLabel className="paylabel">CVV</FormLabel>
+
+                  <FormControl
+                    size="small"
+                    fullWidth
+                    sx={{ display: "flex", flexDirection: "row" }}
+                  >
+                    <TextField
+                      size="small"
+                      variant="outlined"
+                      fullWidth
+                      sx={inpStye}
+                    />
+                  </FormControl>
+                </div>
+              </div>
+            </div>
+
+            <div className="payBtHolder">
+              <Button variant="contained">Check out</Button>
+            </div>
+          </div>
         </div>
       </div>
     </Container>
