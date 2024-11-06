@@ -612,36 +612,37 @@ const Editor = (w) => {
 
   const meshColChanger = (col, uv) => {
     // const canvas = canvasRef.current;
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
 
-    const canvasWidth = 2048;
-    const canvasHeight = 2048;
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    const updatedtxture = texture.map((item) => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    ctx.fillStyle = col;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      const canvasWidth = 2048;
+      const canvasHeight = 2048;
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
 
-    ctx.beginPath();
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      ctx.fillStyle = col;
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-    for (let i = 0; i < uv.length; i += 6) {
-      const x1 = uv[i] * canvasWidth;
-      const y1 = (1 - uv[i + 1]) * canvasHeight;
-      const x2 = uv[i + 2] * canvasWidth;
-      const y2 = (1 - uv[i + 3]) * canvasHeight;
-      const x3 = uv[i + 4] * canvasWidth;
-      const y3 = (1 - uv[i + 5]) * canvasHeight;
+      ctx.beginPath();
 
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.lineTo(x3, y3);
-      ctx.lineTo(x1, y1);
-    }
-    // ctx.closePath();
+      const uv = item.geo.attributes.uv.array;
 
-    texture.forEach((item) => {
+      for (let i = 0; i < uv.length; i += 6) {
+        const x1 = uv[i] * canvasWidth;
+        const y1 = (1 - uv[i + 1]) * canvasHeight;
+        const x2 = uv[i + 2] * canvasWidth;
+        const y2 = (1 - uv[i + 3]) * canvasHeight;
+        const x3 = uv[i + 4] * canvasWidth;
+        const y3 = (1 - uv[i + 5]) * canvasHeight;
+
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x3, y3);
+        ctx.lineTo(x1, y1);
+      }
       // Render images
 
       // if (item.id !== chosenComp.id) return;
@@ -669,17 +670,21 @@ const Editor = (w) => {
         // ctx.strokeText(textItem.text, 0, 0); border
         ctx.restore();
       });
+
+      const newTexture = new CanvasTexture(canvas);
+      newTexture.anisotropy = 16;
+      newTexture.minFilter = LinearFilter;
+      newTexture.magFilter = NearestFilter;
+
+      item.txture = newTexture;
+
+      return item;
     });
 
-    const newTexture = new CanvasTexture(canvas);
-    newTexture.anisotropy = 16;
-    newTexture.minFilter = LinearFilter;
-    newTexture.magFilter = NearestFilter;
-
-    const madetxture = texture.map((item) => {
-      return { ...item, txture: newTexture };
-    });
-    setTexture(madetxture);
+    // const madetxture = texture.map((item) => {
+    //   return { ...item, txture: newTexture };
+    // });
+    setTexture(updatedtxture);
   };
 
   const handleScaleChange = (newScale) => {
@@ -1743,10 +1748,10 @@ const Editor = (w) => {
                   const selCol = fontColors.find(
                     (ite) => ite.id == e.target.value
                   );
-                  texture.forEach((item) => {
-                    const uv = item.geo.attributes.uv.array;
-                    meshColChanger(selCol.hex, uv);
-                  });
+                  // texture.forEach((item) => {
+                  //   const uv = item.geo.attributes.uv.array;
+                  meshColChanger(selCol.hex, uv);
+                  // });
                   setMeshColor(selCol);
                 }}
               >

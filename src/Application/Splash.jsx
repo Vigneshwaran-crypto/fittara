@@ -24,18 +24,29 @@ const Splash = () => {
     if (domains.length > 1) {
       const userName = domains[0];
 
-      const userData = getUserByDomain({ userName: userName })
+      getUserByDomain({ userName: userName })
         .then((res) => {
           console.log("getUserByDomain res :", res);
+
+          if (res.data.status === 1) {
+            navigation("/home");
+          } else {
+            checkForToken();
+          }
         })
         .catch((err) => {
+          checkForToken();
           throw new Error("getUserByDomain api failed :", err);
         });
     } else {
-      const userToken = getUserToken();
-
-      console.log("userToken :", userToken);
+      checkForToken();
     }
+  };
+
+  const checkForToken = () => {
+    const userToken = getUserToken();
+
+    console.log("userToken :", userToken);
   };
 
   return (

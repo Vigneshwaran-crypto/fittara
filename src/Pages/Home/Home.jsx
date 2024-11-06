@@ -122,8 +122,9 @@ const Home = ({ noTopBar = false }) => {
               draggable
               // interval={1000}
             >
-              {slidesList.map((item) => (
+              {slidesList.map((item, ind) => (
                 <Carousel.Item
+                  key={ind}
                   className="carouselItem"
                   style={{
                     backgroundImage: `url(${item.bg})`,
