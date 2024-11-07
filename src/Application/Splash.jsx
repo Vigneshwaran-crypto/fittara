@@ -18,29 +18,26 @@ const Splash = () => {
   }, []);
 
   const checkLastActivity = () => {
-    const domains = urlparts.hostname.split(".");
-
+    // const domains = urlparts.hostname.split(".");
     // client's url with subdomain as their userName
-    if (domains.length > 1) {
-      const userName = domains[0];
-
-      getUserByDomain({ userName: userName })
-        .then((res) => {
-          console.log("getUserByDomain res :", res);
-
-          if (res.data.status === 1) {
-            navigation("/home");
-          } else {
-            checkForToken();
-          }
-        })
-        .catch((err) => {
-          checkForToken();
-          throw new Error("getUserByDomain api failed :", err);
-        });
-    } else {
-      checkForToken();
-    }
+    // if (domains.length > 1) {
+    //   const userName = domains[0];
+    //   getUserByDomain({ userName: userName })
+    //     .then((res) => {
+    //       console.log("getUserByDomain res :", res);
+    //       if (res.data.status === 1) {
+    //         navigation("/home");
+    //       } else {
+    //         checkForToken();
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       checkForToken();
+    //       throw new Error("getUserByDomain api failed :", err);
+    //     });
+    // } else {
+    //   checkForToken();
+    // }
   };
 
   const checkForToken = () => {

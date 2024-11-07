@@ -118,6 +118,7 @@ import {
 } from "three";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import Splash from "../../../Application/Splash";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -1080,9 +1081,8 @@ const Editor = (w) => {
 
     // exportAllTextures();
 
-    setIsEditor(!isEditor);
-
-    smoothRightScroll();
+    // setIsEditor(!isEditor);
+    // smoothRightScroll();
 
     // const meshesToExport = filterMeshes(groupMeshRef.current);
     // const exportScene = new THREE.Scene();
@@ -1130,12 +1130,6 @@ const Editor = (w) => {
 
   const smoothRightScroll = () => {
     if (!wholeViewRef.current) return;
-
-    // const scrollWidth = wholeViewRef.current.scrollWidth;
-    // const clientWidth = wholeViewRef.current.clientWidth;
-    // const targetScrollLeft = scrollWidth - clientWidth;
-
-    // wholeViewRef.current.scrollLeft = targetScrollLeft;
 
     const objDiv = document.querySelector(".modelObjHolder");
 
@@ -1809,79 +1803,72 @@ const Editor = (w) => {
             </Button>
           </div>
 
-          <Suspense fallback={null}>
-            <Canvas
-              gl={{
-                outputEncoding: LinearFilter,
-                toneMapping: NearestFilter,
-                antialias: true,
-                toneMappingExposure: 1.5,
-              }}
-              camera={{
-                fov: 45,
-                // position: new THREE.Vector3(0, 0, 0),
-                position: new THREE.Vector3(0, 0, 5),
-                ref: cameraRef,
-              }}
-              shadows
-              className="threeDHolder"
-            >
-              <ambientLight intensity={1.6} />
-
-              <directionalLight
-                position={[5, 10, 5]}
-                intensity={1.4}
-                castShadow
-                shadow-mapSize-width={4096}
-                shadow-mapSize-height={4096}
-                shadow-bias={-0.0001}
-                shadow-normalBias={0.02}
-              />
-              <hemisphereLight
-                skyColor={"#ffffff"}
-                groundColor={"#333333"}
-                intensity={0.9}
-              />
-
-              {/* <primitive
+          {/* <primitive
                 object={new THREE.AxesHelper(2)}
                 position={[0, 0, 0]}
               />
               <gridHelper /> */}
 
-              <group
-                position={[0, 0, 0]}
-                rotation={[0, 0, 0]}
-                ref={groupMeshRef}
-              >
-                {texture?.map((item) => (
-                  <mesh
-                    receiveShadow
-                    position={[0, 0.15, 0]}
-                    rotation={defMeshRot}
-                    key={item.id}
-                    geometry={item.geo}
-                    ref={item.ref}
-                  >
-                    <meshPhysicalMaterial
-                      toneMapped={false}
-                      map={item.txture}
-                      roughness={0.6}
-                      clearcoat={0.1}
-                      reflectivity={0.2}
-                      metalness={0.0}
-                    />
-                  </mesh>
-                ))}
-              </group>
-              <ControlUpdater
-                controlRef={controlRef}
-                groupMeshRef={groupMeshRef}
-              />
-              <OrbitControls ref={controlRef} minDistance={3} maxDistance={6} />
-              <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} />
-            </Canvas>
-          </Suspense>
+          <Canvas
+            gl={{
+              outputEncoding: LinearFilter,
+              toneMapping: NearestFilter,
+              antialias: true,
+              toneMappingExposure: 1.5,
+            }}
+            camera={{
+              fov: 45,
+              position: new THREE.Vector3(0, 0, 5),
+              ref: cameraRef,
+            }}
+            shadows
+            className="threeDHolder"
+          >
+            <ambientLight intensity={1.6} />
+
+            <directionalLight
+              position={[5, 10, 5]}
+              intensity={1.4}
+              castShadow
+              shadow-mapSize-width={4096}
+              shadow-mapSize-height={4096}
+              shadow-bias={-0.0001}
+              shadow-normalBias={0.02}
+            />
+            <hemisphereLight
+              skyColor={"#ffffff"}
+              groundColor={"#333333"}
+              intensity={0.9}
+            />
+
+            <group position={[0, 0, 0]} rotation={[0, 0, 0]} ref={groupMeshRef}>
+              {texture?.map((item) => (
+                <mesh
+                  receiveShadow
+                  position={[0, 0.15, 0]}
+                  rotation={defMeshRot}
+                  key={item.id}
+                  geometry={item.geo}
+                  ref={item.ref}
+                >
+                  <meshPhysicalMaterial
+                    toneMapped={false}
+                    map={item.txture}
+                    roughness={0.6}
+                    // clearcoat={0.1}
+                    // reflectivity={0.2}
+                    metalness={0.0}
+                  />
+                </mesh>
+              ))}
+            </group>
+            <ControlUpdater
+              controlRef={controlRef}
+              groupMeshRef={groupMeshRef}
+            />
+            <OrbitControls ref={controlRef} minDistance={3} maxDistance={6} />
+            <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} />
+          </Canvas>
         </div>
 
         <div className="placeOrderPallet">
@@ -2133,7 +2120,11 @@ const Editor = (w) => {
                   <FormControl
                     size="small"
                     fullWidth
-                    sx={{ display: "flex", flexDirection: "row", gap: "10px" }}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: "10px",
+                    }}
                   >
                     <TextField
                       size="small"

@@ -583,7 +583,7 @@
 .favConts {
   display: flex;
   flex: 1;
-  border: 1px solid green;
+  /* border: 1px solid green; */
   overflow: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -600,7 +600,7 @@
 
   min-width: 80%;
   position: relative;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   transition: min-width 1s ease;
 }
 

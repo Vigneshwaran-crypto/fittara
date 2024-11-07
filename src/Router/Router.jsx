@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LogIn from "../Pages/Auth/Login.jsx";
 import Register from "../Pages/Auth/Register.jsx";
@@ -14,11 +14,19 @@ const Router = () => {
         <Route path="/splash" index element={<Splash />} />
         <Route path="/register" index element={<Register />} />
         <Route path="/login" element={<LogIn />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/editor" element={<Editor />} />
+        {/* <Route path="/home" element={<Home />} /> */}
+        <Route path="/*" element={<Home />} />
+        <Route
+          path="/editor"
+          element={
+            <Suspense fallback={<Splash />}>
+              <Editor />
+            </Suspense>
+          }
+        />
         <Route path="/checkout" element={<CheckOut />} />
         <Route path="/dashboard/*" exact element={<NavigationRouter />} />
-        <Route path="*" element={<div>Page Not Found</div>} />
+        {/* <Route path="*" element={<div>Page Not Found</div>} /> */}
       </Routes>
     </BrowserRouter>
   );
