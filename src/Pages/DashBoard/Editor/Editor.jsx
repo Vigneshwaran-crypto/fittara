@@ -1,58 +1,42 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import modelObj from "../../../Assets/3dFiles/swater.glb";
-import {
-  AccumulativeShadows,
-  Bounds,
-  Clone,
-  ContactShadows,
-  Decal,
-  Environment,
-  Float,
-  OrbitControls,
-  PerspectiveCamera,
-  RandomizedLight,
-  useGLTF,
-} from "@react-three/drei";
+import { ContactShadows, OrbitControls, useGLTF } from "@react-three/drei";
 
 import frontSide from "../../../Assets/sides/front2.png";
 import backSide from "../../../Assets/sides/back.png";
 import leftSide from "../../../Assets/sides/left.png";
 import rightSide from "../../../Assets/sides/right.png";
 
-import EastIcon from "@mui/icons-material/East";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import { CanvasTexture, LinearFilter, NearestFilter } from "three";
 
 import { SketchPicker } from "react-color";
 import "../MenuOptionsStyles.css";
 import * as THREE from "three";
-import { Container } from "react-bootstrap";
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  FormControlLabel,
-  Radio as MUIRadio,
-  RadioGroup as MUIRadioGroup,
-  hexToRgb,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  rgbToHex,
-  Select,
-  Slider,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-} from "@mui/material";
+import Container from "react-bootstrap/Container";
+
+import MUIRadio from "@mui/material/Radio";
+import MUIRadioGroup from "@mui/material/RadioGroup";
+import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Select from "@mui/material/Select";
+import Slider from "@mui/material/Slider";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TextField from "@mui/material/TextField";
+
 import { LuImagePlus } from "react-icons/lu";
 import {
   fontColors,
@@ -81,44 +65,32 @@ import {
 } from "@mui/base";
 import { IoText } from "react-icons/io5";
 import { FaImage } from "react-icons/fa6";
-import {
-  Avatar,
-  FormLabel,
-  Radio,
-  radioClasses,
-  RadioGroup,
-  Sheet,
-} from "@mui/joy";
-import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+// import { FormLabel, Radio, RadioGroup, Sheet } from "@mui/joy";
+import FormLabel from "@mui/joy/FormLabel";
+import Radio from "@mui/joy/Radio";
+import RadioGroup from "@mui/joy/RadioGroup";
+import Sheet from "@mui/joy/Sheet";
+
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import TitleIcon from "@mui/icons-material/Title";
 import Done from "@mui/icons-material/Done";
-import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Joystick } from "react-joystick-component";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { passMesh } from "../../../ReduxToolKit/Actions";
 import {
   GLTFExporter,
   mergeBufferGeometries,
   SimplifyModifier,
 } from "three-stdlib";
 import { saveModal } from "../../../Api/UsersService";
-import {
-  BufferGeometry,
-  Mesh,
-  Material,
-  MeshStandardMaterial,
-  Group,
-  AxesHelper,
-} from "three";
+
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Splash from "../../../Application/Splash";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -1081,8 +1053,8 @@ const Editor = (w) => {
 
     // exportAllTextures();
 
-    // setIsEditor(!isEditor);
-    // smoothRightScroll();
+    setIsEditor(!isEditor);
+    smoothRightScroll();
 
     // const meshesToExport = filterMeshes(groupMeshRef.current);
     // const exportScene = new THREE.Scene();
@@ -1176,6 +1148,7 @@ const Editor = (w) => {
           onChange={getChosenImage}
           style={{ display: "none" }}
         />
+
         <div className="editorHolderPallate">
           {/* Tabs here */}
           <div className="tabsHolder">
@@ -1713,7 +1686,10 @@ const Editor = (w) => {
           className="modelObjHolder"
           style={{ minWidth: isEditor ? "80%" : "30%" }}
         >
-          <div className="objPosHolder">
+          <div
+            className="objPosHolder"
+            style={{ display: isEditor ? "flex" : "none" }}
+          >
             <div className="posImgListHolder">
               {sidePosses.map((item, ind) => (
                 <div
@@ -1731,7 +1707,10 @@ const Editor = (w) => {
             </div>
           </div>
 
-          <div className="meshcolorPallate">
+          <div
+            className="meshcolorPallate"
+            style={{ display: isEditor ? "flex" : "none" }}
+          >
             <div className="meshColList">
               <RadioGroup
                 defaultValue={1}
@@ -1796,10 +1775,18 @@ const Editor = (w) => {
           <div className="placeOrderBt">
             <Button
               variant="contained"
-              endIcon={<ShoppingCartCheckoutIcon sx={{ fontSize: "15px" }} />}
+              {...(isEditor
+                ? {
+                    endIcon: (
+                      <ShoppingCartCheckoutIcon sx={{ fontSize: "15px" }} />
+                    ),
+                  }
+                : {
+                    startIcon: <ArrowBackIcon sx={{ fontSize: "15px" }} />,
+                  })}
               onClick={onPlaceOrder}
             >
-              Place Order
+              {isEditor ? "Place Order" : "Edit"}
             </Button>
           </div>
 
@@ -1814,15 +1801,19 @@ const Editor = (w) => {
               outputEncoding: LinearFilter,
               toneMapping: NearestFilter,
               antialias: true,
+              // antialias: false,
               toneMappingExposure: 1.5,
             }}
             camera={{
-              fov: 45,
+              // fov: 45,
+              fov: 35,
               position: new THREE.Vector3(0, 0, 5),
               ref: cameraRef,
             }}
             shadows
+            // dpr={[1, 2]}
             className="threeDHolder"
+            style={{ maxWidth: isEditor ? "75%" : "100%" }}
           >
             <ambientLight intensity={1.6} />
 
@@ -1845,7 +1836,7 @@ const Editor = (w) => {
               {texture?.map((item) => (
                 <mesh
                   receiveShadow
-                  position={[0, 0.15, 0]}
+                  position={[0, 0.1, 0]}
                   rotation={defMeshRot}
                   key={item.id}
                   geometry={item.geo}
@@ -1866,7 +1857,7 @@ const Editor = (w) => {
               controlRef={controlRef}
               groupMeshRef={groupMeshRef}
             />
-            <OrbitControls ref={controlRef} minDistance={3} maxDistance={6} />
+            <OrbitControls ref={controlRef} minDistance={3.2} maxDistance={5} />
             <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} />
           </Canvas>
         </div>
