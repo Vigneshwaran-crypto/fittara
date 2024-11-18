@@ -91,6 +91,8 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Splash from "../../../Application/Splash";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import PaymentIcon from "@mui/icons-material/Payment";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -107,8 +109,6 @@ const meshColListStyle = {
 const noBorder = { borderBottom: "0", paddingBottom: 0, paddingTop: "15px" };
 
 const ControlUpdater = ({ controlRef, groupMeshRef }) => {
-  const { camera } = useThree();
-
   useFrame(() => {
     if (!controlRef.current || !groupMeshRef.current) return;
 
@@ -121,7 +121,7 @@ const ControlUpdater = ({ controlRef, groupMeshRef }) => {
   return null;
 };
 
-const Editor = (w) => {
+const Editor = () => {
   const { nodes, materials } = useGLTF(modelObj);
 
   const navigation = useNavigate();
@@ -340,6 +340,7 @@ const Editor = (w) => {
   });
 
   const [isEditor, setIsEditor] = useState(true);
+  const [isPayment, setIsPayment] = useState(false);
 
   const sidePosses = [
     {
@@ -1129,6 +1130,36 @@ const Editor = (w) => {
     setSizesChosen(sizeList);
   };
 
+  const onCheckOutClick = () => {
+    const exporter = new GLTFExporter();
+
+    const formData = new FormData();
+    let meshList = [];
+
+    texture.forEach((item) => {
+      exporter.parse(
+        item.ref.current,
+        (result) => {
+          const gltfString = JSON.stringify(result);
+          const blob = new Blob([gltfString], { type: "application/json" });
+          formData.append("file", blob, `${item.part}.glb`);
+          meshList.push(blob);
+        },
+        { binary: true }
+      );
+    });
+
+    console.log("meshList :", meshList);
+
+    // saveModal(req)
+    //   .then((resVal) => {
+    //     console.log("saveModal res :", resVal);
+    //   })
+    //   .catch((err) => {
+    //     console.log("saveModal err :", err);
+    //   });
+  };
+
   return (
     <Container fluid className="editorHolder">
       <div className="favConts" ref={wholeViewRef}>
@@ -1866,7 +1897,7 @@ const Editor = (w) => {
           <div>
             <div className="inputGroup">
               <div style={{ fontSize: "20px" }} className="groupHeadTxt">
-                Size
+                Pricing
               </div>
 
               <div
@@ -1875,9 +1906,12 @@ const Editor = (w) => {
                   flexDirection: "row",
                   alignItems: "center",
                   width: "100%",
+                  marginTop: "15px",
                 }}
               >
                 <FormControl size="small" fullWidth>
+                  <FormLabel className="paylabel">Size</FormLabel>
+
                   <Select
                     multiple
                     multiline
@@ -1934,7 +1968,6 @@ const Editor = (w) => {
 
             <TableContainer
               style={{
-                // height: "50%",
                 height: "fit-content",
                 maxWidth: "100%",
                 maxHeight: "100% !important",
@@ -2047,115 +2080,280 @@ const Editor = (w) => {
               </Table>
             </TableContainer>
           </div>
+
           <div>
-            <div style={{ fontSize: "20px" }} className="groupHeadTxt">
-              Payment Info
-            </div>
+            {isPayment ? (
+              <div className="partition">
+                <div style={{ fontSize: "20px" }} className="groupHeadTxt">
+                  Payment Info
+                </div>
 
-            <div className="inputItems paymentMethCont">
-              <FormControl size="small" fullWidth>
-                <FormLabel className="paylabel">Payment Method</FormLabel>
+                <div className="inputItems paymentMethCont">
+                  <FormControl size="small" fullWidth>
+                    <FormLabel className="paylabel">Payment Method</FormLabel>
 
-                <MUIRadioGroup>
-                  <FormControlLabel
-                    control={<MUIRadio />}
-                    value={0}
-                    label="Credit card"
-                  />
-                  <FormControlLabel
-                    control={<MUIRadio />}
-                    value={1}
-                    label="UPI"
-                  />
-                </MUIRadioGroup>
-              </FormControl>
-            </div>
-
-            <div className="paymentInpCont">
-              <div className="inputItems paymentMethCont">
-                <FormControl size="small" fullWidth>
-                  <FormLabel className="paylabel">Name on card</FormLabel>
-
-                  <TextField
-                    size="small"
-                    // label="Name on card"
-                    variant="outlined"
-                    fullWidth
-                    sx={inpStye}
-                  />
-                </FormControl>
-              </div>
-
-              <div className="inputItems paymentMethCont">
-                <FormControl size="small" fullWidth>
-                  <FormLabel className="paylabel">Card number</FormLabel>
-
-                  <TextField
-                    size="small"
-                    // label="Name on card"
-                    type="number"
-                    variant="outlined"
-                    fullWidth
-                    sx={inpStye}
-                  />
-                </FormControl>
-              </div>
-
-              <div
-                className="inputItems paymentMethCont"
-                style={{ flexDirection: "row" }}
-              >
-                <div>
-                  <FormLabel className="paylabel">Expiration date</FormLabel>
-
-                  <FormControl
-                    size="small"
-                    fullWidth
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      gap: "10px",
-                    }}
-                  >
-                    <TextField
-                      size="small"
-                      variant="outlined"
-                      type="number"
-                      // fullWidth
-                      style={{ width: "40%" }}
-                      sx={inpStye}
-                    />
-                    <TextField
-                      size="small"
-                      type="number"
-                      variant="outlined"
-                      fullWidth
-                      sx={inpStye}
-                    />
+                    <MUIRadioGroup>
+                      <FormControlLabel
+                        control={<MUIRadio />}
+                        value={0}
+                        label="Credit card"
+                      />
+                      <FormControlLabel
+                        control={<MUIRadio />}
+                        value={1}
+                        label="UPI"
+                      />
+                    </MUIRadioGroup>
                   </FormControl>
                 </div>
-                <div>
-                  <FormLabel className="paylabel">CVV</FormLabel>
 
-                  <FormControl
-                    size="small"
-                    fullWidth
-                    sx={{ display: "flex", flexDirection: "row" }}
+                <div className="paymentInpCont">
+                  <div className="inputItems paymentMethCont">
+                    <FormControl size="small" fullWidth>
+                      <FormLabel className="paylabel">Name on card</FormLabel>
+
+                      <TextField
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                        sx={inpStye}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="inputItems paymentMethCont">
+                    <FormControl size="small" fullWidth>
+                      <FormLabel className="paylabel">Card number</FormLabel>
+
+                      <TextField
+                        size="small"
+                        type="number"
+                        variant="outlined"
+                        fullWidth
+                        sx={inpStye}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div
+                    className="inputItems paymentMethCont"
+                    style={{ flexDirection: "row" }}
                   >
-                    <TextField
-                      size="small"
-                      variant="outlined"
-                      fullWidth
-                      sx={inpStye}
-                    />
-                  </FormControl>
+                    <div>
+                      <FormLabel className="paylabel">
+                        Expiration date
+                      </FormLabel>
+
+                      <FormControl
+                        size="small"
+                        fullWidth
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          gap: "10px",
+                        }}
+                      >
+                        <TextField
+                          size="small"
+                          variant="outlined"
+                          type="number"
+                          style={{ width: "40%" }}
+                          sx={inpStye}
+                        />
+                        <TextField
+                          size="small"
+                          type="number"
+                          variant="outlined"
+                          fullWidth
+                          sx={inpStye}
+                        />
+                      </FormControl>
+                    </div>
+                    <div>
+                      <FormLabel className="paylabel">CVV</FormLabel>
+
+                      <FormControl
+                        size="small"
+                        fullWidth
+                        sx={{ display: "flex", flexDirection: "row" }}
+                      >
+                        <TextField
+                          size="small"
+                          variant="outlined"
+                          fullWidth
+                          sx={inpStye}
+                        />
+                      </FormControl>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="payBtHolder">
+                  <Button variant="contained" onClick={onCheckOutClick}>
+                    Check out
+                  </Button>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="partition">
+                <div style={{ fontSize: "20px" }} className="groupHeadTxt">
+                  Address
+                </div>
 
-            <div className="payBtHolder">
-              <Button variant="contained">Check out</Button>
-            </div>
+                <div className="addressInpCont">
+                  <div className="inputItems">
+                    <FormControl size="small" fullWidth>
+                      <FormLabel className="paylabel">Full Name</FormLabel>
+
+                      <TextField
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                        sx={inpStye}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="inputItems">
+                    <FormControl size="small" fullWidth>
+                      <FormLabel className="paylabel">Mobile number</FormLabel>
+
+                      <TextField
+                        size="small"
+                        type="number"
+                        variant="outlined"
+                        fullWidth
+                        sx={inpStye}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="inputItems">
+                    <FormControl size="small" fullWidth>
+                      <FormLabel className="paylabel">
+                        Flat , House no , Building , Company , Apartment
+                      </FormLabel>
+
+                      <TextField
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                        sx={inpStye}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="inputItems">
+                    <FormControl size="small" fullWidth>
+                      <FormLabel className="paylabel">
+                        Area , Street , Sector , Village
+                      </FormLabel>
+
+                      <TextField
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                        sx={inpStye}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="inputItems">
+                    <FormControl size="small" fullWidth>
+                      <FormLabel className="paylabel">Land Mark</FormLabel>
+
+                      <TextField
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                        sx={inpStye}
+                      />
+                    </FormControl>
+                  </div>
+
+                  <div className="inputItems" style={{ flexDirection: "row" }}>
+                    <div style={{ width: "100%" }}>
+                      <FormLabel className="paylabel">Pincode</FormLabel>
+
+                      <FormControl size="small" fullWidth>
+                        <TextField
+                          size="small"
+                          variant="outlined"
+                          type="number"
+                          sx={inpStye}
+                        />
+                      </FormControl>
+                    </div>
+                    <div style={{ width: "100%" }}>
+                      <FormLabel className="paylabel">Town / City</FormLabel>
+
+                      <FormControl size="small" fullWidth>
+                        <TextField
+                          size="small"
+                          variant="outlined"
+                          fullWidth
+                          sx={inpStye}
+                        />
+                      </FormControl>
+                    </div>
+                  </div>
+
+                  <div className="inputItems">
+                    <FormControl size="small">
+                      <FormLabel className="paylabel">State</FormLabel>
+
+                      <Autocomplete
+                        freeSolo
+                        options={sampleProducts}
+                        size="small"
+                        getOptionLabel={(option) =>
+                          option?.product ? option.product : ""
+                        }
+                        renderInput={(param) => (
+                          <TextField
+                            {...param}
+                            size="small"
+                            fullWidth
+                            variant="outlined"
+                            sx={inpStye}
+                            // error={
+                            //   validate &&
+                            //   !product.name?.product &&
+                            //   !product.typedName
+                            // }
+                          />
+                        )}
+                        // value={product.name}
+                        onInputChange={(e, val) => {
+                          console.log("onInputChange : ", val);
+                          // setProduct({
+                          //   ...product,
+                          //   typedName: val,
+                          // });
+                        }}
+                        onChange={(e, val) => {
+                          console.log("onChange : ", val);
+                          // setProduct({
+                          //   ...product,
+                          //   name: val,
+                          // });
+                        }}
+                      />
+                    </FormControl>
+                  </div>
+                </div>
+
+                <div className="payBtHolder">
+                  <Button
+                    variant="contained"
+                    onClick={() => setIsPayment(true)}
+                    endIcon={<ArrowForwardIcon sx={{ fontSize: "15px" }} />}
+                  >
+                    Payment
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

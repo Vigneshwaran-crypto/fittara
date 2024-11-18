@@ -383,6 +383,19 @@
   flex-direction: column;
 }
 
+.partition {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.addressInpCont {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+
 .groupHeadTxt {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 550;
@@ -414,7 +427,7 @@
 }
 
 .mainImageHolder {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   display: flex;
   border: 1px dashed #91bafe;
   border-radius: 8px;
@@ -507,7 +520,7 @@
   padding-inline: 10px !important;
   min-width: 100% !important;
   min-height: 100% !important;
-  max-height: 90dvh !important; /*Matters for child scrolling*/
+  max-height: 90dvh !important;
   height: fit-content;
   padding: 0 !important;
   margin: 0 !important;
@@ -631,7 +644,7 @@
 .placeOrderPallet {
   display: flex;
   min-width: 70%;
-  border: 1px solid green;
+  /* border: 1px solid green; */
   box-sizing: border-box;
 }
 
@@ -640,7 +653,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   margin: 10px;
   padding: 10px;
   gap: 20px;
@@ -673,12 +686,12 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   margin: 10px;
   margin-left: 0;
   padding: 10px;
+  padding-bottom: 0;
   padding-inline-start: 20px;
-  background-color: #fafafa;
   border-radius: 8px;
 }
 
@@ -1695,7 +1708,7 @@
   display: flex;
   flex-grow: 1;
   /* border: 1px solid blue; */
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 }
 

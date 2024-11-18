@@ -22,8 +22,8 @@ import {
 import sampImg from "../../../Assets/auth/flower.png";
 import { sampleOrders } from "../../Components/utils";
 import "../MenuOptionsStyles.css";
-import { CiCalendarDate } from "react-icons/ci";
-import { DatePicker } from "antd";
+import DatePicker from "antd/es/date-picker";
+import "antd/es/date-picker/style";
 import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;

@@ -10,7 +10,7 @@
       "import",
       {
         "libraryName": "@mui/material",
-        "libraryDirectory": "@mui",
+        "libraryDirectory": "esm",
         "camel2DashComponentName": false
       },
       "mui"
