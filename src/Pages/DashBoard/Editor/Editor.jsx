@@ -39,9 +39,12 @@ import TextField from "@mui/material/TextField";
 
 import { LuImagePlus } from "react-icons/lu";
 import {
+  erToast,
   fontColors,
   fonts,
   hexToRgba,
+  indianCities,
+  indianStates,
   inpStye,
   isDarkHex,
   numSizes,
@@ -52,6 +55,7 @@ import {
   selStyle,
   sizes,
   sliderStyle,
+  successToast,
   tableContStyle,
   wholeColors,
 } from "../../Components/utils";
@@ -93,6 +97,10 @@ import Splash from "../../../Application/Splash";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ReplyIcon from "@mui/icons-material/Reply";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import toast from "react-hot-toast";
+import { placeOrder } from "../../../Api/ShopService";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -399,6 +407,18 @@ const Editor = () => {
   const [sizesChosen, setSizesChosen] = useState([]);
   const orderColumns = ["Size", "Quantity", "Price"];
 
+  const [address, setAddress] = useState({
+    name: "Vignesh",
+    number: "8807207198",
+    flatNo: "7/4 Narayana Swamy Street",
+    area: "Thiruvottiyur",
+    landMark: "Sugam Hospital",
+    pincode: "600019",
+    city: null,
+    state: null,
+    validate: false,
+  });
+
   useEffect(() => {
     if (isMove) {
       if (moveIntervel.current) clearInterval(moveIntervel.current);
@@ -475,8 +495,8 @@ const Editor = () => {
   // }, [incre, chosenInd]);
 
   useEffect(() => {
-    console.log("materials :", materials);
-    console.log("nodes :", nodes);
+    // console.log("materials :", materials);
+    // console.log("nodes :", nodes);
 
     renderCanvas();
   }, [color.hex, incre, chosenInd, posVal]);
@@ -1136,18 +1156,18 @@ const Editor = () => {
     const formData = new FormData();
     let meshList = [];
 
-    texture.forEach((item) => {
-      exporter.parse(
-        item.ref.current,
-        (result) => {
-          const gltfString = JSON.stringify(result);
-          const blob = new Blob([gltfString], { type: "application/json" });
-          formData.append("file", blob, `${item.part}.glb`);
-          meshList.push(blob);
-        },
-        { binary: true }
-      );
-    });
+    // texture.forEach((item) => {
+    //   exporter.parse(
+    //     item.ref.current,
+    //     (result) => {
+    //       const gltfString = JSON.stringify(result);
+    //       const blob = new Blob([gltfString], { type: "application/json" });
+    //       formData.append("file", blob, `${item.part}.glb`);
+    //       meshList.push(blob);
+    //     },
+    //     { binary: true }
+    //   );
+    // });
 
     console.log("meshList :", meshList);
 
@@ -1158,6 +1178,87 @@ const Editor = () => {
     //   .catch((err) => {
     //     console.log("saveModal err :", err);
     //   });
+  };
+
+  const formalKeys = {
+    name: "Full Name",
+    number: "Mobile Number",
+    flatNo: "Flat No",
+    area: "Area Details",
+    landMark: "Land Mark",
+    pincode: "Pincode",
+    city: "Town / City",
+    state: "State",
+  };
+
+  const onPaymentClick = () => {
+    setAddress({ ...address, validate: true });
+
+    if (!sizesChosen.length) return erToast("Please choose the sizes");
+
+    const noValuedKey = Object.entries(address)
+      .filter(([key, val]) => !val)
+      .map(([key]) => key);
+
+    if (!noValuedKey.length) {
+      successToast("Address filled successfully");
+      // setIsPayment(true);
+      confirmOrder();
+    }
+  };
+
+  const confirmOrder = async () => {
+    const exporter = new GLTFExporter();
+    console.log("Order vals :", address);
+
+    const order = new FormData();
+
+    order.append("id", 1);
+    order.append("shopId", "mufasa");
+    order.append("name", address.name);
+    order.append("productId", 1);
+    order.append("customerId", 1);
+    order.append("phoneNo", address.number);
+    order.append("status", "pending");
+    order.append("paymentType", "card");
+
+    const add = `${address.flatNo},${address.area}`;
+    order.append("address", add);
+    order.append("landMark", address.landMark);
+    order.append("pincode", address.pincode);
+    order.append("city", address.city.city);
+    order.append("state", address.state.state);
+    order.append("size", JSON.stringify(sizesChosen));
+    order.append("price", 1200);
+
+    const appendFiles = (item) => {
+      return new Promise((res, rej) => {
+        exporter.parse(
+          item.ref.current,
+          (result) => {
+            const gltfString = JSON.stringify(result);
+            const blob = new Blob([gltfString], { type: "application/json" });
+            order.append("files", blob, `${item.part}.glb`);
+            res();
+          },
+          { binary: true }
+        );
+      });
+    };
+
+    try {
+      await Promise.all(texture.map(appendFiles));
+
+      placeOrder(order)
+        .then((res) => {
+          console.log("placeOrder res :", res);
+        })
+        .catch((err) => {
+          console.log("placeOrder err :", err);
+        });
+    } catch (e) {
+      console.log("error while appedning files :", e);
+    }
   };
 
   return (
@@ -2189,6 +2290,13 @@ const Editor = () => {
                 </div>
 
                 <div className="payBtHolder">
+                  <IconButton
+                    className="backIconBt"
+                    onClick={() => setIsPayment(false)}
+                  >
+                    <ReplyIcon sx={{ fontSize: "30px", color: "#1A76D2" }} />
+                  </IconButton>
+
                   <Button variant="contained" onClick={onCheckOutClick}>
                     Check out
                   </Button>
@@ -2203,13 +2311,21 @@ const Editor = () => {
                 <div className="addressInpCont">
                   <div className="inputItems">
                     <FormControl size="small" fullWidth>
-                      <FormLabel className="paylabel">Full Name</FormLabel>
+                      <FormLabel className="paylabel">
+                        Full Name
+                        {/* <span className="asterix"> *</span> */}
+                      </FormLabel>
 
                       <TextField
                         size="small"
                         variant="outlined"
                         fullWidth
                         sx={inpStye}
+                        value={address.name}
+                        onChange={(e) =>
+                          setAddress({ ...address, name: e.target.value })
+                        }
+                        error={address.validate && !address.name}
                       />
                     </FormControl>
                   </div>
@@ -2224,6 +2340,11 @@ const Editor = () => {
                         variant="outlined"
                         fullWidth
                         sx={inpStye}
+                        value={address.number}
+                        onChange={(e) =>
+                          setAddress({ ...address, number: e.target.value })
+                        }
+                        error={address.validate && address.number.length != 10}
                       />
                     </FormControl>
                   </div>
@@ -2239,6 +2360,11 @@ const Editor = () => {
                         variant="outlined"
                         fullWidth
                         sx={inpStye}
+                        value={address.flatNo}
+                        onChange={(e) =>
+                          setAddress({ ...address, flatNo: e.target.value })
+                        }
+                        error={address.validate && !address.flatNo}
                       />
                     </FormControl>
                   </div>
@@ -2254,6 +2380,11 @@ const Editor = () => {
                         variant="outlined"
                         fullWidth
                         sx={inpStye}
+                        value={address.area}
+                        onChange={(e) =>
+                          setAddress({ ...address, area: e.target.value })
+                        }
+                        error={address.validate && !address.area}
                       />
                     </FormControl>
                   </div>
@@ -2267,6 +2398,11 @@ const Editor = () => {
                         variant="outlined"
                         fullWidth
                         sx={inpStye}
+                        value={address.landMark}
+                        onChange={(e) =>
+                          setAddress({ ...address, landMark: e.target.value })
+                        }
+                        error={address.validate && !address.landMark}
                       />
                     </FormControl>
                   </div>
@@ -2281,6 +2417,11 @@ const Editor = () => {
                           variant="outlined"
                           type="number"
                           sx={inpStye}
+                          value={address.pincode}
+                          onChange={(e) =>
+                            setAddress({ ...address, pincode: e.target.value })
+                          }
+                          error={address.validate && address.pincode.length < 6}
                         />
                       </FormControl>
                     </div>
@@ -2288,11 +2429,37 @@ const Editor = () => {
                       <FormLabel className="paylabel">Town / City</FormLabel>
 
                       <FormControl size="small" fullWidth>
-                        <TextField
+                        <Autocomplete
+                          freeSolo
+                          options={indianCities}
                           size="small"
-                          variant="outlined"
-                          fullWidth
-                          sx={inpStye}
+                          getOptionLabel={(option) =>
+                            option?.city ? option.city : ""
+                          }
+                          renderInput={(param) => (
+                            <TextField
+                              {...param}
+                              size="small"
+                              placeholder="search"
+                              fullWidth
+                              variant="outlined"
+                              sx={inpStye}
+                              error={address.validate && !address.city}
+                            />
+                          )}
+                          value={address?.city || address.typedCity}
+                          // onInputChange={(e, val) => {
+                          //   console.log("onInputChange", val);
+                          //   setAddress({ ...address, typedCity: val });
+                          // }}
+                          onChange={(e, val) => {
+                            console.log("onChange", val);
+                            setAddress({
+                              ...address,
+                              city: val,
+                              typedCity: val?.city || "",
+                            });
+                          }}
                         />
                       </FormControl>
                     </div>
@@ -2301,42 +2468,36 @@ const Editor = () => {
                   <div className="inputItems">
                     <FormControl size="small">
                       <FormLabel className="paylabel">State</FormLabel>
-
                       <Autocomplete
                         freeSolo
-                        options={sampleProducts}
+                        options={indianStates}
+                        value={address?.state}
                         size="small"
                         getOptionLabel={(option) =>
-                          option?.product ? option.product : ""
+                          option?.state ? option.state : ""
                         }
                         renderInput={(param) => (
                           <TextField
                             {...param}
                             size="small"
+                            placeholder="search"
                             fullWidth
                             variant="outlined"
                             sx={inpStye}
-                            // error={
-                            //   validate &&
-                            //   !product.name?.product &&
-                            //   !product.typedName
-                            // }
+                            value={address.state}
+                            error={address.validate && !address.state}
                           />
                         )}
-                        // value={product.name}
-                        onInputChange={(e, val) => {
-                          console.log("onInputChange : ", val);
-                          // setProduct({
-                          //   ...product,
-                          //   typedName: val,
-                          // });
-                        }}
+                        // onInputChange={(e, val) => {
+                        //   console.log("onInputChange state: ", val);
+                        //   setAddress({ ...address, typedState: val });
+                        // }}
                         onChange={(e, val) => {
-                          console.log("onChange : ", val);
-                          // setProduct({
-                          //   ...product,
-                          //   name: val,
-                          // });
+                          console.log("onChange state: ", val);
+                          setAddress({
+                            ...address,
+                            state: val,
+                          });
                         }}
                       />
                     </FormControl>
@@ -2346,7 +2507,7 @@ const Editor = () => {
                 <div className="payBtHolder">
                   <Button
                     variant="contained"
-                    onClick={() => setIsPayment(true)}
+                    onClick={onPaymentClick}
                     endIcon={<ArrowForwardIcon sx={{ fontSize: "15px" }} />}
                   >
                     Payment

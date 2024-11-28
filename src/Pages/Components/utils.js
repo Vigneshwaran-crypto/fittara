@@ -664,6 +664,121 @@ export const sampleProducts = [
   { id: 11, product: "Printed T-Shirt" },
 ];
 
+export const indianStates = [
+  { id: 1, state: "Andhra Pradesh" },
+  { id: 2, state: "Arunachal Pradesh" },
+  { id: 3, state: "Assam" },
+  { id: 4, state: "Bihar" },
+  { id: 5, state: "Chhattisgarh" },
+  { id: 6, state: "Goa" },
+  { id: 7, state: "Gujarat" },
+  { id: 8, state: "Haryana" },
+  { id: 9, state: "Himachal Pradesh" },
+  { id: 10, state: "Jharkhand" },
+  { id: 11, state: "Karnataka" },
+  { id: 12, state: "Kerala" },
+  { id: 13, state: "Madhya Pradesh" },
+  { id: 14, state: "Maharashtra" },
+  { id: 15, state: "Manipur" },
+  { id: 16, state: "Meghalaya" },
+  { id: 17, state: "Mizoram" },
+  { id: 18, state: "Nagaland" },
+  { id: 19, state: "Odisha" },
+  { id: 20, state: "Punjab" },
+  { id: 21, state: "Rajasthan" },
+  { id: 22, state: "Sikkim" },
+  { id: 23, state: "Tamil Nadu" },
+  { id: 24, state: "Telangana" },
+  { id: 25, state: "Tripura" },
+  { id: 26, state: "Uttar Pradesh" },
+  { id: 27, state: "Uttarakhand" },
+  { id: 28, state: "West Bengal" },
+  // Union Territories
+  { id: 29, state: "Andaman and Nicobar Islands" },
+  { id: 30, state: "Chandigarh" },
+  { id: 31, state: "Dadra and Nagar Haveli and Daman and Diu" },
+  { id: 32, state: "Delhi" },
+  { id: 33, state: "Lakshadweep" },
+  { id: 34, state: "Puducherry" },
+  { id: 35, state: "Jammu and Kashmir" },
+  { id: 36, state: "Ladakh" },
+];
+
+export const indianCities = [
+  // Andhra Pradesh
+  { id: 1, stateId: 1, city: "Visakhapatnam" },
+  { id: 2, stateId: 1, city: "Vijayawada" },
+  { id: 3, stateId: 1, city: "Tirupati" },
+
+  // Arunachal Pradesh
+  { id: 4, stateId: 2, city: "Itanagar" },
+  { id: 5, stateId: 2, city: "Pasighat" },
+
+  // Assam
+  { id: 6, stateId: 3, city: "Guwahati" },
+  { id: 7, stateId: 3, city: "Dibrugarh" },
+  { id: 8, stateId: 3, city: "Silchar" },
+
+  // Bihar
+  { id: 9, stateId: 4, city: "Patna" },
+  { id: 10, stateId: 4, city: "Gaya" },
+  { id: 11, stateId: 4, city: "Bhagalpur" },
+
+  // Chhattisgarh
+  { id: 12, stateId: 5, city: "Raipur" },
+  { id: 13, stateId: 5, city: "Bhilai" },
+  { id: 14, stateId: 5, city: "Bilaspur" },
+
+  // Goa
+  { id: 15, stateId: 6, city: "Panaji" },
+  { id: 16, stateId: 6, city: "Margao" },
+
+  // Gujarat
+  { id: 17, stateId: 7, city: "Ahmedabad" },
+  { id: 18, stateId: 7, city: "Surat" },
+  { id: 19, stateId: 7, city: "Vadodara" },
+
+  // Haryana
+  { id: 20, stateId: 8, city: "Gurgaon" },
+  { id: 21, stateId: 8, city: "Faridabad" },
+  { id: 22, stateId: 8, city: "Panipat" },
+
+  // Himachal Pradesh
+  { id: 23, stateId: 9, city: "Shimla" },
+  { id: 24, stateId: 9, city: "Manali" },
+  { id: 25, stateId: 9, city: "Dharamshala" },
+
+  // Jharkhand
+  { id: 26, stateId: 10, city: "Ranchi" },
+  { id: 27, stateId: 10, city: "Jamshedpur" },
+  { id: 28, stateId: 10, city: "Dhanbad" },
+
+  // Karnataka
+  { id: 29, stateId: 11, city: "Bengaluru" },
+  { id: 30, stateId: 11, city: "Mysuru" },
+  { id: 31, stateId: 11, city: "Hubli" },
+
+  // Kerala
+  { id: 32, stateId: 12, city: "Thiruvananthapuram" },
+  { id: 33, stateId: 12, city: "Kochi" },
+  { id: 34, stateId: 12, city: "Kozhikode" },
+
+  // Madhya Pradesh
+  { id: 35, stateId: 13, city: "Bhopal" },
+  { id: 36, stateId: 13, city: "Indore" },
+  { id: 37, stateId: 13, city: "Gwalior" },
+
+  // Maharashtra
+  { id: 38, stateId: 14, city: "Mumbai" },
+  { id: 39, stateId: 14, city: "Pune" },
+  { id: 40, stateId: 14, city: "Nagpur" },
+
+  // Tamil Nadu
+  { id: 41, stateId: 23, city: "Chennai" },
+  { id: 42, stateId: 23, city: "Coimbatore" },
+  { id: 43, stateId: 23, city: "Madurai" },
+];
+
 export const benefits = [
   { id: 1, benefit: "Pay on Delivery" },
   { id: 2, benefit: "Free Delivery" },

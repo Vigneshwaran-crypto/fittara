@@ -1710,6 +1710,16 @@
   /* border: 1px solid blue; */
   align-items: flex-end;
   justify-content: center;
+  position: relative;
+}
+
+.backIconBt {
+  position: absolute !important;
+  left: 10px;
+}
+
+.asterix {
+  color: #c7253e;
 }
 
 @media screen and (max-width: 600px) {
