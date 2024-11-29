@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RECEIVED_ACTION } from "../Common/Constant";
-import { MODIFIED_MESH, SAVE_USER } from "./Types";
+import { MODIFIED_MESH, SAVE_USER, SHOP_DETAILS } from "./Types";
 
 export const reduxStore = createAsyncThunk(
   RECEIVED_ACTION,
@@ -12,6 +12,7 @@ export const reduxStore = createAsyncThunk(
 const initialState = {
   loading: false,
   user: {},
+  shop: {},
 };
 
 const mainSlice = createSlice({
@@ -26,6 +27,10 @@ const mainSlice = createSlice({
         switch (payload.type) {
           case SAVE_USER:
             state.user = payload.data;
+            break;
+
+          case SHOP_DETAILS:
+            state.shop = payload.data;
             break;
 
           default:

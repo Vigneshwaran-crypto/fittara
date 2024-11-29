@@ -1,6 +1,7 @@
 import axios from "axios";
 import { HTTP, baseURL } from "../Common/Constant";
 import { clearLocalStorage } from "../Common/SessionHandler";
+import { erToast } from "../Pages/Components/utils";
 
 const makeApi = axios.create({
   headers: HTTP.AuthHeader,
@@ -14,6 +15,7 @@ makeApi.interceptors.response.use(
   (err) => {
     if (err.response.status === 401) {
       // Token expires handle all the logout protocols
+      erToast("Token Expires");
       window.location.href = "/login";
       clearLocalStorage();
       console.log("TOKEN EXPIRES", err);

@@ -83,7 +83,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Joystick } from "react-joystick-component";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   GLTFExporter,
   mergeBufferGeometries,
@@ -93,7 +93,6 @@ import { saveModal } from "../../../Api/UsersService";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Splash from "../../../Application/Splash";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import PaymentIcon from "@mui/icons-material/Payment";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -134,7 +133,6 @@ const Editor = () => {
 
   const navigation = useNavigate();
   const groupMeshRef = useRef(null);
-  const [glbData, setGlbData] = useState(null);
 
   const wholeViewRef = useRef(null);
   const canvasRef = useRef(null);
@@ -143,6 +141,8 @@ const Editor = () => {
   const objContRef = useRef(null);
   const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry);
   const uv = geometry.attributes.uv.array;
+
+  const shopDetails = useSelector(({ main }) => main.shop);
 
   const [incre, setIncre] = useState(0);
 
@@ -418,6 +418,10 @@ const Editor = () => {
     state: null,
     validate: false,
   });
+
+  useEffect(() => {
+    console.log("shopDetails :", shopDetails);
+  }, [shopDetails]);
 
   useEffect(() => {
     if (isMove) {

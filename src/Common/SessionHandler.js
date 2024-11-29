@@ -3,8 +3,9 @@ export const setUserToken = (token) => {
 };
 
 export const getUserToken = () => {
-  let validToken = "Bearer " + localStorage.getItem("token");
-  return validToken || "";
+  // let validToken = "Bearer " + localStorage.getItem("token");
+  let validToken = localStorage.getItem("token");
+  return validToken;
 };
 
 export const clearLocalStorage = () => {

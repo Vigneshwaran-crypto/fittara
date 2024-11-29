@@ -1,12 +1,8 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import NavigationRouter from "./NavigationRouter.jsx";
-// import LogIn from "../Pages/Auth/Login.jsx";
-// import Register from "../Pages/Auth/Register.jsx";
-// import Home from "../Pages/Home/Home.jsx";
-// import Editor from "../Pages/DashBoard/Editor/Editor.jsx";
-// import Splash from "../Application/Splash.jsx";
+import { getUserToken } from "../Common/SessionHandler.js";
 
+const Loader = lazy(() => import("../Application/Loader.jsx"));
 const Splash = lazy(() => import("../Application/Splash.jsx"));
 const Home = lazy(() => import("../Pages/Home/Home.jsx"));
 const LogIn = lazy(() => import("../Pages/Auth/Login.jsx"));
@@ -15,14 +11,22 @@ const Editor = lazy(() => import("../Pages/DashBoard/Editor/Editor.jsx"));
 const NavigationRouter = lazy(() => import("./NavigationRouter.jsx"));
 
 const Router = () => {
+  const userToken = getUserToken();
+  const isCust = new URL(window.location.href).hostname.split(".").length > 1;
+
+  useEffect(() => {
+    console.log("isCust in Router :", isCust);
+    console.log("userToken in Router :", userToken);
+  }, []);
+
   return (
     <BrowserRouter basename="/fittara">
       <Routes>
         <Route
-          path="/splash"
+          path="/*"
           index
           element={
-            <Suspense fallback={<Splash />}>
+            <Suspense fallback={<Loader />}>
               <Splash />
             </Suspense>
           }
@@ -31,7 +35,7 @@ const Router = () => {
           path="/register"
           index
           element={
-            <Suspense fallback={<Splash />}>
+            <Suspense fallback={<Loader />}>
               <Register />
             </Suspense>
           }
@@ -39,38 +43,45 @@ const Router = () => {
         <Route
           path="/login"
           element={
-            <Suspense fallback={<Splash />}>
+            <Suspense fallback={<Loader />}>
               <LogIn />
             </Suspense>
           }
         />
-        <Route
-          path="/*"
-          element={
-            <Suspense fallback={<Splash />}>
-              <Home />
-            </Suspense>
-          }
-        />
 
-        <Route
-          path="/editor"
-          element={
-            <Suspense fallback={<Splash />}>
-              <Editor />
-            </Suspense>
-          }
-        />
+        {isCust && (
+          <>
+            <Route
+              path="/home"
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Home />
+                </Suspense>
+              }
+            />
 
-        <Route
-          path="/dashboard/*"
-          exact
-          element={
-            <Suspense fallback={<Splash />}>
-              <NavigationRouter />
-            </Suspense>
-          }
-        />
+            <Route
+              path="/editor"
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Editor />
+                </Suspense>
+              }
+            />
+          </>
+        )}
+
+        {userToken && !isCust && (
+          <Route
+            path="/dashboard/*"
+            exact
+            element={
+              <Suspense fallback={<Loader />}>
+                <NavigationRouter />
+              </Suspense>
+            }
+          />
+        )}
       </Routes>
     </BrowserRouter>
   );
