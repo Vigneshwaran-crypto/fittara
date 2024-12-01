@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./styles.css";
 import { Carousel, Container } from "react-bootstrap";
 import TopBar from "../Components/TopBar";
@@ -47,9 +47,12 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import { prods } from "../Components/utils";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCurPath } from "../../ReduxToolKit/Actions";
 
 const Home = ({ noTopBar = false }) => {
   const navigation = useNavigate();
+  const dispatch = useDispatch();
   const slidesList = [
     {
       title: "Be Bold, Be You – The Power to Customize is Yours!",
@@ -100,6 +103,10 @@ const Home = ({ noTopBar = false }) => {
     offer10,
     offer11,
   ];
+
+  useEffect(() => {
+    dispatch(setCurPath("/home"));
+  }, []);
 
   const onCatItemClick = (item) => {
     console.log("onCatItemClick item :", item);

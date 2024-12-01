@@ -1,8 +1,15 @@
 import React, { lazy, Suspense, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { getUserToken } from "../Common/SessionHandler.js";
 
 const Loader = lazy(() => import("../Application/Loader.jsx"));
+const UnAuth = lazy(() => import("../Application/UnAuth.jsx"));
 const Splash = lazy(() => import("../Application/Splash.jsx"));
 const Home = lazy(() => import("../Pages/Home/Home.jsx"));
 const LogIn = lazy(() => import("../Pages/Auth/Login.jsx"));
@@ -31,20 +38,30 @@ const Router = () => {
             </Suspense>
           }
         />
+
         <Route
           path="/register"
-          index
           element={
             <Suspense fallback={<Loader />}>
               <Register />
             </Suspense>
           }
         />
+
         <Route
           path="/login"
           element={
             <Suspense fallback={<Loader />}>
               <LogIn />
+            </Suspense>
+          }
+        />
+
+        <Route
+          path="/unauth"
+          element={
+            <Suspense fallback={<Loader />}>
+              <UnAuth />
             </Suspense>
           }
         />

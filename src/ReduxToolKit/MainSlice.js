@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RECEIVED_ACTION } from "../Common/Constant";
-import { MODIFIED_MESH, SAVE_USER, SHOP_DETAILS } from "./Types";
+import { MODIFIED_MESH, PATH_NAME, SAVE_USER, SHOP_DETAILS } from "./Types";
 
 export const reduxStore = createAsyncThunk(
   RECEIVED_ACTION,
@@ -13,6 +13,7 @@ const initialState = {
   loading: false,
   user: {},
   shop: {},
+  curPath: "/splash",
 };
 
 const mainSlice = createSlice({
@@ -31,6 +32,10 @@ const mainSlice = createSlice({
 
           case SHOP_DETAILS:
             state.shop = payload.data;
+            break;
+
+          case PATH_NAME:
+            state.curPath = payload.data;
             break;
 
           default:

@@ -100,6 +100,7 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import toast from "react-hot-toast";
 import { placeOrder } from "../../../Api/ShopService";
+import { setCurPath } from "../../../ReduxToolKit/Actions";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -129,6 +130,7 @@ const ControlUpdater = ({ controlRef, groupMeshRef }) => {
 };
 
 const Editor = () => {
+  const dispatch = useDispatch();
   const { nodes, materials } = useGLTF(modelObj);
 
   const navigation = useNavigate();
@@ -418,6 +420,10 @@ const Editor = () => {
     state: null,
     validate: false,
   });
+
+  useEffect(() => {
+    dispatch(setCurPath("/editor"));
+  }, []);
 
   useEffect(() => {
     console.log("shopDetails :", shopDetails);

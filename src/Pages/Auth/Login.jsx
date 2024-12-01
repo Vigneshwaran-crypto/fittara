@@ -15,7 +15,7 @@ import CustomSwitch from "./CustomSwitch";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { reduxStore } from "../../ReduxToolKit/MainSlice";
-import { saveUser } from "../../ReduxToolKit/Actions";
+import { saveUser, setCurPath } from "../../ReduxToolKit/Actions";
 import { setUserToken } from "../../Common/SessionHandler";
 
 import IconButton from "@mui/material/IconButton";
@@ -40,6 +40,10 @@ const LogIn = () => {
   const [userData, setUserData] = useState({});
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+
+  useEffect(() => {
+    dispatch(setCurPath("/login"));
+  }, []);
 
   const onSigInClick = () => {
     if (!email) {

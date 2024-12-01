@@ -34,7 +34,8 @@ const Splash = () => {
             dispatch(shopDetailsStore(shopData));
             navigation("/home");
           } else {
-            checkForToken();
+            // checkForToken();
+            navigation("/unauth", { state: { shop: userName } });
           }
         })
         .catch((err) => {

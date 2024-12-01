@@ -13,3 +13,21 @@
   align-items: center;
   justify-content: center;
 }
+
+.loginConts {
+  position: absolute;
+  bottom: 20%;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+.loginConts > span {
+  font-weight: 600;
+}
+
+.loginConts > span:first-child {
+  cursor: pointer;
+  color: #3fa2f6;
+}
+
+.loginConts > span:last-child {
+}
