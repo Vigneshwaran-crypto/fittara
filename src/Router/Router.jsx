@@ -8,6 +8,9 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { getUserToken } from "../Common/SessionHandler.js";
+import { useDispatch } from "react-redux";
+import { reduxStore } from "../ReduxToolKit/MainSlice.js";
+import { saveUser } from "../ReduxToolKit/Actions.js";
 
 const Loader = lazy(() => import("../Application/Loader.jsx"));
 const UnAuth = lazy(() => import("../Application/UnAuth.jsx"));
@@ -19,6 +22,7 @@ const Editor = lazy(() => import("../Pages/DashBoard/Editor/Editor.jsx"));
 const NavigationRouter = lazy(() => import("./NavigationRouter.jsx"));
 
 const Router = () => {
+  const dispatch = useDispatch();
   const userToken = getUserToken();
   const isCust = new URL(window.location.href).hostname.split(".").length > 1;
 
@@ -29,6 +33,11 @@ const Router = () => {
     console.log("isCust in Router :", isCust);
     console.log("userToken in Router :", userToken);
     console.log("curPath in Router :", curPath);
+    if (userToken) {
+      const [header, payload, signature] = userToken.split(".");
+      const usr = JSON.parse(atob(payload));
+      dispatch(reduxStore(saveUser(usr)));
+    }
     navigation(curPath);
   }, []);
 

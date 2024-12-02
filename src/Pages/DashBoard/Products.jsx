@@ -37,7 +37,7 @@ import {
 
 const Products = (props) => {
   const dispatch = useDispatch();
-  const userData = useSelector(({ main }) => main.user);
+  const usr = useSelector(({ main }) => main.user);
   const navigation = useNavigate();
 
   const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
@@ -47,8 +47,8 @@ const Products = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("userData", userData);
-  }, [userData]);
+    console.log("userData", usr);
+  }, []);
 
   return (
     <Container fluid className="tabScreens">

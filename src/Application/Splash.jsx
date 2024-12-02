@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { getUserToken } from "../Common/SessionHandler";
 import { getUserByDomain } from "../Api/UsersService";
 import { useDispatch, useSelector } from "react-redux";
-import { shopDetailsStore } from "../ReduxToolKit/Actions";
+import { saveUser, shopDetailsStore } from "../ReduxToolKit/Actions";
+import { reduxStore } from "../ReduxToolKit/MainSlice";
 
 const Splash = () => {
   const navigation = useNavigate();
@@ -30,9 +31,9 @@ const Splash = () => {
         .then((res) => {
           console.log("getUserByDomain res :", res);
           if (res.data.status === 1) {
-            const shopData = res.data.data;
-            dispatch(shopDetailsStore(shopData));
             navigation("/home", { replace: true });
+            const shopData = res.data.data;
+            dispatch(reduxStore(shopDetailsStore(shopData)));
           } else {
             // checkForToken();
             navigation("/unauth", { state: { shop: userName } });
@@ -54,7 +55,6 @@ const Splash = () => {
     } else {
       navigation("/login", { replace: true });
     }
-    console.log("userToken :", userToken);
   };
 
   return (
