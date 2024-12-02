@@ -36,10 +36,15 @@ import {
 } from "react-icons/ci";
 
 const Products = (props) => {
+  const dispatch = useDispatch();
   const userData = useSelector(({ main }) => main.user);
   const navigation = useNavigate();
 
   const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
+
+  useEffect(() => {
+    sessionStorage.setItem("curPath", "/dashboard/products");
+  }, []);
 
   useEffect(() => {
     console.log("userData", userData);

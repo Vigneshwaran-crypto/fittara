@@ -32,7 +32,7 @@ const Splash = () => {
           if (res.data.status === 1) {
             const shopData = res.data.data;
             dispatch(shopDetailsStore(shopData));
-            navigation("/home");
+            navigation("/home", { replace: true });
           } else {
             // checkForToken();
             navigation("/unauth", { state: { shop: userName } });
@@ -50,9 +50,9 @@ const Splash = () => {
   const checkForToken = () => {
     const userToken = getUserToken();
     if (userToken) {
-      navigation("/dashboard/products");
+      navigation("/dashboard/products", { replace: true });
     } else {
-      navigation("/login");
+      navigation("/login", { replace: true });
     }
     console.log("userToken :", userToken);
   };

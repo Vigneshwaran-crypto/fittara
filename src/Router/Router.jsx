@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import {
   BrowserRouter,
+  Navigate,
   Route,
   Routes,
   useLocation,
@@ -21,87 +22,97 @@ const Router = () => {
   const userToken = getUserToken();
   const isCust = new URL(window.location.href).hostname.split(".").length > 1;
 
+  const navigation = useNavigate();
+  const curPath = sessionStorage.getItem("curPath") || "/splash";
+
   useEffect(() => {
     console.log("isCust in Router :", isCust);
     console.log("userToken in Router :", userToken);
+    console.log("curPath in Router :", curPath);
+    navigation(curPath);
   }, []);
 
   return (
-    <BrowserRouter basename="/fittara">
-      <Routes>
-        <Route
-          path="/*"
-          index
-          element={
-            <Suspense fallback={<Loader />}>
-              <Splash />
-            </Suspense>
-          }
-        />
+    <Routes>
+      <Route
+        path="/*"
+        index
+        element={
+          <Suspense fallback={<Loader />}>
+            <Splash />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <Suspense fallback={<Loader />}>
+            <Register />
+          </Suspense>
+        }
+      />
 
-        <Route
-          path="/register"
-          element={
-            <Suspense fallback={<Loader />}>
-              <Register />
-            </Suspense>
-          }
-        />
+      <Route
+        path="/login"
+        element={
+          <Suspense fallback={<Loader />}>
+            <LogIn />
+          </Suspense>
+        }
+      />
 
-        <Route
-          path="/login"
-          element={
-            <Suspense fallback={<Loader />}>
-              <LogIn />
-            </Suspense>
-          }
-        />
+      <Route
+        path="/unauth"
+        element={
+          <Suspense fallback={<Loader />}>
+            <UnAuth />
+          </Suspense>
+        }
+      />
 
-        <Route
-          path="/unauth"
-          element={
-            <Suspense fallback={<Loader />}>
-              <UnAuth />
-            </Suspense>
-          }
-        />
-
-        {isCust && (
-          <>
-            <Route
-              path="/home"
-              element={
-                <Suspense fallback={<Loader />}>
-                  <Home />
-                </Suspense>
-              }
-            />
-
-            <Route
-              path="/editor"
-              element={
-                <Suspense fallback={<Loader />}>
-                  <Editor />
-                </Suspense>
-              }
-            />
-          </>
-        )}
-
-        {userToken && !isCust && (
+      {isCust && (
+        <>
           <Route
-            path="/dashboard/*"
-            exact
+            path="/home"
             element={
               <Suspense fallback={<Loader />}>
-                <NavigationRouter />
+                <Home />
               </Suspense>
             }
           />
-        )}
-      </Routes>
+
+          <Route
+            path="/editor"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Editor />
+              </Suspense>
+            }
+          />
+        </>
+      )}
+
+      {userToken && !isCust && (
+        <Route
+          path="/dashboard/*"
+          exact
+          element={
+            <Suspense fallback={<Loader />}>
+              <NavigationRouter />
+            </Suspense>
+          }
+        />
+      )}
+    </Routes>
+  );
+};
+
+const AppRouter = () => {
+  return (
+    <BrowserRouter basename="/fittara">
+      <Router />
     </BrowserRouter>
   );
 };
 
-export default Router;
+export default AppRouter;

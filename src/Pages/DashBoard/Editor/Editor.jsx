@@ -100,7 +100,6 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import toast from "react-hot-toast";
 import { placeOrder } from "../../../Api/ShopService";
-import { setCurPath } from "../../../ReduxToolKit/Actions";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -422,7 +421,7 @@ const Editor = () => {
   });
 
   useEffect(() => {
-    dispatch(setCurPath("/editor"));
+    sessionStorage.setItem("curPath", "/editor");
   }, []);
 
   useEffect(() => {

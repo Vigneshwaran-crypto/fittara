@@ -18,7 +18,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { saveUser, setCurPath } from "../../ReduxToolKit/Actions";
+import { saveUser } from "../../ReduxToolKit/Actions";
 import { setUserToken } from "../../Common/SessionHandler";
 import { useDispatch } from "react-redux";
 import { reduxStore } from "../../ReduxToolKit/MainSlice";
@@ -39,7 +39,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    dispatch(setCurPath("/register"));
+    sessionStorage.setItem("curPath", "/register");
   }, []);
 
   useEffect(() => {

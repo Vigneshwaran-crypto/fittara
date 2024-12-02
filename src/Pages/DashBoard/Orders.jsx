@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./MenuOptionsStyles.css";
 import "../Home/styles.css";
 import "../Components/component.css";
@@ -77,6 +77,10 @@ const Orders = () => {
       bg: "#CDF1EF",
     },
   ];
+
+  useEffect(() => {
+    sessionStorage.setItem("curPath", "/dashboard/orders");
+  }, []);
 
   return (
     <Container fluid className="tabScreens">

@@ -48,7 +48,6 @@ import { prods } from "../Components/utils";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCurPath } from "../../ReduxToolKit/Actions";
 
 const Home = ({ noTopBar = false }) => {
   const navigation = useNavigate();
@@ -87,7 +86,6 @@ const Home = ({ noTopBar = false }) => {
   ];
 
   const offersList = [
-    // offer5,
     offer8,
     offer4,
     offer13,
@@ -105,7 +103,7 @@ const Home = ({ noTopBar = false }) => {
   ];
 
   useEffect(() => {
-    dispatch(setCurPath("/home"));
+    sessionStorage.setItem("curPath", "/home");
   }, []);
 
   const onCatItemClick = (item) => {

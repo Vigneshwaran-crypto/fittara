@@ -13,10 +13,3 @@ export const shopDetailsStore = (data) => {
     data,
   };
 };
-
-export const setCurPath = (data) => {
-  return {
-    type: PATH_NAME,
-    data,
-  };
-};

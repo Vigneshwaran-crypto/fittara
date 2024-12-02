@@ -13,7 +13,6 @@ const initialState = {
   loading: false,
   user: {},
   shop: {},
-  curPath: "/splash",
 };
 
 const mainSlice = createSlice({
@@ -32,10 +31,6 @@ const mainSlice = createSlice({
 
           case SHOP_DETAILS:
             state.shop = payload.data;
-            break;
-
-          case PATH_NAME:
-            state.curPath = payload.data;
             break;
 
           default:

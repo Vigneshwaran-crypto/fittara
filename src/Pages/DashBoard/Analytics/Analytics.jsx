@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Paper,
   Table,
@@ -106,6 +106,10 @@ const Analytics = () => {
   ];
 
   const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
+
+  useEffect(() => {
+    sessionStorage.setItem("curPath", "/dashboard/analytics");
+  }, []);
 
   return (
     <Container fluid className="tabScreens">

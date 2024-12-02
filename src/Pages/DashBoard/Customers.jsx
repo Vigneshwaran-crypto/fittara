@@ -36,6 +36,10 @@ import { Container } from "react-bootstrap";
 const Customers = () => {
   const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
 
+  useEffect(() => {
+    sessionStorage.setItem("curPath", "/dashboard/customers");
+  }, []);
+
   return (
     <Container fluid className="tabScreens">
       <div className="orderListContent">
