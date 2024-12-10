@@ -16,7 +16,7 @@ const Splash = () => {
   const urlparts = new URL(urlFromBrowser);
 
   useEffect(() => {
-    console.log("URL from browser :", urlparts.hostname.split("."));
+    console.log("URL from browser in Splash:", urlparts.hostname.split("."));
 
     checkLastActivity();
   }, []);
@@ -41,7 +41,7 @@ const Splash = () => {
         })
         .catch((err) => {
           checkForToken();
-          throw new Error("getUserByDomain api failed :", err);
+          // throw new Error("getUserByDomain api failed :", err);
         });
     } else {
       checkForToken();
@@ -53,7 +53,9 @@ const Splash = () => {
     if (userToken) {
       navigation("/dashboard/products", { replace: true });
     } else {
-      navigation("/login", { replace: true });
+      navigation("/home", { replace: true });
+      // sessionStorage.setItem("curPath", "/login");
+      // navigation("/login", { replace: true });
     }
   };
 

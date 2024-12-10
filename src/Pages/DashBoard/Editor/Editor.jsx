@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import modelObj from "../../../Assets/3dFiles/swater.glb";
 import { ContactShadows, OrbitControls, useGLTF } from "@react-three/drei";
 
 import frontSide from "../../../Assets/sides/front2.png";
@@ -100,6 +99,12 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import toast from "react-hot-toast";
 import { placeOrder } from "../../../Api/ShopService";
+import hoodie from "../../../Assets/elems/swater.glb";
+import cap from "../../../Assets/elems/cap.glb";
+import bag from "../../../Assets/elems/baggy.glb";
+import mug from "../../../Assets/elems/mug.glb";
+import bottle from "../../../Assets/elems/bottle.glb";
+// import modelObj from "../../../Assets/3dFiles/swater.glb";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -130,7 +135,11 @@ const ControlUpdater = ({ controlRef, groupMeshRef }) => {
 
 const Editor = () => {
   const dispatch = useDispatch();
-  const { nodes, materials } = useGLTF(modelObj);
+  // const { nodes, materials } = useGLTF(hoodie);
+  const { nodes, materials } = useGLTF(bag);
+
+  console.log("nodes :", nodes);
+  console.log("materials :", materials);
 
   const navigation = useNavigate();
   const groupMeshRef = useRef(null);
@@ -140,7 +149,10 @@ const Editor = () => {
   const controlRef = useRef(null);
   const cameraRef = useRef(null);
   const objContRef = useRef(null);
-  const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry);
+  // const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry); // hoodie
+  // const [geometry, setGeometry] = useState(nodes.Object_27.geometry); // bag
+  const [geometry, setGeometry] = useState(nodes.Object_12_2.geometry); // bagTest
+  // const [geometry, setGeometry] = useState(nodes.Cloth_mesh_1.geometry); // polo
   const uv = geometry.attributes.uv.array;
 
   const shopDetails = useSelector(({ main }) => main.shop);
@@ -177,42 +189,202 @@ const Editor = () => {
 
   const [isTxtEdit, setIsTxtEdit] = useState(false);
 
+  // const [chosenComp, setChosenComp] = useState({
+  //   id: 2,
+  //   part: "Front",
+  //   geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
+  //   mat: materials.Hoodie,
+  //   txture: null,
+  //   color: "",
+  //   ref: useRef(null),
+  //   defPos: { x: 610.7, y: 333.5 },
+  //   defRot: 87.7,
+  //   defScal: 3.1,
+  //   images: [],
+  //   texts: [],
+  // });
   const [chosenComp, setChosenComp] = useState({
-    id: 2,
-    part: "Front",
-    geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
-    mat: materials.Hoodie,
+    id: 3,
+    part: "FrontPrint",
+    geo: nodes.Object_12_2.geometry,
+    mat: materials.frontPrint,
     txture: null,
-    color: "",
+    color: "#FFFEFE",
     ref: useRef(null),
-    defPos: { x: 610.7, y: 333.5 },
-    defRot: 87.7,
-    defScal: 3.1,
+    defPos: { x: 730.7, y: 1158.5 },
+    defRot: 1,
+    defScal: 10,
     images: [],
     texts: [],
   });
+
+  // const [chosenMesh, setChosenMesh] = useState({
+  //   id: 2,
+  //   part: "Front",
+  //   geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
+  //   mat: materials.front,
+  //   txture: null,
+  //   color: "",
+  //   ref: useRef(null),
+  //   defPos: { x: 610.7, y: 333.5 },
+  //   defRot: 87.7,
+  //   defScal: 3.1,
+  //   images: [],
+  //   texts: [],
+  // });
 
   const [chosenMesh, setChosenMesh] = useState({
-    id: 2,
-    part: "Front",
-    geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
-    mat: materials.Hoodie,
+    id: 3,
+    part: "FrontPrint",
+    geo: nodes.Object_12_2.geometry,
+    mat: materials.frontPrint,
     txture: null,
-    color: "",
+    color: "#FFFEFE",
     ref: useRef(null),
-    defPos: { x: 610.7, y: 333.5 },
-    defRot: 87.7,
-    defScal: 3.1,
+    defPos: { x: 730.7, y: 1158.5 },
+    defRot: 1,
+    defScal: 10,
     images: [],
     texts: [],
   });
 
+  // const [texture, setTexture] = useState([
+  //   // {
+  //   //   id: 1,
+  //   //   part: "Hoodie",
+  //   //   geo: nodes.g_Hoodie_Hoodie_0_1.geometry,
+  //   //   mat: materials.Hoodie,
+  //   //   txture: null,
+  //   //   color: "#FFFEFE",
+  //   //   ref: useRef(null),
+  //   //   defPos: { x: 652.4, y: 300 },
+  //   //   defRot: 87.7,
+  //   //   defScal: 3.6,
+  //   //   images: [],
+  //   //   texts: [],
+  //   // },
+  //   {
+  //     id: 2,
+  //     part: "Front",
+  //     geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
+  //     // mat: materials.Hoodie,
+  //     mat: materials.front,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 610.7, y: 333.5 },
+  //     defRot: 87.7,
+  //     defScal: 3.1,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 3,
+  //     part: "Pocket",
+  //     geo: nodes.g_Hoodie_Hoodie_0_2.geometry,
+  //     mat: materials.poacket,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 100.1, y: 333.5 },
+  //     defRot: 87.7,
+  //     defScal: 1.9,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 4,
+  //     part: "Back",
+  //     geo: nodes.g_Hoodie_Hoodie_0_5.geometry,
+  //     mat: materials.back,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 1250.8, y: 974.5 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 5,
+  //     part: "Left Hand",
+  //     geo: nodes.g_Hoodie_Hoodie_0_6.geometry,
+  //     mat: materials.left,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 652.4, y: 300 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 6,
+  //     part: "Right Hand",
+  //     geo: nodes.g_Hoodie_Hoodie_0_8.geometry,
+  //     mat: materials.right,
+  //     txture: null,
+  //     ref: useRef(null),
+  //     color: "#FFFEFE",
+  //     defPos: { x: 1527, y: 333.5 },
+  //     defRot: 95.3,
+  //     defScal: 1,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 7,
+  //     part: "Left Cuff",
+  //     geo: nodes.g_Hoodie_Hoodie_0_7.geometry,
+  //     mat: materials.lcuff,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 652.4, y: 300 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 8,
+  //     part: "Right Cuff",
+  //     geo: nodes.g_Hoodie_Hoodie_0_9.geometry,
+  //     mat: materials.rcuff,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 652.4, y: 300 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 9,
+  //     part: "Cap",
+  //     geo: nodes.g_Hoodie_Hoodie_0_4.geometry,
+  //     mat: materials.cape,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 652.4, y: 300 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //     images: [],
+  //     texts: [],
+  //   },
+  // ]);
+
+  // 20 - handle
   const [texture, setTexture] = useState([
     {
       id: 1,
-      part: "Hoodie",
-      geo: nodes.g_Hoodie_Hoodie_0_1.geometry,
-      mat: materials.Hoodie,
+      part: "Holder",
+      geo: nodes.Object_20.geometry,
+      mat: materials.holder,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
@@ -225,8 +397,9 @@ const Editor = () => {
     {
       id: 2,
       part: "Front",
-      geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
-      mat: materials.Hoodie,
+      geo: nodes.Object_12_1.geometry,
+      mat: materials.front,
+      txture: null,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
@@ -238,105 +411,140 @@ const Editor = () => {
     },
     {
       id: 3,
-      part: "Pocket",
-      geo: nodes.g_Hoodie_Hoodie_0_2.geometry,
-      mat: materials.poacket,
+      part: "FrontPrint",
+      geo: nodes.Object_12_2.geometry,
+      mat: materials.frontPrint,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
-      defPos: { x: 100.1, y: 333.5 },
-      defRot: 87.7,
-      defScal: 1.9,
+      defPos: { x: 730.7, y: 1158.5 },
+      defRot: 1,
+      defScal: 10,
       images: [],
       texts: [],
     },
     {
       id: 4,
       part: "Back",
-      geo: nodes.g_Hoodie_Hoodie_0_5.geometry,
+      geo: nodes.Object_11.geometry,
       mat: materials.back,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
-      defPos: { x: 1250.8, y: 974.5 },
+      defPos: { x: 610.7, y: 333.5 },
       defRot: 87.7,
-      defScal: 3.6,
+      defScal: 3.1,
       images: [],
       texts: [],
     },
     {
       id: 5,
-      part: "Left Hand",
-      geo: nodes.g_Hoodie_Hoodie_0_6.geometry,
-      mat: materials.left,
+      part: "BackPrint",
+      geo: nodes.Object_11_1.geometry,
+      mat: materials.backPrint,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
-      defPos: { x: 652.4, y: 300 },
+      defPos: { x: 610.7, y: 333.5 },
       defRot: 87.7,
-      defScal: 3.6,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 6,
-      part: "Right Hand",
-      geo: nodes.g_Hoodie_Hoodie_0_8.geometry,
-      mat: materials.right,
-      txture: null,
-      ref: useRef(null),
-      color: "#FFFEFE",
-      defPos: { x: 1527, y: 333.5 },
-      defRot: 95.3,
-      defScal: 1,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 7,
-      part: "Left Cuff",
-      geo: nodes.g_Hoodie_Hoodie_0_7.geometry,
-      mat: materials.lcuff,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 652.4, y: 300 },
-      defRot: 87.7,
-      defScal: 3.6,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 8,
-      part: "Right Cuff",
-      geo: nodes.g_Hoodie_Hoodie_0_9.geometry,
-      mat: materials.rcuff,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 652.4, y: 300 },
-      defRot: 87.7,
-      defScal: 3.6,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 9,
-      part: "Cap",
-      geo: nodes.g_Hoodie_Hoodie_0_4.geometry,
-      mat: materials.cape,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 652.4, y: 300 },
-      defRot: 87.7,
-      defScal: 3.6,
+      defScal: 3.1,
       images: [],
       texts: [],
     },
   ]);
 
-  const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" }); // State to hold the selected color
+  //7 - left , 8 - rght hands
+
+  // const [texture, setTexture] = useState([
+  //   {
+  //     id: 1,
+  //     part: "Front",
+  //     geo: nodes.Cloth_mesh_5.geometry,
+  //     mat: materials.front,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 610.7, y: 333.5 },
+  //     defRot: 87.7,
+  //     defScal: 3.1,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 2,
+  //     part: "Back",
+  //     geo: nodes.Cloth_mesh_9.geometry,
+  //     mat: materials.back,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 1250.8, y: 974.5 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 3,
+  //     part: "Left Hand",
+  //     geo: nodes.Cloth_mesh_7.geometry,
+  //     mat: materials.left,
+  //     txture: null,
+  //     color: "#FFFEFE",
+  //     ref: useRef(null),
+  //     defPos: { x: 652.4, y: 300 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 4,
+  //     part: "Right Hand",
+  //     geo: nodes.Cloth_mesh_4.geometry,
+  //     mat: materials.right,
+  //     txture: null,
+  //     ref: useRef(null),
+  //     color: "#FFFEFE",
+  //     defPos: { x: 1527, y: 333.5 },
+  //     defRot: 95.3,
+  //     defScal: 1,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 5,
+  //     part: "Remain",
+  //     geo: nodes.Cloth_mesh_8.geometry,
+  //     mat: materials.remain,
+  //     txture: null,
+  //     ref: useRef(null),
+  //     color: "#FFFEFE",
+  //     defPos: { x: 1527, y: 333.5 },
+  //     defRot: 95.3,
+  //     defScal: 1,
+  //     images: [],
+  //     texts: [],
+  //   },
+  //   {
+  //     id: 6,
+  //     part: "polo",
+  //     geo: nodes.Cloth_mesh_3.geometry,
+  //     mat: materials.polo,
+  //     txture: null,
+  //     ref: useRef(null),
+  //     color: "#FFFEFE",
+  //     defPos: { x: 1527, y: 333.5 },
+  //     defRot: 95.3,
+  //     defScal: 1,
+  //     images: [],
+  //     texts: [],
+  //   },
+  // ]);
+
+  // 2 - back frame
+
+  const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" });
   const [defMeshRot, setdefMeshRot] = useState([0, 0, 0]);
 
   const [joyPos, setJoyPos] = useState({ direction: "FORWARD" });
@@ -402,6 +610,56 @@ const Editor = () => {
     },
   ];
 
+  // const sidePosses = [
+  //   {
+  //     id: 2,
+  //     part: "Front",
+  //     node: "Cloth_mesh_1",
+  //     position: [0, -0.85, 0],
+  //     opacity: 0.8,
+  //     blur: 1,
+  //     img: frontSide,
+  //     defPos: { x: 610.7, y: 333.5 },
+  //     defRot: 87.7,
+  //     defScal: 3.1,
+  //   },
+  //   {
+  //     id: 4,
+  //     part: "Back",
+  //     node: "Cloth_mesh_1",
+  //     position: [0, -1.1, 0],
+  //     opacity: 0.8,
+  //     blur: 2,
+  //     img: backSide,
+  //     defPos: { x: 1250.8, y: 974.5 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //   },
+  //   {
+  //     id: 5,
+  //     part: "Left Hand",
+  //     node: "Cloth_mesh_1",
+  //     position: [-0.1, -0.9, 0],
+  //     opacity: 0.2,
+  //     blur: 0.8,
+  //     img: leftSide,
+  //     defPos: { x: 652.4, y: 300 },
+  //     defRot: 87.7,
+  //     defScal: 3.6,
+  //   },
+  //   {
+  //     id: 6,
+  //     part: "Right Hand",
+  //     node: "Cloth_mesh_1",
+  //     position: [0.1, -0.9, 0],
+  //     opacity: 0.2,
+  //     blur: 0.8,
+  //     img: rightSide,
+  //     defPos: { x: 1527, y: 333.5 },
+  //     defRot: 95.3,
+  //     defScal: 1,
+  //   },
+  // ];
   const tShirtPrice = 120;
   const shippingPrice = 50;
 
@@ -422,11 +680,33 @@ const Editor = () => {
 
   useEffect(() => {
     sessionStorage.setItem("curPath", "/editor");
+    console.log("model nodes :", nodes);
+    console.log("model materials :", materials);
+    // console.log("polo node", polo.nodes);
+    // console.log("polo materials", polo.materials);
   }, []);
 
   useEffect(() => {
     console.log("shopDetails :", shopDetails);
   }, [shopDetails]);
+
+  // switch (joyPos?.direction) {
+  //   case "FORWARD":
+  //     yVal -= moveSpeed;
+  //     break;
+  //   case "BACKWARD":
+  //     yVal += moveSpeed;
+
+  //     break;
+  //   case "LEFT":
+  //     xVal -= moveSpeed;
+  //     break;
+  //   case "RIGHT":
+  //     xVal += moveSpeed;
+  //     break;
+  //   default:
+  //     break;
+  // }
 
   useEffect(() => {
     if (isMove) {
@@ -465,7 +745,6 @@ const Editor = () => {
               ...chosenItem,
               position: { ...chosenItem.position, x: xVal, y: yVal },
             };
-            // setXValue(xVal?.toFixed(1));
             setPosVal({ x: xVal?.toFixed(1), y: yVal?.toFixed(1) });
             updatedItem[focTab ? "images" : "texts"] = itemArray;
             return updatedItem;
@@ -519,10 +798,10 @@ const Editor = () => {
     });
   }, [texture]);
 
-  const renderCanvas = (col) => {
+  const renderCanvas = () => {
     // if (!imageLoaded) return;
 
-    console.log("renderCanvas called");
+    console.log("renderCanvas called", uv);
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -546,8 +825,9 @@ const Editor = () => {
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     // Draw UV wireframe
-    // ctx.strokeStyle = "green";
-    // ctx.lineWidth = 2;
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0, 0, canvasWidth, canvasHeight);
     ctx.beginPath();
 
     for (let i = 0; i < uv.length; i += 6) {
@@ -724,34 +1004,6 @@ const Editor = () => {
     setIncre(incre + 1);
   };
 
-  // const handleX = (newPos) => {
-  //   console.log("handleX chosen index :", chosenInd);
-
-  //   const updatedTextures = texture.map((item) => {
-  //     if (item.id === chosenComp.id) {
-  //       const updatedItem = { ...item };
-  //       updatedItem[focTab ? "images" : "texts"] = [
-  //         ...item[focTab ? "images" : "texts"],
-  //       ];
-
-  //       updatedItem[focTab ? "images" : "texts"][chosenInd] = {
-  //         ...updatedItem[focTab ? "images" : "texts"][chosenInd],
-  //         position: {
-  //           ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
-  //           x: newPos,
-  //         },
-  //       };
-  //       return updatedItem;
-  //     }
-  //     return item;
-  //   });
-
-  //   console.log("updating item :", updatedTextures);
-
-  //   setTexture(updatedTextures);
-  //   setIncre((pre) => pre + 1);
-  // };
-
   const handlePosInp = (newPos, mot) => {
     console.log("handleX chosen index :", chosenInd);
 
@@ -765,8 +1017,10 @@ const Editor = () => {
             ...arrayToUpdate[chosenInd],
             position: {
               ...arrayToUpdate[chosenInd].position,
-              x: mot ? newPos : arrayToUpdate[chosenInd].position.x,
-              y: !mot ? newPos : arrayToUpdate[chosenInd].position.y,
+              // x: mot ? newPos : arrayToUpdate[chosenInd].position.x,
+              // y: !mot ? newPos : arrayToUpdate[chosenInd].position.y,
+              x: mot ? newPos : arrayToUpdate[chosenInd].position.y,
+              y: !mot ? newPos : arrayToUpdate[chosenInd].position.x,
             },
           };
 
@@ -785,35 +1039,6 @@ const Editor = () => {
     // setXValue(newPos);
 
     setPosVal({ x: mot ? newPos : posVal.x, y: !mot ? newPos : posVal.y });
-  };
-
-  const handleY = (newPos) => {
-    const updatedTextures = texture.map((item) => {
-      if (item.part === chosenComp.part) {
-        // item[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
-        // chosenComp[focTab ? "images" : "texts"][chosenInd].position.y = newPos;
-        // return item;
-
-        const updatedItem = { ...item };
-        updatedItem[focTab ? "images" : "texts"] = [
-          ...item[focTab ? "images" : "texts"],
-        ];
-
-        updatedItem[focTab ? "images" : "texts"][chosenInd] = {
-          ...updatedItem[focTab ? "images" : "texts"][chosenInd],
-          position: {
-            ...updatedItem[focTab ? "images" : "texts"][chosenInd].position,
-            y: newPos,
-          },
-        };
-
-        return updatedItem;
-      }
-      return item;
-    });
-
-    setTexture(updatedTextures);
-    setIncre(incre + 1);
   };
 
   const handleColorChange = (color) => {
@@ -894,13 +1119,6 @@ const Editor = () => {
     else txtIndHold.current = ind;
 
     setChosenInd(ind);
-
-    // if (!img) {
-    //   const val = fonts.find((ite) => ite.name === item.font);
-    //   console.log("found font :", val);
-    //   setPrintFont(val);
-    //   setPrintTxt(item.text);
-    // }
   };
 
   const onTxtPrintConfirm = () => {
@@ -1277,8 +1495,9 @@ const Editor = () => {
           ref={canvasRef}
           id="uvCanvas"
           style={{
-            width: "100%",
-            display: "none",
+            width: "30%",
+            // width: "100%",
+            // display: "none",
           }}
         />
 
@@ -1769,7 +1988,8 @@ const Editor = () => {
                     className="sliders"
                     step={0.01}
                     min={0.1}
-                    max={10}
+                    // max={10}
+                    max={100}
                     value={
                       chosenComp[focTab ? "images" : "texts"][chosenInd]
                         ?.scale ?? 0
@@ -1977,7 +2197,8 @@ const Editor = () => {
               {texture?.map((item) => (
                 <mesh
                   receiveShadow
-                  position={[0, 0.1, 0]}
+                  // position={[0, 0.1, 0]}
+                  position={[0, -1, 0]}
                   rotation={defMeshRot}
                   key={item.id}
                   geometry={item.geo}
@@ -1986,19 +2207,20 @@ const Editor = () => {
                   <meshPhysicalMaterial
                     toneMapped={false}
                     map={item.txture}
-                    roughness={0.6}
-                    // clearcoat={0.1}
-                    // reflectivity={0.2}
-                    metalness={0.0}
+                    // roughness={0.6}
+                    // metalness={0.0}
+                    roughness={0.5} // Match Blender
+                    normalMap={item.mat.normalMap}
                   />
                 </mesh>
               ))}
             </group>
-            <ControlUpdater
+            {/* <ControlUpdater
               controlRef={controlRef}
               groupMeshRef={groupMeshRef}
-            />
-            <OrbitControls ref={controlRef} minDistance={3.2} maxDistance={5} />
+            /> */}
+            {/* <OrbitControls ref={controlRef} minDistance={3.2} maxDistance={5} /> */}
+            <OrbitControls ref={controlRef} />
             <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} />
           </Canvas>
         </div>

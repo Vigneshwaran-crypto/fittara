@@ -184,8 +184,9 @@ const Home = ({ noTopBar = false }) => {
           <div className="categoryListHolder">
             <div className="listScrollArea">
               <div className="categoryList">
-                {cateList.map((item) => (
+                {cateList.map((item, ind) => (
                   <div
+                    key={ind}
                     className="categoryItem"
                     onClick={onCatItemClick.bind(this, item)}
                   >
@@ -198,11 +199,12 @@ const Home = ({ noTopBar = false }) => {
             </div>
           </div>
 
-          <div className="customizeTitle">New Arrivals</div>
+          {/* <div className="customizeTitle">New Arrivals</div> */}
+          <div className="customizeTitle">Acheived Works</div>
 
           <div className="prodList">
-            {prods.map((item) => (
-              <div className="prodItem">
+            {prods.map((item, ind) => (
+              <div className="prodItem" key={ind}>
                 <img className="prodImg" src={item.img} />
                 <div className="namePriceTag">
                   {item.prod}
@@ -215,11 +217,11 @@ const Home = ({ noTopBar = false }) => {
 
           <div className="offersList">
             <div className="offerConst">
-              {offersList.map((item) => (
-                <img className="offerImg" src={item} />
+              {offersList.map((item, ind) => (
+                <img className="offerImg" src={item} key={ind} />
               ))}
-              {offersList.map((item) => (
-                <img className="offerImg" src={item} />
+              {offersList.map((item, ind) => (
+                <img className="offerImg" src={item} key={ind} />
               ))}
             </div>
           </div>
