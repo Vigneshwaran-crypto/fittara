@@ -101,8 +101,9 @@ import toast from "react-hot-toast";
 import { placeOrder } from "../../../Api/ShopService";
 import hoodie from "../../../Assets/elems/swater.glb";
 import cap from "../../../Assets/elems/cap.glb";
-import bag from "../../../Assets/elems/baggy.glb";
-import mug from "../../../Assets/elems/mug.glb";
+import bag from "../../../Assets/elems/bag.glb";
+// import mug from "../../../Assets/elems/mug.glb";
+import mug from "../../../Assets/elems/cup.glb";
 import bottle from "../../../Assets/elems/bottle.glb";
 // import modelObj from "../../../Assets/3dFiles/swater.glb";
 
@@ -136,7 +137,7 @@ const ControlUpdater = ({ controlRef, groupMeshRef }) => {
 const Editor = () => {
   const dispatch = useDispatch();
   // const { nodes, materials } = useGLTF(hoodie);
-  const { nodes, materials } = useGLTF(bag);
+  const { nodes, materials } = useGLTF(mug);
 
   console.log("nodes :", nodes);
   console.log("materials :", materials);
@@ -150,9 +151,8 @@ const Editor = () => {
   const cameraRef = useRef(null);
   const objContRef = useRef(null);
   // const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry); // hoodie
-  // const [geometry, setGeometry] = useState(nodes.Object_27.geometry); // bag
-  const [geometry, setGeometry] = useState(nodes.Object_12_2.geometry); // bagTest
-  // const [geometry, setGeometry] = useState(nodes.Cloth_mesh_1.geometry); // polo
+  // const [geometry, setGeometry] = useState(nodes.Object_11_1.geometry); // bag
+  const [geometry, setGeometry] = useState(nodes.cup4_cup_shd_0_2.geometry); // cup
   const uv = geometry.attributes.uv.array;
 
   const shopDetails = useSelector(({ main }) => main.shop);
@@ -204,16 +204,16 @@ const Editor = () => {
   //   texts: [],
   // });
   const [chosenComp, setChosenComp] = useState({
-    id: 3,
-    part: "FrontPrint",
-    geo: nodes.Object_12_2.geometry,
-    mat: materials.frontPrint,
+    id: 2,
+    part: "printable",
+    geo: nodes.cup4_cup_shd_0_2.geometry,
+    mat: materials.printable,
     txture: null,
     color: "#FFFEFE",
     ref: useRef(null),
-    defPos: { x: 730.7, y: 1158.5 },
+    defPos: { x: 652.4, y: 1770.0 },
     defRot: 1,
-    defScal: 10,
+    defScal: 6.08,
     images: [],
     texts: [],
   });
@@ -234,16 +234,16 @@ const Editor = () => {
   // });
 
   const [chosenMesh, setChosenMesh] = useState({
-    id: 3,
-    part: "FrontPrint",
-    geo: nodes.Object_12_2.geometry,
-    mat: materials.frontPrint,
+    id: 2,
+    part: "printable",
+    geo: nodes.cup4_cup_shd_0_2.geometry,
+    mat: materials.printable,
     txture: null,
     color: "#FFFEFE",
     ref: useRef(null),
-    defPos: { x: 730.7, y: 1158.5 },
+    defPos: { x: 652.4, y: 1770.0 },
     defRot: 1,
-    defScal: 10,
+    defScal: 6.08,
     images: [],
     texts: [],
   });
@@ -378,13 +378,13 @@ const Editor = () => {
   //   },
   // ]);
 
-  // 20 - handle
+  //BAG
   const [texture, setTexture] = useState([
     {
       id: 1,
-      part: "Holder",
-      geo: nodes.Object_20.geometry,
-      mat: materials.holder,
+      part: "cup",
+      geo: nodes.cup4_cup_shd_0_1.geometry,
+      mat: materials.cup,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
@@ -396,153 +396,33 @@ const Editor = () => {
     },
     {
       id: 2,
-      part: "Front",
-      geo: nodes.Object_12_1.geometry,
-      mat: materials.front,
-      txture: null,
+      part: "printable",
+      geo: nodes.cup4_cup_shd_0_2.geometry,
+      mat: materials.printable,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
-      defPos: { x: 610.7, y: 333.5 },
-      defRot: 87.7,
-      defScal: 3.1,
+      defPos: { x: 652.4, y: 1770.0 },
+      defRot: 1,
+      defScal: 6.08,
       images: [],
       texts: [],
     },
     {
       id: 3,
-      part: "FrontPrint",
-      geo: nodes.Object_12_2.geometry,
-      mat: materials.frontPrint,
+      part: "remain",
+      geo: nodes.cup4_white_shd_0.geometry,
+      mat: materials.remain,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
-      defPos: { x: 730.7, y: 1158.5 },
-      defRot: 1,
-      defScal: 10,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 4,
-      part: "Back",
-      geo: nodes.Object_11.geometry,
-      mat: materials.back,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 610.7, y: 333.5 },
+      defPos: { x: 652.4, y: 300 },
       defRot: 87.7,
-      defScal: 3.1,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 5,
-      part: "BackPrint",
-      geo: nodes.Object_11_1.geometry,
-      mat: materials.backPrint,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 610.7, y: 333.5 },
-      defRot: 87.7,
-      defScal: 3.1,
+      defScal: 3.6,
       images: [],
       texts: [],
     },
   ]);
-
-  //7 - left , 8 - rght hands
-
-  // const [texture, setTexture] = useState([
-  //   {
-  //     id: 1,
-  //     part: "Front",
-  //     geo: nodes.Cloth_mesh_5.geometry,
-  //     mat: materials.front,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 610.7, y: 333.5 },
-  //     defRot: 87.7,
-  //     defScal: 3.1,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 2,
-  //     part: "Back",
-  //     geo: nodes.Cloth_mesh_9.geometry,
-  //     mat: materials.back,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 1250.8, y: 974.5 },
-  //     defRot: 87.7,
-  //     defScal: 3.6,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 3,
-  //     part: "Left Hand",
-  //     geo: nodes.Cloth_mesh_7.geometry,
-  //     mat: materials.left,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 652.4, y: 300 },
-  //     defRot: 87.7,
-  //     defScal: 3.6,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 4,
-  //     part: "Right Hand",
-  //     geo: nodes.Cloth_mesh_4.geometry,
-  //     mat: materials.right,
-  //     txture: null,
-  //     ref: useRef(null),
-  //     color: "#FFFEFE",
-  //     defPos: { x: 1527, y: 333.5 },
-  //     defRot: 95.3,
-  //     defScal: 1,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 5,
-  //     part: "Remain",
-  //     geo: nodes.Cloth_mesh_8.geometry,
-  //     mat: materials.remain,
-  //     txture: null,
-  //     ref: useRef(null),
-  //     color: "#FFFEFE",
-  //     defPos: { x: 1527, y: 333.5 },
-  //     defRot: 95.3,
-  //     defScal: 1,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 6,
-  //     part: "polo",
-  //     geo: nodes.Cloth_mesh_3.geometry,
-  //     mat: materials.polo,
-  //     txture: null,
-  //     ref: useRef(null),
-  //     color: "#FFFEFE",
-  //     defPos: { x: 1527, y: 333.5 },
-  //     defRot: 95.3,
-  //     defScal: 1,
-  //     images: [],
-  //     texts: [],
-  //   },
-  // ]);
-
-  // 2 - back frame
 
   const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" });
   const [defMeshRot, setdefMeshRot] = useState([0, 0, 0]);
@@ -696,7 +576,6 @@ const Editor = () => {
   //     break;
   //   case "BACKWARD":
   //     yVal += moveSpeed;
-
   //     break;
   //   case "LEFT":
   //     xVal -= moveSpeed;
@@ -719,27 +598,58 @@ const Editor = () => {
             const itemArray = updatedItem[focTab ? "images" : "texts"];
             const chosenItem = itemArray[chosenInd];
 
-            let moveSpeed = focTab ? 5 : 15;
+            const moveSpeed = focTab ? 5 : 15;
+
+            // 1 - hoodie
+            // 2 - bag
+
+            const cords = {
+              1: {
+                FORWARD: { axis: "x", value: moveSpeed },
+                BACKWARD: { axis: "x", value: -moveSpeed },
+                LEFT: { axis: "y", value: -moveSpeed },
+                RIGHT: { axis: "y", value: moveSpeed },
+              },
+              2: {
+                FORWARD: { axis: "y", value: -moveSpeed },
+                BACKWARD: { axis: "y", value: moveSpeed },
+                LEFT: { axis: "x", value: -moveSpeed },
+                RIGHT: { axis: "x", value: moveSpeed },
+              },
+            };
+
+            const moves = {
+              FORWARD: { axis: "y", value: -moveSpeed },
+              BACKWARD: { axis: "y", value: moveSpeed },
+              LEFT: { axis: "x", value: -moveSpeed },
+              RIGHT: { axis: "x", value: moveSpeed },
+            };
 
             let xVal = chosenItem.position.x;
             let yVal = chosenItem.position.y;
 
-            switch (joyPos?.direction) {
-              case "FORWARD":
-                xVal += moveSpeed;
-                break;
-              case "BACKWARD":
-                xVal -= moveSpeed;
-                break;
-              case "LEFT":
-                yVal -= moveSpeed;
-                break;
-              case "RIGHT":
-                yVal += moveSpeed;
-                break;
-              default:
-                break;
+            if (joyPos?.direction) {
+              const { axis, value } = moves[joyPos?.direction];
+              if (axis === "x") xVal += value;
+              if (axis === "y") yVal += value;
             }
+
+            // switch (joyPos?.direction) {
+            //   case "FORWARD":
+            //     xVal += moveSpeed;
+            //     break;
+            //   case "BACKWARD":
+            //     xVal -= moveSpeed;
+            //     break;
+            //   case "LEFT":
+            //     yVal -= moveSpeed;
+            //     break;
+            //   case "RIGHT":
+            //     yVal += moveSpeed;
+            //     break;
+            //   default:
+            //     break;
+            // }
 
             itemArray[chosenInd] = {
               ...chosenItem,
@@ -800,8 +710,6 @@ const Editor = () => {
 
   const renderCanvas = () => {
     // if (!imageLoaded) return;
-
-    console.log("renderCanvas called", uv);
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -1019,8 +927,8 @@ const Editor = () => {
               ...arrayToUpdate[chosenInd].position,
               // x: mot ? newPos : arrayToUpdate[chosenInd].position.x,
               // y: !mot ? newPos : arrayToUpdate[chosenInd].position.y,
-              x: mot ? newPos : arrayToUpdate[chosenInd].position.y,
-              y: !mot ? newPos : arrayToUpdate[chosenInd].position.x,
+              x: mot ? newPos : arrayToUpdate[chosenInd].position.x,
+              y: !mot ? newPos : arrayToUpdate[chosenInd].position.y,
             },
           };
 
@@ -1988,8 +1896,7 @@ const Editor = () => {
                     className="sliders"
                     step={0.01}
                     min={0.1}
-                    // max={10}
-                    max={100}
+                    max={10}
                     value={
                       chosenComp[focTab ? "images" : "texts"][chosenInd]
                         ?.scale ?? 0
