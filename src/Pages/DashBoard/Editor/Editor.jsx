@@ -144,8 +144,8 @@ const Editor = () => {
   // const { nodes, materials } = useGLTF(hoodie);
   const { nodes, materials } = useGLTF(bottle);
 
-  console.log("nodes :", nodes);
-  console.log("materials :", materials);
+  // console.log("nodes :", nodes);
+  // console.log("materials :", materials);
 
   const navigation = useNavigate();
   const groupMeshRef = useRef(null);
@@ -1410,9 +1410,8 @@ const Editor = () => {
           ref={canvasRef}
           id="uvCanvas"
           style={{
-            width: "30%",
-            // width: "100%",
-            // display: "none",
+            width: "100%",
+            display: "none",
           }}
         />
 

@@ -17,12 +17,16 @@ import girlBG from "../../Assets/carousel/girlBG.png";
 import coolBG from "../../Assets/carousel/coolBG.png";
 import blueBg from "../../Assets/carousel/darkBlueBg.png";
 
-import apron from "../../Assets/products/apron.png";
-import bag from "../../Assets/products/bag.png";
-import chefCoat from "../../Assets/products/chefCoat.png";
-import cup from "../../Assets/products/cup.png";
-import hoodie from "../../Assets/products/hoodie.png";
-import tshirt from "../../Assets/products/tshirt.png";
+import cap from "../../Assets/products/cap.png";
+// import bag from "../../Assets/products/bag.png";
+import bag from "../../Assets/products/tote.png";
+// import chefCoat from "../../Assets/products/chefCoat.png";
+import bottle from "../../Assets/products/bottle.png";
+// import cup from "../../Assets/products/cup.png";
+import cup from "../../Assets/products/mug2.png";
+// import hoodie from "../../Assets/products/hoodie.png";
+import hoodie from "../../Assets/sides/front2.png";
+import tshirt from "../../Assets/products/tees.png";
 
 import offer1 from "../../Assets/offers/offer1.png";
 import offer2 from "../../Assets/offers/offer2.png";
@@ -78,11 +82,11 @@ const Home = ({ noTopBar = false }) => {
 
   const cateList = [
     { prod: "Hoodie", img: hoodie },
-    { prod: "Tote bag", img: bag },
-    { prod: "cup", img: cup },
     { prod: "Tshirt", img: tshirt },
-    { prod: "Apron", img: apron },
-    { prod: "Coat", img: chefCoat },
+    { prod: "Tote bag", img: bag },
+    { prod: "Cap", img: cap },
+    { prod: "cup", img: cup },
+    { prod: "Bottle", img: bottle },
   ];
 
   const offersList = [

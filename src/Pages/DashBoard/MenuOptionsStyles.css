@@ -636,8 +636,10 @@
 .threeDHolder {
   display: flex;
   /* border: 1px solid red; */
-  max-height: 80% !important;
-  margin: auto;
+  max-height: 90% !important;
+  /* margin: auto; */
+  margin-inline: auto;
+  margin-bottom: auto;
   cursor: grab;
 }
 
