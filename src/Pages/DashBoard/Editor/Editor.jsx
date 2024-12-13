@@ -142,7 +142,7 @@ const ControlUpdater = ({ controlRef, groupMeshRef }) => {
 const Editor = () => {
   const dispatch = useDispatch();
   // const { nodes, materials } = useGLTF(hoodie);
-  const { nodes, materials } = useGLTF(cap);
+  const { nodes, materials } = useGLTF(bottle);
 
   console.log("nodes :", nodes);
   console.log("materials :", materials);
@@ -159,7 +159,10 @@ const Editor = () => {
   // const [geometry, setGeometry] = useState(nodes.Object_11_1.geometry); // bag
   // const [geometry, setGeometry] = useState(nodes.cup4_cup_shd_0_2.geometry); // mug
   // const [geometry, setGeometry] = useState(nodes.Object_0_1.geometry); // tshirt
-  const [geometry, setGeometry] = useState(nodes.gorra002__0_1.geometry); // cap
+  // const [geometry, setGeometry] = useState(nodes.gorra002__0_1.geometry); // cap
+  const [geometry, setGeometry] = useState(
+    nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry
+  ); // bottle
   const uv = geometry.attributes.uv.array;
 
   const shopDetails = useSelector(({ main }) => main.shop);
@@ -213,14 +216,14 @@ const Editor = () => {
   const [chosenComp, setChosenComp] = useState({
     id: 1,
     part: "printable",
-    geo: nodes.gorra002__0_2.geometry,
+    geo: nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry,
     mat: materials.printable,
     txture: null,
     color: "#FFFEFE",
     ref: useRef(null),
-    defPos: { x: 1327.4, y: 510.0 },
+    defPos: { x: 397.4, y: 1275.0 },
     defRot: 1,
-    defScal: 2.84,
+    defScal: 4.02,
     images: [],
     texts: [],
   });
@@ -243,14 +246,14 @@ const Editor = () => {
   const [chosenMesh, setChosenMesh] = useState({
     id: 1,
     part: "printable",
-    geo: nodes.gorra002__0_2.geometry,
+    geo: nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry,
     mat: materials.printable,
     txture: null,
     color: "#FFFEFE",
     ref: useRef(null),
-    defPos: { x: 1327.4, y: 510.0 },
+    defPos: { x: 397.4, y: 1275.0 },
     defRot: 1,
-    defScal: 2.84,
+    defScal: 4.02,
     images: [],
     texts: [],
   });
@@ -390,8 +393,22 @@ const Editor = () => {
     {
       id: 1,
       part: "printable",
-      geo: nodes.gorra002__0_2.geometry,
+      geo: nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry,
       mat: materials.printable,
+      txture: null,
+      color: "#FFFEFE",
+      ref: useRef(null),
+      defPos: { x: 397.4, y: 1275.0 },
+      defRot: 1,
+      defScal: 4.02,
+      images: [],
+      texts: [],
+    },
+    {
+      id: 2,
+      part: "cap",
+      geo: nodes.Lid_Water_Bottle_Lid_0.geometry,
+      mat: materials.Water_Bottle_Lid,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
@@ -402,10 +419,24 @@ const Editor = () => {
       texts: [],
     },
     {
-      id: 2,
-      part: "cap",
-      geo: nodes.gorra002__0_1.geometry,
-      mat: materials.cap,
+      id: 3,
+      part: "body",
+      geo: nodes.Bottle_Water_Bottle_Yellow_Part_0_1.geometry,
+      mat: materials.body,
+      txture: null,
+      color: "#FFFEFE",
+      ref: useRef(null),
+      defPos: { x: 397.4, y: 960.0 },
+      defRot: 354.43,
+      defScal: 3.6,
+      images: [],
+      texts: [],
+    },
+    {
+      id: 4,
+      part: "remain",
+      geo: nodes.Bottle_Water_Bottle_Metal_Part_0.geometry,
+      mat: materials.Water_Bottle_Metal_Part,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
