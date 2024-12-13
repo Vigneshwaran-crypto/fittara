@@ -1812,3 +1812,35 @@ export const sampleSize = [
 //     texts: [],
 //   },
 // ]);
+
+// Cap
+// const [texture, setTexture] = useState([
+//   {
+//     id: 1,
+//     part: "printable",
+//     geo: nodes.gorra002__0_2.geometry,
+//     mat: materials.printable,
+//     txture: null,
+//     color: "#FFFEFE",
+//     ref: useRef(null),
+//     defPos: { x: 727.4, y: 1095.0 },
+//     defRot: 1,
+//     defScal: 7,
+//     images: [],
+//     texts: [],
+//   },
+//   {
+//     id: 2,
+//     part: "cap",
+//     geo: nodes.gorra002__0_1.geometry,
+//     mat: materials.cap,
+//     txture: null,
+//     color: "#FFFEFE",
+//     ref: useRef(null),
+//     defPos: { x: 397.4, y: 960.0 },
+//     defRot: 354.43,
+//     defScal: 3.6,
+//     images: [],
+//     texts: [],
+//   },
+// ]);

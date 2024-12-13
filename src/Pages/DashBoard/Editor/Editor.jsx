@@ -108,7 +108,6 @@ import hoodie from "../../../Assets/elems/swater.glb";
 import cap from "../../../Assets/elems/cap.glb";
 import bag from "../../../Assets/elems/bag.glb";
 import mug from "../../../Assets/elems/cup.glb";
-// import tees from "../../../Assets/elems/tshirt.glb";
 import tees from "../../../Assets/elems/tshirt.glb";
 import bottle from "../../../Assets/elems/bottle.glb";
 // import modelObj from "../../../Assets/3dFiles/swater.glb";
@@ -143,7 +142,7 @@ const ControlUpdater = ({ controlRef, groupMeshRef }) => {
 const Editor = () => {
   const dispatch = useDispatch();
   // const { nodes, materials } = useGLTF(hoodie);
-  const { nodes, materials } = useGLTF(tees);
+  const { nodes, materials } = useGLTF(cap);
 
   console.log("nodes :", nodes);
   console.log("materials :", materials);
@@ -159,7 +158,8 @@ const Editor = () => {
   // const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry); // hoodie
   // const [geometry, setGeometry] = useState(nodes.Object_11_1.geometry); // bag
   // const [geometry, setGeometry] = useState(nodes.cup4_cup_shd_0_2.geometry); // mug
-  const [geometry, setGeometry] = useState(nodes.Object_0_1.geometry); // tshirt
+  // const [geometry, setGeometry] = useState(nodes.Object_0_1.geometry); // tshirt
+  const [geometry, setGeometry] = useState(nodes.gorra002__0_1.geometry); // cap
   const uv = geometry.attributes.uv.array;
 
   const shopDetails = useSelector(({ main }) => main.shop);
@@ -212,15 +212,15 @@ const Editor = () => {
   // });
   const [chosenComp, setChosenComp] = useState({
     id: 1,
-    part: "front",
-    geo: nodes.Object_0_1.geometry,
-    mat: materials.front,
+    part: "printable",
+    geo: nodes.gorra002__0_2.geometry,
+    mat: materials.printable,
     txture: null,
     color: "#FFFEFE",
     ref: useRef(null),
-    defPos: { x: 397.4, y: 960.0 },
-    defRot: 354.43,
-    defScal: 3.6,
+    defPos: { x: 1327.4, y: 510.0 },
+    defRot: 1,
+    defScal: 2.84,
     images: [],
     texts: [],
   });
@@ -242,15 +242,15 @@ const Editor = () => {
 
   const [chosenMesh, setChosenMesh] = useState({
     id: 1,
-    part: "front",
-    geo: nodes.Object_0_1.geometry,
-    mat: materials.front,
+    part: "printable",
+    geo: nodes.gorra002__0_2.geometry,
+    mat: materials.printable,
     txture: null,
     color: "#FFFEFE",
     ref: useRef(null),
-    defPos: { x: 397.4, y: 960.0 },
-    defRot: 354.43,
-    defScal: 3.6,
+    defPos: { x: 1327.4, y: 510.0 },
+    defRot: 1,
+    defScal: 2.84,
     images: [],
     texts: [],
   });
@@ -389,84 +389,28 @@ const Editor = () => {
   const [texture, setTexture] = useState([
     {
       id: 1,
-      part: "front",
-      geo: nodes.Object_0_1.geometry,
-      mat: materials.front,
+      part: "printable",
+      geo: nodes.gorra002__0_2.geometry,
+      mat: materials.printable,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
-      defPos: { x: 397.4, y: 960.0 },
-      defRot: 354.43,
-      defScal: 3.6,
+      defPos: { x: 727.4, y: 1095.0 },
+      defRot: 1,
+      defScal: 7,
       images: [],
       texts: [],
     },
     {
       id: 2,
-      part: "back",
-      geo: nodes.Object_0_2.geometry,
-      mat: materials.back,
+      part: "cap",
+      geo: nodes.gorra002__0_1.geometry,
+      mat: materials.cap,
       txture: null,
       color: "#FFFEFE",
       ref: useRef(null),
-      defPos: { x: 1327.4, y: 510.0 },
-      defRot: 1,
-      defScal: 2.84,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 3,
-      part: "left",
-      geo: nodes.Object_0_3.geometry,
-      mat: materials.left,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 1507.4, y: 1785.0 },
-      defRot: 1,
-      defScal: 2.25,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 4,
-      part: "right",
-      geo: nodes.Object_0_4.geometry,
-      mat: materials.right,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 352.4, y: 1785.0 },
-      defRot: 1,
-      defScal: 2.34,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 5,
-      part: "remain",
-      geo: nodes.Object_0_5.geometry,
-      mat: materials.remain,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 652.4, y: 300 },
-      defRot: 87.7,
-      defScal: 3.6,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 6,
-      part: "whole",
-      geo: nodes.Object_6.geometry,
-      mat: materials.material,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 652.4, y: 300 },
-      defRot: 87.7,
+      defPos: { x: 397.4, y: 960.0 },
+      defRot: 354.43,
       defScal: 3.6,
       images: [],
       texts: [],
