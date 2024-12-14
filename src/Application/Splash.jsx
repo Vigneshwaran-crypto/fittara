@@ -51,8 +51,11 @@ const Splash = () => {
   const checkForToken = () => {
     const userToken = getUserToken();
     if (userToken) {
+      console.log("userToken navigate");
       navigation("/dashboard/products", { replace: true });
     } else {
+      console.log("Home navigate");
+
       navigation("/home", { replace: true });
       // sessionStorage.setItem("curPath", "/login");
       // navigation("/login", { replace: true });

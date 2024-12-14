@@ -220,7 +220,8 @@
   text-shadow: rgba(99, 99, 99, 1) 0px 2px 8px 0px;
 }
 .categoryItem:hover .categoryImg {
-  filter: blur(2px);
+  /* filter: blur(2px); */
+  filter: drop-shadow(0 0 0.6rem grey);
 }
 
 .categoryItem:hover .catCustBt {

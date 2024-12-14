@@ -73,7 +73,6 @@ import {
 } from "@mui/base";
 import { IoText } from "react-icons/io5";
 import { FaImage } from "react-icons/fa6";
-// import { FormLabel, Radio, RadioGroup, Sheet } from "@mui/joy";
 import FormLabel from "@mui/joy/FormLabel";
 import Radio from "@mui/joy/Radio";
 import RadioGroup from "@mui/joy/RadioGroup";
@@ -86,7 +85,7 @@ import Done from "@mui/icons-material/Done";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Joystick } from "react-joystick-component";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   GLTFExporter,
@@ -106,11 +105,10 @@ import toast from "react-hot-toast";
 import { placeOrder } from "../../../Api/ShopService";
 import hoodie from "../../../Assets/elems/swater.glb";
 import cap from "../../../Assets/elems/cap.glb";
-import bag from "../../../Assets/elems/bag.glb";
+import tote from "../../../Assets/elems/bag.glb";
 import mug from "../../../Assets/elems/cup.glb";
 import tees from "../../../Assets/elems/tshirt.glb";
 import bottle from "../../../Assets/elems/bottle.glb";
-// import modelObj from "../../../Assets/3dFiles/swater.glb";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -139,15 +137,458 @@ const ControlUpdater = ({ controlRef, groupMeshRef }) => {
   return null;
 };
 
-const Editor = () => {
+const Editor = (props) => {
   const dispatch = useDispatch();
-  // const { nodes, materials } = useGLTF(hoodie);
-  const { nodes, materials } = useGLTF(bottle);
+  const navigation = useNavigate();
+  const loc = useLocation();
+
+  const prod = loc?.state?.prod || 6;
+
+  const models = {
+    1: hoodie,
+    2: tees,
+    3: tote,
+    4: cap,
+    5: mug,
+    6: bottle,
+  };
+
+  const { nodes, materials } = useGLTF(models[prod]);
+
+  const meshes = {
+    1: [
+      {
+        id: 1,
+        part: "Front",
+        geo: nodes?.g_Hoodie_Hoodie_0_3?.geometry,
+        mat: materials.front,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 610.7, y: 333.5 },
+        defRot: 87.7,
+        defScal: 3.1,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 2,
+        part: "Back",
+        geo: nodes?.g_Hoodie_Hoodie_0_5?.geometry,
+        mat: materials.back,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 1250.8, y: 974.5 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 3,
+        part: "Left Hand",
+        geo: nodes?.g_Hoodie_Hoodie_0_6?.geometry,
+        mat: materials.left,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 4,
+        part: "Right Hand",
+        geo: nodes?.g_Hoodie_Hoodie_0_8?.geometry,
+        mat: materials.right,
+        txture: null,
+        ref: useRef(null),
+        color: "#FFFEFE",
+        defPos: { x: 1527, y: 333.5 },
+        defRot: 95.3,
+        defScal: 1,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 5,
+        part: "Cap",
+        geo: nodes?.g_Hoodie_Hoodie_0_4?.geometry,
+        mat: materials.cape,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 6,
+        part: "Pocket",
+        geo: nodes?.g_Hoodie_Hoodie_0_2?.geometry,
+        mat: materials.poacket,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 100.1, y: 333.5 },
+        defRot: 87.7,
+        defScal: 1.9,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 7,
+        part: "Left Cuff",
+        geo: nodes?.g_Hoodie_Hoodie_0_7?.geometry,
+        mat: materials.lcuff,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 8,
+        part: "Right Cuff",
+        geo: nodes?.g_Hoodie_Hoodie_0_9?.geometry,
+        mat: materials.rcuff,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      // {
+      //   id: 9,
+      //   part: "Hoodie",
+      //   geo: nodes?.g_Hoodie_Hoodie_0_1?.geometry,
+      //   mat: materials.Hoodie,
+      //   txture: null,
+      //   color: "#FFFEFE",
+      //   ref: useRef(null),
+      //   defPos: { x: 652.4, y: 300 },
+      //   defRot: 87.7,
+      //   defScal: 3.6,
+      //   images: [],
+      //   texts: [],
+      // },
+    ],
+    2: [
+      {
+        id: 1,
+        part: "front",
+        geo: nodes?.Object_0_1?.geometry,
+        mat: materials.front,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 397.4, y: 960.0 },
+        defRot: 354.43,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 2,
+        part: "back",
+        geo: nodes?.Object_0_2?.geometry,
+        mat: materials.back,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 1327.4, y: 510.0 },
+        defRot: 1,
+        defScal: 2.84,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 3,
+        part: "left",
+        geo: nodes?.Object_0_3?.geometry,
+        mat: materials.left,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 1507.4, y: 1785.0 },
+        defRot: 1,
+        defScal: 2.25,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 4,
+        part: "right",
+        geo: nodes?.Object_0_4?.geometry,
+        mat: materials.right,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 352.4, y: 1785.0 },
+        defRot: 1,
+        defScal: 2.34,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 5,
+        part: "remain",
+        geo: nodes?.Object_0_5?.geometry,
+        mat: materials.remain,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 6,
+        part: "whole",
+        geo: nodes?.Object_6?.geometry,
+        mat: materials.material,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+    ],
+    3: [
+      {
+        id: 1,
+        part: "FrontPrint",
+        geo: nodes?.Object_12_2?.geometry,
+        mat: materials.frontPrint,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 730.7, y: 1158.5 },
+        defRot: 1,
+        defScal: 10,
+        images: [],
+        texts: [],
+      },
+
+      {
+        id: 2,
+        part: "BackPrint",
+        geo: nodes?.Object_11_1?.geometry,
+        mat: materials.backPrint,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 805.7, y: 1053.5 },
+        defRot: 1,
+        defScal: 2.64,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 3,
+        part: "Front",
+        geo: nodes?.Object_12_1?.geometry,
+        mat: materials.front,
+        txture: null,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 610.7, y: 333.5 },
+        defRot: 87.7,
+        defScal: 3.1,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 4,
+        part: "Back",
+        geo: nodes?.Object_11?.geometry,
+        mat: materials.back,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 610.7, y: 333.5 },
+        defRot: 87.7,
+        defScal: 3.1,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 5,
+        part: "Holder",
+        geo: nodes?.Object_20?.geometry,
+        mat: materials.holder,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+    ],
+    4: [
+      {
+        id: 1,
+        part: "printable",
+        geo: nodes?.gorra002__0_2?.geometry,
+        mat: materials.printable,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 727.4, y: 1095.0 },
+        defRot: 1,
+        defScal: 7,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 2,
+        part: "cap",
+        geo: nodes?.gorra002__0_1?.geometry,
+        mat: materials.cap,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 397.4, y: 960.0 },
+        defRot: 354.43,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+    ],
+    5: [
+      {
+        id: 1,
+        part: "printable",
+        geo: nodes?.cup4_cup_shd_0_2?.geometry,
+        mat: materials.printable,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 1770.0 },
+        defRot: 1,
+        defScal: 6.08,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 2,
+        part: "cup",
+        geo: nodes?.cup4_cup_shd_0_1?.geometry,
+        mat: materials.cup,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 3,
+        part: "remain",
+        geo: nodes?.cup4_white_shd_0?.geometry,
+        mat: materials.remain,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 652.4, y: 300 },
+        defRot: 87.7,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+    ],
+    6: [
+      {
+        id: 1,
+        part: "printable",
+        geo: nodes?.Bottle_Water_Bottle_Yellow_Part_0_2?.geometry,
+        mat: materials.printable,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 397.4, y: 1275.0 },
+        defRot: 1,
+        defScal: 4.02,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 2,
+        part: "cap",
+        geo: nodes?.Lid_Water_Bottle_Lid_0?.geometry,
+        mat: materials.Water_Bottle_Lid,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 727.4, y: 1095.0 },
+        defRot: 1,
+        defScal: 7,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 3,
+        part: "body",
+        geo: nodes?.Bottle_Water_Bottle_Yellow_Part_0_1?.geometry,
+        mat: materials.body,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 397.4, y: 960.0 },
+        defRot: 354.43,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+      {
+        id: 4,
+        part: "remain",
+        geo: nodes?.Bottle_Water_Bottle_Metal_Part_0?.geometry,
+        mat: materials.Water_Bottle_Metal_Part,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 397.4, y: 960.0 },
+        defRot: 354.43,
+        defScal: 3.6,
+        images: [],
+        texts: [],
+      },
+    ],
+  };
+  const aptPos = {
+    1: { y: 0.2, z: 5 },
+    2: { y: -30, z: 150 },
+    3: { y: -1.5, z: 10 },
+    4: { y: 0, z: 7 },
+    5: { y: -1, z: 35 },
+    6: { y: -9, z: 45 },
+  };
 
   // console.log("nodes :", nodes);
   // console.log("materials :", materials);
 
-  const navigation = useNavigate();
   const groupMeshRef = useRef(null);
 
   const wholeViewRef = useRef(null);
@@ -155,14 +596,17 @@ const Editor = () => {
   const controlRef = useRef(null);
   const cameraRef = useRef(null);
   const objContRef = useRef(null);
+
   // const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry); // hoodie
   // const [geometry, setGeometry] = useState(nodes.Object_11_1.geometry); // bag
   // const [geometry, setGeometry] = useState(nodes.cup4_cup_shd_0_2.geometry); // mug
   // const [geometry, setGeometry] = useState(nodes.Object_0_1.geometry); // tshirt
   // const [geometry, setGeometry] = useState(nodes.gorra002__0_1.geometry); // cap
-  const [geometry, setGeometry] = useState(
-    nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry
-  ); // bottle
+  // const [geometry, setGeometry] = useState(
+  //   nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry
+  // ); // bottle
+
+  const [geometry, setGeometry] = useState(meshes[prod][0].geo);
   const uv = geometry.attributes.uv.array;
 
   const shopDetails = useSelector(({ main }) => main.shop);
@@ -199,254 +643,9 @@ const Editor = () => {
 
   const [isTxtEdit, setIsTxtEdit] = useState(false);
 
-  // const [chosenComp, setChosenComp] = useState({
-  //   id: 2,
-  //   part: "Front",
-  //   geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
-  //   mat: materials.Hoodie,
-  //   txture: null,
-  //   color: "",
-  //   ref: useRef(null),
-  //   defPos: { x: 610.7, y: 333.5 },
-  //   defRot: 87.7,
-  //   defScal: 3.1,
-  //   images: [],
-  //   texts: [],
-  // });
-  const [chosenComp, setChosenComp] = useState({
-    id: 1,
-    part: "printable",
-    geo: nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry,
-    mat: materials.printable,
-    txture: null,
-    color: "#FFFEFE",
-    ref: useRef(null),
-    defPos: { x: 397.4, y: 1275.0 },
-    defRot: 1,
-    defScal: 4.02,
-    images: [],
-    texts: [],
-  });
-
-  // const [chosenMesh, setChosenMesh] = useState({
-  //   id: 2,
-  //   part: "Front",
-  //   geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
-  //   mat: materials.front,
-  //   txture: null,
-  //   color: "",
-  //   ref: useRef(null),
-  //   defPos: { x: 610.7, y: 333.5 },
-  //   defRot: 87.7,
-  //   defScal: 3.1,
-  //   images: [],
-  //   texts: [],
-  // });
-
-  const [chosenMesh, setChosenMesh] = useState({
-    id: 1,
-    part: "printable",
-    geo: nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry,
-    mat: materials.printable,
-    txture: null,
-    color: "#FFFEFE",
-    ref: useRef(null),
-    defPos: { x: 397.4, y: 1275.0 },
-    defRot: 1,
-    defScal: 4.02,
-    images: [],
-    texts: [],
-  });
-
-  // const [texture, setTexture] = useState([
-  //   // {
-  //   //   id: 1,
-  //   //   part: "Hoodie",
-  //   //   geo: nodes.g_Hoodie_Hoodie_0_1.geometry,
-  //   //   mat: materials.Hoodie,
-  //   //   txture: null,
-  //   //   color: "#FFFEFE",
-  //   //   ref: useRef(null),
-  //   //   defPos: { x: 652.4, y: 300 },
-  //   //   defRot: 87.7,
-  //   //   defScal: 3.6,
-  //   //   images: [],
-  //   //   texts: [],
-  //   // },
-  //   {
-  //     id: 2,
-  //     part: "Front",
-  //     geo: nodes.g_Hoodie_Hoodie_0_3.geometry,
-  //     // mat: materials.Hoodie,
-  //     mat: materials.front,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 610.7, y: 333.5 },
-  //     defRot: 87.7,
-  //     defScal: 3.1,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 3,
-  //     part: "Pocket",
-  //     geo: nodes.g_Hoodie_Hoodie_0_2.geometry,
-  //     mat: materials.poacket,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 100.1, y: 333.5 },
-  //     defRot: 87.7,
-  //     defScal: 1.9,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 4,
-  //     part: "Back",
-  //     geo: nodes.g_Hoodie_Hoodie_0_5.geometry,
-  //     mat: materials.back,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 1250.8, y: 974.5 },
-  //     defRot: 87.7,
-  //     defScal: 3.6,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 5,
-  //     part: "Left Hand",
-  //     geo: nodes.g_Hoodie_Hoodie_0_6.geometry,
-  //     mat: materials.left,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 652.4, y: 300 },
-  //     defRot: 87.7,
-  //     defScal: 3.6,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 6,
-  //     part: "Right Hand",
-  //     geo: nodes.g_Hoodie_Hoodie_0_8.geometry,
-  //     mat: materials.right,
-  //     txture: null,
-  //     ref: useRef(null),
-  //     color: "#FFFEFE",
-  //     defPos: { x: 1527, y: 333.5 },
-  //     defRot: 95.3,
-  //     defScal: 1,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 7,
-  //     part: "Left Cuff",
-  //     geo: nodes.g_Hoodie_Hoodie_0_7.geometry,
-  //     mat: materials.lcuff,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 652.4, y: 300 },
-  //     defRot: 87.7,
-  //     defScal: 3.6,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 8,
-  //     part: "Right Cuff",
-  //     geo: nodes.g_Hoodie_Hoodie_0_9.geometry,
-  //     mat: materials.rcuff,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 652.4, y: 300 },
-  //     defRot: 87.7,
-  //     defScal: 3.6,
-  //     images: [],
-  //     texts: [],
-  //   },
-  //   {
-  //     id: 9,
-  //     part: "Cap",
-  //     geo: nodes.g_Hoodie_Hoodie_0_4.geometry,
-  //     mat: materials.cape,
-  //     txture: null,
-  //     color: "#FFFEFE",
-  //     ref: useRef(null),
-  //     defPos: { x: 652.4, y: 300 },
-  //     defRot: 87.7,
-  //     defScal: 3.6,
-  //     images: [],
-  //     texts: [],
-  //   },
-  // ]);
-
-  //BAG
-  const [texture, setTexture] = useState([
-    {
-      id: 1,
-      part: "printable",
-      geo: nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry,
-      mat: materials.printable,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 397.4, y: 1275.0 },
-      defRot: 1,
-      defScal: 4.02,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 2,
-      part: "cap",
-      geo: nodes.Lid_Water_Bottle_Lid_0.geometry,
-      mat: materials.Water_Bottle_Lid,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 727.4, y: 1095.0 },
-      defRot: 1,
-      defScal: 7,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 3,
-      part: "body",
-      geo: nodes.Bottle_Water_Bottle_Yellow_Part_0_1.geometry,
-      mat: materials.body,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 397.4, y: 960.0 },
-      defRot: 354.43,
-      defScal: 3.6,
-      images: [],
-      texts: [],
-    },
-    {
-      id: 4,
-      part: "remain",
-      geo: nodes.Bottle_Water_Bottle_Metal_Part_0.geometry,
-      mat: materials.Water_Bottle_Metal_Part,
-      txture: null,
-      color: "#FFFEFE",
-      ref: useRef(null),
-      defPos: { x: 397.4, y: 960.0 },
-      defRot: 354.43,
-      defScal: 3.6,
-      images: [],
-      texts: [],
-    },
-  ]);
+  const [chosenComp, setChosenComp] = useState(meshes[prod][0]);
+  const [chosenMesh, setChosenMesh] = useState(meshes[prod][0]);
+  const [texture, setTexture] = useState(meshes[prod]);
 
   const [color, setColor] = useState({ hex: "#ffffff", alpha: 1, rgb: "" });
   const [defMeshRot, setdefMeshRot] = useState([0, 0, 0]);
@@ -607,9 +806,6 @@ const Editor = () => {
 
             const moveSpeed = focTab ? 5 : 15;
 
-            // 1 - hoodie
-            // 2 - bag
-
             const cords = {
               1: {
                 FORWARD: { axis: "x", value: moveSpeed },
@@ -625,12 +821,7 @@ const Editor = () => {
               },
             };
 
-            const moves = {
-              FORWARD: { axis: "y", value: -moveSpeed },
-              BACKWARD: { axis: "y", value: moveSpeed },
-              LEFT: { axis: "x", value: -moveSpeed },
-              RIGHT: { axis: "x", value: moveSpeed },
-            };
+            const moves = prod === 1 ? cords[1] : cords[2];
 
             let xVal = chosenItem.position.x;
             let yVal = chosenItem.position.y;
@@ -932,8 +1123,6 @@ const Editor = () => {
             ...arrayToUpdate[chosenInd],
             position: {
               ...arrayToUpdate[chosenInd].position,
-              // x: mot ? newPos : arrayToUpdate[chosenInd].position.x,
-              // y: !mot ? newPos : arrayToUpdate[chosenInd].position.y,
               x: mot ? newPos : arrayToUpdate[chosenInd].position.x,
               y: !mot ? newPos : arrayToUpdate[chosenInd].position.y,
             },
@@ -951,7 +1140,6 @@ const Editor = () => {
     console.log("updating item :", updatedTextures);
     setTexture(updatedTextures);
     setIncre((prev) => prev + 1);
-    // setXValue(newPos);
 
     setPosVal({ x: mot ? newPos : posVal.x, y: !mot ? newPos : posVal.y });
   };
@@ -1184,63 +1372,10 @@ const Editor = () => {
     setFontColor(selCol);
   };
 
-  const filterMeshes = (scene, callback, i = 0) => {
-    const meshes = [];
-    const processNext = () => {
-      if (i < scene.children.length) {
-        const object = scene.children[i];
-        if (object.isMesh) {
-          const clonedMesh = object.clone();
-
-          // Remove textures for export to avoid complex memory issues
-          if (clonedMesh.material && clonedMesh.material.map) {
-            clonedMesh.material.map = null;
-            clonedMesh.material.needsUpdate = true;
-          }
-          meshes.push(clonedMesh);
-        }
-        i++;
-        setTimeout(processNext, 0); // Allow stack clearing
-      } else {
-        callback(meshes);
-      }
-    };
-
-    processNext(); // Start async recursive loop
-  };
-
   const onPlaceOrder = () => {
     const exporter = new GLTFExporter();
-
-    // exportRightHand();
-
-    // exportAllTextures();
-
     setIsEditor(!isEditor);
     smoothRightScroll();
-
-    // const meshesToExport = filterMeshes(groupMeshRef.current);
-    // const exportScene = new THREE.Scene();
-    // meshesToExport.forEach((mesh) => exportScene.add(mesh));
-
-    // exporter.parse(
-    //   texture[1].ref.current,
-    //   (result) => {
-
-    //     const blob = new Blob([result], { type: "model/gltf-binary" });
-    //     const req = new FormData();
-    //     req.append("file", blob, "updatedModel.glb");
-
-    //     saveModal(req)
-    //       .then((resVal) => {
-    //         console.log("saveModal res :", resVal);
-    //       })
-    //       .catch((err) => {
-    //         console.log("saveModal err :", err);
-    //       });
-    //   },
-    //   { binary: true }
-    // );
   };
 
   const exportRightHand = (rightHandNode) => {
@@ -2073,7 +2208,7 @@ const Editor = () => {
             }}
             camera={{
               fov: 35,
-              position: new THREE.Vector3(0, 0, 5),
+              position: new THREE.Vector3(0, 0, aptPos[prod].z),
               ref: cameraRef,
             }}
             shadows
@@ -2100,11 +2235,15 @@ const Editor = () => {
               intensity={0.9}
             />
 
-            <group position={[0, 0, 0]} rotation={[0, 0, 0]} ref={groupMeshRef}>
+            <group
+              position={[0, aptPos[prod].y, 0]}
+              rotation={[0, 0, 0]}
+              ref={groupMeshRef}
+            >
               {texture?.map((item) => (
                 <mesh
                   receiveShadow
-                  position={[0, -1, 0]}
+                  position={[0, 0, 0]}
                   rotation={defMeshRot}
                   key={item.id}
                   geometry={item.geo}
@@ -2125,7 +2264,7 @@ const Editor = () => {
             /> */}
             {/* <OrbitControls ref={controlRef} minDistance={3.2} maxDistance={5} /> */}
             <OrbitControls ref={controlRef} />
-            <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} />
+            {/* <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} /> */}
           </Canvas>
         </div>
 

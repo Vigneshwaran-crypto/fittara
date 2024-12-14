@@ -18,13 +18,9 @@ import coolBG from "../../Assets/carousel/coolBG.png";
 import blueBg from "../../Assets/carousel/darkBlueBg.png";
 
 import cap from "../../Assets/products/cap.png";
-// import bag from "../../Assets/products/bag.png";
 import bag from "../../Assets/products/tote.png";
-// import chefCoat from "../../Assets/products/chefCoat.png";
 import bottle from "../../Assets/products/bottle.png";
-// import cup from "../../Assets/products/cup.png";
 import cup from "../../Assets/products/mug2.png";
-// import hoodie from "../../Assets/products/hoodie.png";
 import hoodie from "../../Assets/sides/front2.png";
 import tshirt from "../../Assets/products/tees.png";
 
@@ -60,7 +56,6 @@ const Home = ({ noTopBar = false }) => {
     {
       title: "Be Bold, Be You – The Power to Customize is Yours!",
       bg: blueBg,
-      // txtColor: "#3C3D37",
       txtColor: "white",
     },
     {
@@ -81,12 +76,12 @@ const Home = ({ noTopBar = false }) => {
   ];
 
   const cateList = [
-    { prod: "Hoodie", img: hoodie },
-    { prod: "Tshirt", img: tshirt },
-    { prod: "Tote bag", img: bag },
-    { prod: "Cap", img: cap },
-    { prod: "cup", img: cup },
-    { prod: "Bottle", img: bottle },
+    { id: 1, prod: "Hoodie", img: hoodie, height: "80%", width: "100%" },
+    { id: 2, prod: "Tshirt", img: tshirt, height: "80%", width: "100%" },
+    { id: 3, prod: "Tote bag", img: bag, height: "80%", width: "100%" },
+    { id: 4, prod: "Cap", img: cap, height: "100%", width: "100%" },
+    { id: 5, prod: "cup", img: cup, height: "100%", width: "130%" },
+    { id: 6, prod: "Bottle", img: bottle, height: "100%", width: "100%" },
   ];
 
   const offersList = [
@@ -112,7 +107,7 @@ const Home = ({ noTopBar = false }) => {
 
   const onCatItemClick = (item) => {
     console.log("onCatItemClick item :", item);
-    navigation("/editor");
+    navigation("/editor", { state: { prod: item.id } });
   };
 
   return (
@@ -194,7 +189,11 @@ const Home = ({ noTopBar = false }) => {
                     className="categoryItem"
                     onClick={onCatItemClick.bind(this, item)}
                   >
-                    <img className="categoryImg" src={item.img} />
+                    <img
+                      className="categoryImg"
+                      style={{ height: item.height, width: item.width }}
+                      src={item.img}
+                    />
 
                     <div className="catCustBt customizeTitle">Customize</div>
                   </div>
