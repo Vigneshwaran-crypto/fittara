@@ -1436,9 +1436,13 @@ const Editor = (props) => {
       .map(([key]) => key);
 
     if (!noValuedKey.length) {
-      successToast("Address filled successfully");
+      successToast("Order placed successfully");
+
+      setTimeout(() => {
+        navigation("/home");
+      }, 100);
       // setIsPayment(true);
-      confirmOrder();
+      // confirmOrder();
     }
   };
 
@@ -2745,7 +2749,8 @@ const Editor = (props) => {
                     onClick={onPaymentClick}
                     endIcon={<ArrowForwardIcon sx={{ fontSize: "15px" }} />}
                   >
-                    Payment
+                    {/* Payment */}
+                    Check Out
                   </Button>
                 </div>
               </div>

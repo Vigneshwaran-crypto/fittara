@@ -17,7 +17,6 @@ const Splash = () => {
 
   useEffect(() => {
     console.log("URL from browser in Splash:", urlparts.hostname.split("."));
-
     checkLastActivity();
   }, []);
 
@@ -26,25 +25,25 @@ const Splash = () => {
     // client's url with subdomain as their userName
     console.log("founded domain :", domains);
     if (domains.length > 1) {
-      const userName = domains[0];
-      getUserByDomain({ userName: userName })
-        .then((res) => {
-          console.log("getUserByDomain res :", res);
-          if (res.data.status === 1) {
-            navigation("/home", { replace: true });
-            const shopData = res.data.data;
-            dispatch(reduxStore(shopDetailsStore(shopData)));
-          } else {
-            // checkForToken();
-            navigation("/unauth", { state: { shop: userName } });
-          }
-        })
-        .catch((err) => {
-          checkForToken();
-          // throw new Error("getUserByDomain api failed :", err);
-        });
+      navigation("/home", { replace: true });
+      // const userName = domains[0];
+      // getUserByDomain({ userName: userName })
+      //   .then((res) => {
+      //     console.log("getUserByDomain res :", res);
+      //     if (res.data.status === 1) {
+      //       navigation("/home", { replace: true });
+      //       const shopData = res.data.data;
+      //       dispatch(reduxStore(shopDetailsStore(shopData)));
+      //     } else {
+      //       navigation("/unauth", { state: { shop: userName } });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     checkForToken();
+      //   });
     } else {
-      checkForToken();
+      navigation("/dashboard/products", { replace: true });
+      // checkForToken();
     }
   };
 
