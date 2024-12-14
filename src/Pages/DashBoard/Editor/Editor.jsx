@@ -186,8 +186,22 @@ const Editor = (props) => {
         texts: [],
       },
       {
+        id: 6,
+        part: "Pocket",
+        geo: nodes?.g_Hoodie_Hoodie_0_2?.geometry,
+        mat: materials.poacket,
+        txture: null,
+        color: "#FFFEFE",
+        ref: useRef(null),
+        defPos: { x: 100.1, y: 333.5 },
+        defRot: 87.7,
+        defScal: 1.9,
+        images: [],
+        texts: [],
+      },
+      {
         id: 3,
-        part: "Left Hand",
+        part: "Left",
         geo: nodes?.g_Hoodie_Hoodie_0_6?.geometry,
         mat: materials.left,
         txture: null,
@@ -201,7 +215,7 @@ const Editor = (props) => {
       },
       {
         id: 4,
-        part: "Right Hand",
+        part: "Right",
         geo: nodes?.g_Hoodie_Hoodie_0_8?.geometry,
         mat: materials.right,
         txture: null,
@@ -227,20 +241,7 @@ const Editor = (props) => {
         images: [],
         texts: [],
       },
-      {
-        id: 6,
-        part: "Pocket",
-        geo: nodes?.g_Hoodie_Hoodie_0_2?.geometry,
-        mat: materials.poacket,
-        txture: null,
-        color: "#FFFEFE",
-        ref: useRef(null),
-        defPos: { x: 100.1, y: 333.5 },
-        defRot: 87.7,
-        defScal: 1.9,
-        images: [],
-        texts: [],
-      },
+
       {
         id: 7,
         part: "Left Cuff",
@@ -287,7 +288,7 @@ const Editor = (props) => {
     2: [
       {
         id: 1,
-        part: "front",
+        part: "Front",
         geo: nodes?.Object_0_1?.geometry,
         mat: materials.front,
         txture: null,
@@ -301,7 +302,7 @@ const Editor = (props) => {
       },
       {
         id: 2,
-        part: "back",
+        part: "Back",
         geo: nodes?.Object_0_2?.geometry,
         mat: materials.back,
         txture: null,
@@ -315,7 +316,7 @@ const Editor = (props) => {
       },
       {
         id: 3,
-        part: "left",
+        part: "Left",
         geo: nodes?.Object_0_3?.geometry,
         mat: materials.left,
         txture: null,
@@ -329,7 +330,7 @@ const Editor = (props) => {
       },
       {
         id: 4,
-        part: "right",
+        part: "Right",
         geo: nodes?.Object_0_4?.geometry,
         mat: materials.right,
         txture: null,
@@ -373,7 +374,7 @@ const Editor = (props) => {
     3: [
       {
         id: 1,
-        part: "FrontPrint",
+        part: "Front",
         geo: nodes?.Object_12_2?.geometry,
         mat: materials.frontPrint,
         txture: null,
@@ -388,7 +389,7 @@ const Editor = (props) => {
 
       {
         id: 2,
-        part: "BackPrint",
+        part: "Back",
         geo: nodes?.Object_11_1?.geometry,
         mat: materials.backPrint,
         txture: null,
@@ -402,7 +403,7 @@ const Editor = (props) => {
       },
       {
         id: 3,
-        part: "Front",
+        part: "FrontSide",
         geo: nodes?.Object_12_1?.geometry,
         mat: materials.front,
         txture: null,
@@ -417,7 +418,7 @@ const Editor = (props) => {
       },
       {
         id: 4,
-        part: "Back",
+        part: "BackSide",
         geo: nodes?.Object_11?.geometry,
         mat: materials.back,
         txture: null,
@@ -662,56 +663,14 @@ const Editor = (props) => {
   const [isEditor, setIsEditor] = useState(true);
   const [isPayment, setIsPayment] = useState(false);
 
-  const sidePosses = [
-    {
-      id: 2,
-      part: "Front",
-      node: "g_Hoodie_Hoodie_0_3",
-      position: [0, -0.85, 0],
-      opacity: 0.8,
-      blur: 1,
-      img: frontSide,
-      defPos: { x: 610.7, y: 333.5 },
-      defRot: 87.7,
-      defScal: 3.1,
-    },
-    {
-      id: 4,
-      part: "Back",
-      node: "g_Hoodie_Hoodie_0_5",
-      position: [0, -1.1, 0],
-      opacity: 0.8,
-      blur: 2,
-      img: backSide,
-      defPos: { x: 1250.8, y: 974.5 },
-      defRot: 87.7,
-      defScal: 3.6,
-    },
-    {
-      id: 5,
-      part: "Left Hand",
-      node: "g_Hoodie_Hoodie_0_6",
-      position: [-0.1, -0.9, 0],
-      opacity: 0.2,
-      blur: 0.8,
-      img: leftSide,
-      defPos: { x: 652.4, y: 300 },
-      defRot: 87.7,
-      defScal: 3.6,
-    },
-    {
-      id: 6,
-      part: "Right Hand",
-      node: "g_Hoodie_Hoodie_0_8",
-      position: [0.1, -0.9, 0],
-      opacity: 0.2,
-      blur: 0.8,
-      img: rightSide,
-      defPos: { x: 1527, y: 333.5 },
-      defRot: 95.3,
-      defScal: 1,
-    },
-  ];
+  const sidePosses =
+    prod === 1
+      ? texture?.slice(0, 3)
+      : prod === 2
+      ? texture?.slice(0, 4)
+      : prod === 3
+      ? texture?.slice(0, 2)
+      : [];
 
   // const sidePosses = [
   //   {
@@ -1184,33 +1143,32 @@ const Editor = (props) => {
     ];
 
     switch (val.id) {
-      case 2:
+      case 1:
         setdefMeshRot(rots[0]);
         break;
-      case 4:
+      case 2:
         setdefMeshRot(rots[3]);
         break;
-      case 5:
+      case 3:
         setdefMeshRot(rots[2]);
         break;
-      case 6:
+      case 4:
         setdefMeshRot(rots[1]);
         break;
       default:
+        setdefMeshRot(rots[0]);
         break;
     }
 
-    // const samp = nodes.g_Hoodie_Hoodie_0_3.geometry;
-    setGeometry(nodes[val.node].geometry);
-    // setPartName(val.part);
+    // setGeometry(nodes[val.node].geometry);
+    setGeometry(val.geo);
 
     const meshItem = texture.find((item) => item.id === val.id);
     setChosenComp(meshItem);
 
     setChosenMesh(meshItem);
-    // setChosenInd(0);
     setIsValid(false);
-    setPrintFont({ id: "", name: "" });
+    // setPrintFont({ id: "", name: "" });
     setPrintTxt("");
   };
 
@@ -1612,7 +1570,8 @@ const Editor = (props) => {
                           variant="standard"
                           placeholder="Search"
                           sx={inpStye}
-                          error={isValid && !printFont.name}
+                          // error={isValid && !printFont.name}
+                          error={!printFont.name}
                         />
                       )}
                       value={printFont}
@@ -2097,7 +2056,7 @@ const Editor = (props) => {
         >
           <div
             className="objPosHolder"
-            style={{ display: isEditor ? "flex" : "none" }}
+            style={{ display: isEditor && prod < 4 ? "flex" : "none" }}
           >
             <div className="posImgListHolder">
               {sidePosses.map((item, ind) => (
@@ -2110,7 +2069,9 @@ const Editor = (props) => {
                   }}
                   className="posImgItemHolder"
                 >
-                  <img className="posImg" src={item.img} />
+                  {/* <img className="posImg" src={item.img} /> */}
+
+                  <span className="poseText">{item.part}</span>
                 </div>
               ))}
             </div>
