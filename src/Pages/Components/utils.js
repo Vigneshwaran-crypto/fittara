@@ -797,7 +797,7 @@ export const methods = [
   { id: 2, method: "Cash On Delivery" },
 ];
 
-export const sizes = ["S", "M", "L", "XL", "XXL", "Slim", "Baggy", "Universal"];
+export const sizes = ["S", "M", "L", "XL", "XXL", "Slim", "Baggy"];
 export const numSizes = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
 
 export const gender = ["Men", "Woman", "Unisex"];

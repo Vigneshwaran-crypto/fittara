@@ -92,7 +92,7 @@ import {
   mergeBufferGeometries,
   SimplifyModifier,
 } from "three-stdlib";
-import { saveModal } from "../../../Api/UsersService";
+import { saveAssets, saveModal } from "../../../Api/UsersService";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -109,6 +109,7 @@ import tote from "../../../Assets/elems/bag.glb";
 import mug from "../../../Assets/elems/cup.glb";
 import tees from "../../../Assets/elems/tshirt.glb";
 import bottle from "../../../Assets/elems/bottle.glb";
+import Swal from "sweetalert2";
 
 const meshColListStyle = {
   gap: 0.5,
@@ -598,15 +599,6 @@ const Editor = (props) => {
   const cameraRef = useRef(null);
   const objContRef = useRef(null);
 
-  // const [geometry, setGeometry] = useState(nodes.g_Hoodie_Hoodie_0_3.geometry); // hoodie
-  // const [geometry, setGeometry] = useState(nodes.Object_11_1.geometry); // bag
-  // const [geometry, setGeometry] = useState(nodes.cup4_cup_shd_0_2.geometry); // mug
-  // const [geometry, setGeometry] = useState(nodes.Object_0_1.geometry); // tshirt
-  // const [geometry, setGeometry] = useState(nodes.gorra002__0_1.geometry); // cap
-  // const [geometry, setGeometry] = useState(
-  //   nodes.Bottle_Water_Bottle_Yellow_Part_0_2.geometry
-  // ); // bottle
-
   const [geometry, setGeometry] = useState(meshes[prod][0].geo);
   const uv = geometry.attributes.uv.array;
 
@@ -619,7 +611,7 @@ const Editor = (props) => {
     id: 1,
     name: "Arial",
   });
-  const [fontStyle, setFontStyle] = useState("");
+  const [fontStyle, setFontStyle] = useState("1");
   const [fontColor, setFontColor] = useState({
     id: 1,
     color: "Black",
@@ -670,7 +662,7 @@ const Editor = (props) => {
       ? texture?.slice(0, 4)
       : prod === 3
       ? texture?.slice(0, 2)
-      : [];
+      : texture?.slice(0, 1);
 
   // const sidePosses = [
   //   {
@@ -725,7 +717,13 @@ const Editor = (props) => {
   const tShirtPrice = 120;
   const shippingPrice = 50;
 
-  const [sizesChosen, setSizesChosen] = useState([]);
+  const [sizesChosen, setSizesChosen] = useState([
+    {
+      size: "S",
+      quantity: 1,
+      price: 120,
+    },
+  ]);
   const orderColumns = ["Size", "Quantity", "Price"];
 
   const [address, setAddress] = useState({
@@ -735,17 +733,20 @@ const Editor = (props) => {
     area: "Thiruvottiyur",
     landMark: "Sugam Hospital",
     pincode: "600019",
-    city: null,
-    state: null,
+    city: {
+      id: 8,
+      stateId: 3,
+      city: "Silchar",
+    },
+    state: {
+      id: 6,
+      state: "Goa",
+    },
     validate: false,
   });
 
   useEffect(() => {
     sessionStorage.setItem("curPath", "/editor");
-    console.log("model nodes :", nodes);
-    console.log("model materials :", materials);
-    // console.log("polo node", polo.nodes);
-    // console.log("polo materials", polo.materials);
   }, []);
 
   useEffect(() => {
@@ -790,23 +791,6 @@ const Editor = (props) => {
               if (axis === "x") xVal += value;
               if (axis === "y") yVal += value;
             }
-
-            // switch (joyPos?.direction) {
-            //   case "FORWARD":
-            //     xVal += moveSpeed;
-            //     break;
-            //   case "BACKWARD":
-            //     xVal -= moveSpeed;
-            //     break;
-            //   case "LEFT":
-            //     yVal -= moveSpeed;
-            //     break;
-            //   case "RIGHT":
-            //     yVal += moveSpeed;
-            //     break;
-            //   default:
-            //     break;
-            // }
 
             itemArray[chosenInd] = {
               ...chosenItem,
@@ -915,7 +899,7 @@ const Editor = (props) => {
 
       if (item.id !== chosenComp.id) return;
 
-      item.images.forEach((image, index) => {
+      item.images?.forEach((image, index) => {
         // const img = imgElements.current[index];
         const img = image.ref.current;
         ctx.save();
@@ -927,10 +911,7 @@ const Editor = (props) => {
       });
 
       // Render texts
-      item.texts.forEach((textItem) => {
-        // const textWidth = ctx.measureText(textItem.text).width;
-        // const textHeight = 30;
-
+      item.texts?.forEach((textItem) => {
         ctx.save();
         ctx.translate(textItem.position.x, textItem.position.y);
         ctx.rotate((textItem.rotation * Math.PI) / 180);
@@ -959,8 +940,6 @@ const Editor = (props) => {
   };
 
   const meshColChanger = (col, uv) => {
-    // const canvas = canvasRef.current;
-
     const updatedtxture = texture.map((item) => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
@@ -1109,7 +1088,6 @@ const Editor = (props) => {
     console.log("NONconverted rgba to hex :", hex);
     const col = rgbaToHex(rgb.r, rgb.g, rgb.b, rgb.a);
     console.log("converted rgba to hex :", col);
-    // const col = rgbToHex(rgb);
 
     const updatedTextures = texture.map((item) => {
       if (item.part === chosenComp.part) {
@@ -1173,12 +1151,8 @@ const Editor = (props) => {
   };
 
   const onComImgClick = (ind, item) => {
-    console.log("clicked item index :", ind);
-    console.log("clicked item item :", item);
-    // setIsImg(img);
     if (focTab) imgIndHold.current = ind;
     else txtIndHold.current = ind;
-
     setChosenInd(ind);
   };
 
@@ -1273,12 +1247,6 @@ const Editor = (props) => {
       }
       return item;
     });
-
-    // const updatedItem = updatedTextures.find((item) => item.id === chosenComp.id);
-    // setChosenComp(updatedItem);
-
-    // setChosenComp(updatedItem);
-    //   setChosenInd(updatedItem.texts.length - 1);
 
     setPosVal({ x: chosenComp.defPos.x, y: chosenComp.defPos.y });
 
@@ -1388,8 +1356,7 @@ const Editor = (props) => {
   const onCheckOutClick = () => {
     const exporter = new GLTFExporter();
 
-    const formData = new FormData();
-    let meshList = [];
+    confirmOrder();
 
     // texture.forEach((item) => {
     //   exporter.parse(
@@ -1403,8 +1370,6 @@ const Editor = (props) => {
     //     { binary: true }
     //   );
     // });
-
-    console.log("meshList :", meshList);
 
     // saveModal(req)
     //   .then((resVal) => {
@@ -1436,26 +1401,34 @@ const Editor = (props) => {
       .map(([key]) => key);
 
     if (!noValuedKey.length) {
-      successToast("Order placed successfully");
-
-      setTimeout(() => {
-        navigation("/home");
-      }, 100);
       // setIsPayment(true);
-      // confirmOrder();
+      confirmOrder();
     }
   };
 
   const confirmOrder = async () => {
+    // Swal.fire({
+    //   position: "center",
+    //   title: "Processing your order",
+    //   text: "Please wait a moment",
+    //   icon: "info",
+    //   allowOutsideClick: false,
+    //   showConfirmButton: false,
+    //   didOpen: () => {
+    //     Swal.showLoading();
+    //   },
+    // });
+
     const exporter = new GLTFExporter();
-    console.log("Order vals :", address);
+    // console.log("Order vals :", address);
 
     const order = new FormData();
 
     order.append("id", 1);
-    order.append("shopId", "mufasa");
+    order.append("shopId", "oraisa");
     order.append("name", address.name);
-    order.append("productId", 1);
+    order.append("productId", prod);
+    order.append("prodColor", meshColor.hex);
     order.append("customerId", 1);
     order.append("phoneNo", address.number);
     order.append("status", "pending");
@@ -1470,33 +1443,110 @@ const Editor = (props) => {
     order.append("size", JSON.stringify(sizesChosen));
     order.append("price", 1200);
 
-    const appendFiles = (item) => {
-      return new Promise((res, rej) => {
-        exporter.parse(
-          item.ref.current,
-          (result) => {
-            const gltfString = JSON.stringify(result);
-            const blob = new Blob([gltfString], { type: "application/json" });
-            order.append("files", blob, `${item.part}.glb`);
-            res();
-          },
-          { binary: true }
-        );
+    const assets = sidePosses.map((item, ind) => {
+      item.images = item.images?.map((img, dex) => {
+        console.log("files appended :", img.file);
+        order.append(`files[${ind}][${dex}]`, img.file);
+        img.file = "";
+        img.ref = "";
+        img.src = "";
+        return img;
       });
-    };
+      return { id: item.id, images: item.images, texts: item.texts };
+    });
+
+    console.log("Assets data :", assets);
+    order.append("asset", JSON.stringify(assets));
+
+    placeOrder(order)
+      .then((res) => {
+        console.log("placeOrder res :", res);
+      })
+      .catch((err) => {
+        console.log("placeOrder err :", err);
+      });
+
+    // const appendFiles = (item) => {
+    //   return new Promise((res, rej) => {
+    //     exporter.parse(
+    //       item.ref.current,
+    //       (result) => {
+    //         const gltfString = JSON.stringify(result);
+    //         const blob = new Blob([gltfString], { type: "application/json" });
+    //         order.append("files", blob, `${item.part}.glb`);
+    //         res();
+    //       },
+    //       {
+    //         binary: true,
+    //         maxTextureSize: 2048, // Limit texture resolution
+    //         truncateBuffers: true, // Ensure no circular buffers
+    //         includeCustomExtensions: false, // Exclude any custom extensions
+    //       }
+    //     );
+    //   });
+    // };
+
+    // try {
+    //   await Promise.all(texture.map(appendFiles));
+
+    //   placeOrder(order)
+    //     .then((res) => {
+    //       console.log("placeOrder res :", res);
+    //     })
+    //     .catch((err) => {
+    //       console.log("placeOrder err :", err);
+    //     });
+    // } catch (e) {
+    //   console.log("error while appedning files :", e);
+    // }
+
+    // const appendFiles = async (item) => {
+    //   try {
+    //     const result = await exporter.parseAsync(item.ref.current, {
+    //       binary: true,
+    //     });
+    //     const gltfString = JSON.stringify(result);
+    //     const blob = new Blob([gltfString], { type: "application/json" });
+    //     order.append("files", blob, `${item.part}.glb`);
+    //   } catch (error) {
+    //     console.error(`Error exporting ${item.part}:`, error);
+    //   }
+    // };
 
     try {
-      await Promise.all(texture.map(appendFiles));
+      // await Promise.all(texture.map(appendFiles));
 
-      placeOrder(order)
-        .then((res) => {
-          console.log("placeOrder res :", res);
-        })
-        .catch((err) => {
-          console.log("placeOrder err :", err);
-        });
-    } catch (e) {
-      console.log("error while appedning files :", e);
+      // placeOrder(order)
+      //   .then((res) => {
+      //     console.log("placeOrder res :", res);
+      //     if (res.data?.status === 1) {
+      //       Swal.close();
+      //       Swal.fire({
+      //         position: "center",
+      //         icon: "success",
+      //         title: "Order Placed",
+      //         showConfirmButton: false,
+      //         timer: 2500,
+      //       }).finally(() => {
+      //         navigation("/home");
+      //       });
+      //     } else {
+      //       Swal.close();
+      //       Swal.fire({
+      //         position: "center",
+      //         icon: "error",
+      //         title: "Please try again",
+      //         showConfirmButton: true,
+      //       });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log("placeOrder err :", err);
+      //   });
+
+      console.log("All files exported successfully");
+    } catch (error) {
+      console.error("Export failed, babe:", error);
     }
   };
 
@@ -2457,6 +2507,7 @@ const Editor = (props) => {
                         variant="outlined"
                         fullWidth
                         sx={inpStye}
+                        value={"Testing Customer"}
                       />
                     </FormControl>
                   </div>
@@ -2471,6 +2522,7 @@ const Editor = (props) => {
                         variant="outlined"
                         fullWidth
                         sx={inpStye}
+                        value={"5555555555554444"}
                       />
                     </FormControl>
                   </div>
@@ -2499,6 +2551,7 @@ const Editor = (props) => {
                           type="number"
                           style={{ width: "40%" }}
                           sx={inpStye}
+                          value={"12"}
                         />
                         <TextField
                           size="small"
@@ -2506,6 +2559,7 @@ const Editor = (props) => {
                           variant="outlined"
                           fullWidth
                           sx={inpStye}
+                          value={"2030"}
                         />
                       </FormControl>
                     </div>
@@ -2522,6 +2576,7 @@ const Editor = (props) => {
                           variant="outlined"
                           fullWidth
                           sx={inpStye}
+                          value={"983"}
                         />
                       </FormControl>
                     </div>
@@ -2749,8 +2804,7 @@ const Editor = (props) => {
                     onClick={onPaymentClick}
                     endIcon={<ArrowForwardIcon sx={{ fontSize: "15px" }} />}
                   >
-                    {/* Payment */}
-                    Check Out
+                    Payment
                   </Button>
                 </div>
               </div>

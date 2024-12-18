@@ -63,3 +63,12 @@ export const saveModal = (req) => {
     data: req,
   });
 };
+
+export const saveAssets = (req) => {
+  return apiHit({
+    url: baseURL + "saveAssets",
+    headers: HTTP.formDataHeader,
+    method: "post",
+    data: req,
+  });
+};
