@@ -9,3 +9,12 @@ export const placeOrder = (req) => {
     data: req,
   });
 };
+
+export const getAllOrders = (req) => {
+  return apiHit({
+    url: baseURL + "getAllOrders",
+    headers: HTTP.HEADERS,
+    method: "get",
+    data: req,
+  });
+};

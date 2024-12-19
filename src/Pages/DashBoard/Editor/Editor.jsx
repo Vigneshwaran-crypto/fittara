@@ -53,15 +53,9 @@ import {
   isDarkHex,
   numSizes,
   rgbaToHex,
-  sampleOrders,
-  sampleProducts,
-  sampleSize,
   selStyle,
   sizes,
   sliderStyle,
-  successToast,
-  tableContStyle,
-  wholeColors,
 } from "../../Components/utils";
 import {
   buttonClasses,
@@ -111,6 +105,13 @@ import tees from "../../../Assets/elems/tshirt.glb";
 import bottle from "../../../Assets/elems/bottle.glb";
 import Swal from "sweetalert2";
 
+import samp1 from "../../../Assets/prints/samp1.png";
+import samp2 from "../../../Assets/prints/samp2.png";
+import samp3 from "../../../Assets/prints/samp3.png";
+import samp4 from "../../../Assets/prints/samp4.png";
+import samp5 from "../../../Assets/prints/samp5.png";
+import samp6 from "../../../Assets/prints/samp6.png";
+
 const meshColListStyle = {
   gap: 0.5,
   padding: "3px",
@@ -138,7 +139,7 @@ const ControlUpdater = ({ controlRef, groupMeshRef }) => {
   return null;
 };
 
-const Editor = (props) => {
+const Editor = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const loc = useLocation();
@@ -529,9 +530,9 @@ const Editor = (props) => {
         txture: null,
         color: "#FFFEFE",
         ref: useRef(null),
-        defPos: { x: 397.4, y: 1275.0 },
+        defPos: { x: 592.4, y: 1275.0 },
         defRot: 1,
-        defScal: 4.02,
+        defScal: 2,
         images: [],
         texts: [],
       },
@@ -726,6 +727,8 @@ const Editor = (props) => {
   ]);
   const orderColumns = ["Size", "Quantity", "Price"];
 
+  const [validate, setValidate] = useState(false);
+
   const [address, setAddress] = useState({
     name: "Vignesh",
     number: "8807207198",
@@ -742,8 +745,9 @@ const Editor = (props) => {
       id: 6,
       state: "Goa",
     },
-    validate: false,
   });
+
+  const sampImages = [samp1, samp2, samp3, samp4, samp5, samp6];
 
   useEffect(() => {
     sessionStorage.setItem("curPath", "/editor");
@@ -1215,6 +1219,7 @@ const Editor = (props) => {
   };
 
   const getChosenImage = (e) => {
+    console.log("Chosen Files :", e);
     const file = e.target.files[0];
 
     if (!file) return;
@@ -1354,10 +1359,7 @@ const Editor = (props) => {
   };
 
   const onCheckOutClick = () => {
-    const exporter = new GLTFExporter();
-
     confirmOrder();
-
     // texture.forEach((item) => {
     //   exporter.parse(
     //     item.ref.current,
@@ -1392,38 +1394,39 @@ const Editor = (props) => {
   };
 
   const onPaymentClick = () => {
-    setAddress({ ...address, validate: true });
+    console.log("onPaymentClick");
+    // setAddress((prev) => ({ ...prev, validate: true }));
+    setValidate(true);
 
     if (!sizesChosen.length) return erToast("Please choose the sizes");
+    console.log("sizesChosen.length", !sizesChosen.length);
 
     const noValuedKey = Object.entries(address)
       .filter(([key, val]) => !val)
       .map(([key]) => key);
 
+    console.log("noValuedKey", noValuedKey);
+
     if (!noValuedKey.length) {
-      // setIsPayment(true);
-      confirmOrder();
+      setIsPayment(true);
+      // confirmOrder();
     }
   };
 
   const confirmOrder = async () => {
-    // Swal.fire({
-    //   position: "center",
-    //   title: "Processing your order",
-    //   text: "Please wait a moment",
-    //   icon: "info",
-    //   allowOutsideClick: false,
-    //   showConfirmButton: false,
-    //   didOpen: () => {
-    //     Swal.showLoading();
-    //   },
-    // });
-
-    const exporter = new GLTFExporter();
-    // console.log("Order vals :", address);
+    Swal.fire({
+      position: "center",
+      title: "Processing your order",
+      text: "Please wait a moment",
+      icon: "info",
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     const order = new FormData();
-
     order.append("id", 1);
     order.append("shopId", "oraisa");
     order.append("name", address.name);
@@ -1461,6 +1464,26 @@ const Editor = (props) => {
     placeOrder(order)
       .then((res) => {
         console.log("placeOrder res :", res);
+        if (res.data?.status === 1) {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Order Placed",
+            showConfirmButton: false,
+            timer: 2500,
+          }).finally(() => {
+            navigation("/home");
+          });
+        } else {
+          Swal.close();
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Please try again",
+            showConfirmButton: true,
+          });
+        }
       })
       .catch((err) => {
         console.log("placeOrder err :", err);
@@ -1513,41 +1536,39 @@ const Editor = (props) => {
     //   }
     // };
 
-    try {
-      // await Promise.all(texture.map(appendFiles));
-
-      // placeOrder(order)
-      //   .then((res) => {
-      //     console.log("placeOrder res :", res);
-      //     if (res.data?.status === 1) {
-      //       Swal.close();
-      //       Swal.fire({
-      //         position: "center",
-      //         icon: "success",
-      //         title: "Order Placed",
-      //         showConfirmButton: false,
-      //         timer: 2500,
-      //       }).finally(() => {
-      //         navigation("/home");
-      //       });
-      //     } else {
-      //       Swal.close();
-      //       Swal.fire({
-      //         position: "center",
-      //         icon: "error",
-      //         title: "Please try again",
-      //         showConfirmButton: true,
-      //       });
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log("placeOrder err :", err);
-      //   });
-
-      console.log("All files exported successfully");
-    } catch (error) {
-      console.error("Export failed, babe:", error);
-    }
+    // try {
+    // await Promise.all(texture.map(appendFiles));
+    // placeOrder(order)
+    //   .then((res) => {
+    //     console.log("placeOrder res :", res);
+    //     if (res.data?.status === 1) {
+    //       Swal.close();
+    //       Swal.fire({
+    //         position: "center",
+    //         icon: "success",
+    //         title: "Order Placed",
+    //         showConfirmButton: false,
+    //         timer: 2500,
+    //       }).finally(() => {
+    //         navigation("/home");
+    //       });
+    //     } else {
+    //       Swal.close();
+    //       Swal.fire({
+    //         position: "center",
+    //         icon: "error",
+    //         title: "Please try again",
+    //         showConfirmButton: true,
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.log("placeOrder err :", err);
+    //   });
+    //   console.log("All files exported successfully");
+    // } catch (error) {
+    //   console.error("Export failed, babe:", error);
+    // }
   };
 
   return (
@@ -1910,7 +1931,38 @@ const Editor = (props) => {
                   <div style={{ paddingBlock: "4px" }} className="subTitle">
                     Images
                   </div>
-                  <div className="addedImgHolder"></div>
+                  <div className="addedImgHolder">
+                    {/* sampImages */}
+                    <div className="imgGridListHolder">
+                      {sampImages.map((item, ind) => (
+                        <div className="comImgHolder" key={ind}>
+                          <img
+                            src={item}
+                            className="imgItem"
+                            onClick={() => {
+                              fetch(item)
+                                .then((res) => res.blob())
+                                .then((blob) => {
+                                  const file = new File([blob], "image.png", {
+                                    type: blob.type,
+                                  });
+                                  getChosenImage({
+                                    target: { files: [file] },
+                                  });
+                                })
+                                .catch((err) =>
+                                  console.log("getChosenImage err:", err)
+                                );
+                            }}
+                            style={{
+                              border: "1px solid grey",
+                              borderRadius: "8px",
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 <div style={{ paddingBlock: "4px" }} className="subTitle">
@@ -2482,7 +2534,7 @@ const Editor = (props) => {
                   <FormControl size="small" fullWidth>
                     <FormLabel className="paylabel">Payment Method</FormLabel>
 
-                    <MUIRadioGroup>
+                    <MUIRadioGroup value={1}>
                       <FormControlLabel
                         control={<MUIRadio />}
                         value={0}

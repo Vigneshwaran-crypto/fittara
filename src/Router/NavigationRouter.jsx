@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import SideBar from "./SideBar";
 import Explore from "../Pages/DashBoard/Customers";
-import Orders from "../Pages/DashBoard/Orders";
+import Orders from "../Pages/DashBoard/Orders/Orders";
 import Settings from "../Pages/DashBoard/Settings";
 import UserAccount from "../Pages/DashBoard/Account/UserAccount";
 import AddProduct from "../Pages/DashBoard/Account/AddProduct";
@@ -10,6 +10,7 @@ import Products from "../Pages/DashBoard/Products";
 import Analytics from "../Pages/DashBoard/Analytics/Analytics";
 import Customers from "../Pages/DashBoard/Customers";
 import Policy from "../Pages/DashBoard/Policy/Policy";
+import ViewOrder from "../Pages/DashBoard/Orders/ViewOrder";
 
 const NavigationRouter = () => {
   return (
@@ -21,6 +22,7 @@ const NavigationRouter = () => {
         <Route path="analytics" element={<Analytics />} />
         <Route path="policies" element={<Policy />} />
         <Route path="orders" element={<Orders />} />
+        <Route path="viewOrder" element={<ViewOrder />} />
         <Route path="settings" element={<Settings />} />
         <Route path="userAccount" element={<UserAccount />} />
         <Route path="addProduct" element={<AddProduct />} />

@@ -1734,6 +1734,21 @@
   color: #c7253e;
 }
 
+.viewOrder {
+  display: flex;
+  flex: 1;
+  /* border: 1px solid black; */
+  gap: 5px;
+}
+
+.viewOrder > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* background-color: white; */
+  border-radius: 8px;
+}
+
 @media screen and (max-width: 600px) {
   .analiticsGridHolder > div:nth-child(5) {
     grid-column: 1/-1;
@@ -1809,7 +1824,6 @@
   }
 
   /* Editor Fesponsive Handling */
-
   .favConts {
     flex-direction: column;
     overflow: auto;
@@ -1817,30 +1831,13 @@
   }
 
   .editorHolderPallate {
-    /* border: 1px solid red;
-  display: flex;
-  max-height: 100% !important;
-  min-width: 20%;
-  flex-direction: column;
-  background-color: #f6f6f6;
-  overflow: hidden; */
     overflow: auto;
     min-width: 100%;
     min-height: 100%;
     order: 2;
   }
 
-  .tabPanel {
-    /* flex-direction: row !important; */
-  }
-
   .modelObjHolder {
-    /* display: flex;
-
-  min-width: 80%;
-  position: relative;
-  border: 1px solid blue;
-  transition: min-width 1s ease; */
     display: flex;
     flex-direction: column;
     min-height: 50%;
@@ -1849,10 +1846,6 @@
   }
 
   .placeOrderPallet {
-    /* display: flex;
-  min-width: 70%;
-  border: 1px solid green;
-  box-sizing: border-box; */
     flex-direction: column;
     order: 3;
   }

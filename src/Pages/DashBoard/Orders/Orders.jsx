@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import "./MenuOptionsStyles.css";
-import "../Home/styles.css";
-import "../Components/component.css";
+import React, { useEffect, useState } from "react";
+// import "./MenuOptionsStyles.css";
+// import "../Home/styles.css";
+// import "../Components/component.css";
 import { Radio, RadioGroup, Sheet } from "@mui/joy";
 import { Container } from "react-bootstrap";
 import {
@@ -40,12 +40,47 @@ import {
   sampleProducts,
   selStyle,
   tableContStyle,
-} from "../Components/utils";
+} from "../../Components/utils";
+import { getAllOrders } from "../../../Api/ShopService";
+
+import { GiHoodie } from "react-icons/gi";
+import { FaTshirt } from "react-icons/fa";
+import { BsBagFill } from "react-icons/bs";
+import { GiBilledCap } from "react-icons/gi";
+import { TbMugFilled } from "react-icons/tb";
+import { FaBottleWater } from "react-icons/fa6";
+
+import { ImMug } from "react-icons/im";
+import { useNavigate } from "react-router-dom";
 
 const Orders = () => {
+  const nav = useNavigate();
   const fSize = "clamp(1rem, 1vw + 1rem, 2rem)";
+  const [orderList, setOrderList] = useState([]);
 
-  const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
+  const orderColumns = [
+    { title: "Id", key: "id" },
+    {
+      title: "Product",
+      key: "productId",
+    },
+    { title: "Name", key: "name" },
+    { title: "Payment", key: "paymentType" },
+    { title: "Status", key: "status" },
+    { title: "Price", key: "price" },
+  ];
+
+  const renderProductIcon = (id) => {
+    const products = {
+      1: <GiHoodie />,
+      2: <FaTshirt />,
+      3: <BsBagFill />,
+      4: <GiBilledCap />,
+      5: <ImMug />,
+      6: <FaBottleWater />,
+    };
+    return products[id];
+  };
 
   const menuGridList = [
     {
@@ -80,7 +115,22 @@ const Orders = () => {
 
   useEffect(() => {
     sessionStorage.setItem("curPath", "/dashboard/orders");
+    getAllOrders()
+      .then((res) => {
+        console.log("getAllOrders res :", res);
+        if (res.data?.status) {
+          const allOrders = res.data?.data || [];
+          setOrderList(allOrders);
+        }
+      })
+      .catch((err) => {
+        console.log("getAllOrders err :", err);
+      });
   }, []);
+
+  const onOrderClick = (order) => {
+    nav("/dashboard/viewOrder", { state: { order } });
+  };
 
   return (
     <Container fluid className="tabScreens">
@@ -229,23 +279,28 @@ const Orders = () => {
                           fontSize: "medium",
                           fontWeight: "500",
                           fontFamily: "Lucida Sans Regular",
-                          // backgroundColor: "#f6f6f6",
                         }}
                         align="center"
                         key={ind}
                       >
-                        {item}
+                        {item.title}
                       </TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
 
                 <TableBody>
-                  {sampleOrders.map((obj, ind) => (
-                    <TableRow hover key={ind}>
-                      {Object.keys(sampleOrders[0]).map((key, dex) => (
+                  {orderList.map((obj, ind) => (
+                    <TableRow
+                      hover
+                      key={ind}
+                      onClick={onOrderClick.bind(this, obj)}
+                    >
+                      {orderColumns.map((col, dex) => (
                         <TableCell align="center" key={dex}>
-                          {obj[key]}
+                          {col.key === "productId"
+                            ? renderProductIcon(obj[col.key])
+                            : obj[col.key]}
                         </TableCell>
                       ))}
                     </TableRow>
