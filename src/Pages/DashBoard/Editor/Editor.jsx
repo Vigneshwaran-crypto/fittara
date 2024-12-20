@@ -943,7 +943,7 @@ const Editor = () => {
     setTexture(madetxture);
   };
 
-  const meshColChanger = (col, uv) => {
+  const meshColChanger = (col) => {
     const updatedtxture = texture.map((item) => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
@@ -1011,10 +1011,6 @@ const Editor = () => {
 
       return item;
     });
-
-    // const madetxture = texture.map((item) => {
-    //   return { ...item, txture: newTexture };
-    // });
     setTexture(updatedtxture);
   };
 
