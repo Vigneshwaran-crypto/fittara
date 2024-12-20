@@ -12,7 +12,7 @@ export const AuthToken = "";
 // export const baseURL = "http://192.168.0.101:8080/api/"; //act
 // export const baseURL = "http://192.168.226.211:8080/api/"; //your mobile
 export const baseURL = "http://localhost:8080/api/"; //your mobile
-export const fileUrl = "http://localhost:8080/oraisa/"; //your mobile
+export const fileUrl = "http://localhost:8080/"; //your mobile
 
 export const HTTP = {
   HEADERS: {

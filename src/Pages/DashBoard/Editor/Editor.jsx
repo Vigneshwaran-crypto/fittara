@@ -864,7 +864,7 @@ const Editor = () => {
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
 
-    const meshItem = texture.find((item) => item.id === chosenComp.id);
+    // const meshItem = texture.find((item) => item.id === chosenComp.id);
 
     // don't remove
     // ctx.fillStyle = meshItem.color;

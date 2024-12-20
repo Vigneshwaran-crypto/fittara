@@ -12,6 +12,7 @@ import bottle from "../../../Assets/elems/bottle.glb";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { fileUrl } from "../../../Common/Constant";
+import axios from "axios";
 
 const ViewOrder = () => {
   const loc = useLocation();
@@ -467,29 +468,77 @@ const ViewOrder = () => {
 
   useEffect(() => {
     console.log("ViewOrder props value :", order);
-    const assets = order?.assets || [];
-    const updated = texture.map((item) => {
-      const ast = assets.find((val) => val.id === item.id);
-      if (Object.keys(ast || {}).length) {
-        if (ast.images.length) {
-          const astImages = ast.images.map((img) => ({
-            ...img,
-            ref: React.createRef(),
-          }));
-          item.images = astImages;
-        }
-        if (ast.texts.length) {
-          item.texts = ast.texts;
-        }
-      }
 
-      return item;
-    });
-
-    // const uv = geometry.attributes.uv.array;
+    applyTxture();
   }, []);
 
-  const renderCanvas = async (uv, valId) => {
+  useEffect(() => {
+    texture.forEach((item) => {
+      if (item.ref.current && item.txture) {
+        item.ref.current.material.map = item.txture;
+        item.ref.current.material.needsUpdate = true;
+      }
+    });
+  }, [texture]);
+
+  const base64ToFile = (base64) => {
+    const regex = /^data:(.*?);base64,/;
+    const match = base64.match(regex);
+    if (!match) {
+      console.error("Invalid Base64 format", base64);
+      return null;
+    }
+    const mimeString = match[1];
+    const byteString = atob(base64.replace(regex, ""));
+    const byteNumbers = new Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) {
+      byteNumbers[i] = byteString.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new File([byteArray], "image", { type: mimeString });
+  };
+
+  const applyTxture = async () => {
+    const assets = order?.assets || [];
+
+    // for (const ast of assets) {
+    //   const ishas = texture.find((obj) => obj.id === ast.id);
+    //   if (Object.keys(ishas || {}).length) {
+    //     const item = { ...ishas };
+    //     item.images = ast.images;
+    //     item.texts = ast.texts;
+    //     const uv = item.geo.attributes.uv.array;
+    //     renderCanvas(uv, item);
+    //   }
+    // }
+
+    // for (const ast of assets) {
+    //   const ishas = texture.find((obj) => obj.id === ast.id);
+    //   if (Object.keys(ishas || {}).length) {
+    //     const item = { ...ishas };
+    //     item.images = ast.images;
+    //     item.texts = ast.texts;
+    //     const uv = item.geo.attributes.uv.array;
+    //     renderCanvas(uv, item);
+    //   }
+    // }
+
+    const upTextures = texture.map((item) => {
+      const ishas = assets.find((ast) => item.id === ast.id);
+      if (Object.keys(ishas || {}).length) {
+        item.images = ishas.images;
+        item.texts = ishas.texts;
+        const uv = item.geo.attributes.uv.array;
+        const txt = renderCanvas(uv, item);
+        item.txture = txt;
+        return item;
+      } else return item;
+    });
+
+    setTexture(upTextures);
+  };
+
+  const renderCanvas = (uv, obj) => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
@@ -522,43 +571,66 @@ const ViewOrder = () => {
       ctx.lineTo(x1, y1);
     }
 
-    texture.forEach((item) => {
-      //   if (item.id !== chosenComp.id) return;
-
-      //   item.images?.forEach((image, index) => {
-      //     const img = image.ref.current;
-      //     ctx.save();
-      //     ctx.translate(image.position.x, image.position.y);
-      //     ctx.rotate((image.rotation * Math.PI) / 180);
-      //     ctx.scale(image.scale, image.scale);
-      //     ctx.drawImage(img, -img.width / 2, -img.height / 2);
-      //     ctx.restore();
-      //   });
-
-      for (const image of item.images || []) {
+    const getImage = (imgUrl) => {
+      return new Promise((res, rej) => {
         const img = new Image();
-        img.onload = () => {
+        img.crossOrigin = "anonymous";
+        img.src = imgUrl;
+        img.onload = () => res(img);
+        img.onerror = () => rej(img);
+      });
+    };
+
+    texture.forEach((val) => {
+      const item = val.id === obj.id ? obj : val;
+
+      // console.log("item in render :", item);
+
+      item.images?.forEach(async (image, index) => {
+        if (image.src) {
+          const baseForm = `data:${image.src};base64,${image.file}`;
+          const file = base64ToFile(baseForm, image.src);
+          const imgUrl = URL.createObjectURL(file);
+
+          // const img = new Image();
+          // img.src = imgUrl;
+
+          const imgFile = await getImage(imgUrl);
+          const ref = React.createRef();
+          ref.current = imgFile;
+          image.ref = ref;
+          console.log("fetched image :", image);
+
+          const img = image.ref.current;
           ctx.save();
           ctx.translate(image.position.x, image.position.y);
           ctx.rotate((image.rotation * Math.PI) / 180);
           ctx.scale(image.scale, image.scale);
           ctx.drawImage(img, -img.width / 2, -img.height / 2);
           ctx.restore();
-        };
-        img.src = fileUrl + image.src;
-      }
+
+          // ctx.save();
+          // ctx.translate(image.position.x, image.position.y);
+          // ctx.rotate((image.rotation * Math.PI) / 180);
+          // ctx.scale(image.scale, image.scale);
+          // ctx.drawImage(img, -img.width / 2, -img.height / 2);
+          // ctx.restore();
+        }
+      });
 
       // Render texts
       item.texts?.forEach((textItem) => {
-        ctx.save();
-        ctx.translate(textItem.position.x, textItem.position.y);
-        ctx.rotate((textItem.rotation * Math.PI) / 180);
-        ctx.scale(textItem.scale, textItem.scale);
-        ctx.font = textItem.fontStyle + " 30px " + textItem.font;
-        ctx.fillStyle = textItem.color;
-        ctx.fillText(textItem.text, 0, 0);
-        // ctx.strokeText(textItem.text, 0, 0); border
-        ctx.restore();
+        if (textItem.text) {
+          ctx.save();
+          ctx.translate(textItem.position.x, textItem.position.y);
+          ctx.rotate((textItem.rotation * Math.PI) / 180);
+          ctx.scale(textItem.scale, textItem.scale);
+          ctx.font = textItem.fontStyle + " 30px " + textItem.font;
+          ctx.fillStyle = textItem.color;
+          ctx.fillText(textItem.text, 0, 0);
+          // ctx.strokeText(textItem.text, 0, 0); border
+          ctx.restore();
+        }
       });
     });
 
@@ -567,14 +639,16 @@ const ViewOrder = () => {
     newTexture.minFilter = LinearFilter;
     newTexture.magFilter = NearestFilter;
 
-    const madetxture = texture.map((item) => {
-      if (valId === item.id) {
-        return { ...item, txture: newTexture };
-      } else {
-        return item;
-      }
-    });
-    setTexture(madetxture);
+    return newTexture;
+
+    // const madetxture = texture.map((item) => {
+    //   if (obj.id === item.id) {
+    //     return { ...item, txture: newTexture };
+    //   } else {
+    //     return item;
+    //   }
+    // });
+    // setTexture(madetxture);
   };
 
   return (
