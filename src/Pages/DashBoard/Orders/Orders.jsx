@@ -129,7 +129,7 @@ const Orders = () => {
   }, []);
 
   const onOrderClick = (order) => {
-    nav("/dashboard/viewOrder", { state: { order } });
+    nav("/viewOrder", { state: { order } });
   };
 
   return (

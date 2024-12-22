@@ -20,6 +20,7 @@ const LogIn = lazy(() => import("../Pages/Auth/Login.jsx"));
 const Register = lazy(() => import("../Pages/Auth/Register.jsx"));
 const Editor = lazy(() => import("../Pages/DashBoard/Editor/Editor.jsx"));
 const NavigationRouter = lazy(() => import("./NavigationRouter.jsx"));
+const ViewOrder = lazy(() => import("../Pages/DashBoard/Orders/ViewOrder.jsx"));
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const Router = () => {
           </Suspense>
         }
       />
+
       <Route
         path="/register"
         element={
@@ -102,15 +104,26 @@ const Router = () => {
       )}
 
       {userToken && !isCust && (
-        <Route
-          path="/dashboard/*"
-          exact
-          element={
-            <Suspense fallback={<Loader />}>
-              <NavigationRouter />
-            </Suspense>
-          }
-        />
+        <>
+          <Route
+            path="/dashboard/*"
+            exact
+            element={
+              <Suspense fallback={<Loader />}>
+                <NavigationRouter />
+              </Suspense>
+            }
+          />
+
+          <Route
+            path="/viewOrder"
+            element={
+              <Suspense fallback={<Loader />}>
+                <ViewOrder />
+              </Suspense>
+            }
+          />
+        </>
       )}
     </Routes>
   );

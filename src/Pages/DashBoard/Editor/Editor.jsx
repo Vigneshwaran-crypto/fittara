@@ -1467,7 +1467,7 @@ const Editor = () => {
             icon: "success",
             title: "Order Placed",
             showConfirmButton: false,
-            timer: 2500,
+            timer: 1500,
           }).finally(() => {
             navigation("/home");
           });

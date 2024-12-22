@@ -9,16 +9,55 @@ import tote from "../../../Assets/elems/bag.glb";
 import mug from "../../../Assets/elems/cup.glb";
 import tees from "../../../Assets/elems/tshirt.glb";
 import bottle from "../../../Assets/elems/bottle.glb";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { Center, OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { fileUrl } from "../../../Common/Constant";
 import axios from "axios";
+import { inpStye, selStyle } from "../../Components/utils";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/joy/FormLabel";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Table from "@mui/material/Table";
+
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+
+import samp1 from "../../../Assets/prints/samp1.png";
+import samp2 from "../../../Assets/prints/samp2.png";
+import samp3 from "../../../Assets/prints/samp3.png";
+import samp4 from "../../../Assets/prints/samp4.png";
+import samp5 from "../../../Assets/prints/samp5.png";
+import samp6 from "../../../Assets/prints/samp6.png";
+import { GoDotFill } from "react-icons/go";
+import { IoCloudDownload } from "react-icons/io5";
+
+const noBorder = { borderBottom: "0", paddingBottom: 0, paddingTop: "15px" };
 
 const ViewOrder = () => {
   const loc = useLocation();
   const order = loc.state.order;
 
   const prod = order?.productId || 6;
+  const sampImages = [
+    samp1,
+    samp2,
+    samp3,
+    samp4,
+    samp5,
+    samp6,
+    samp1,
+    samp2,
+    samp3,
+    samp4,
+    samp5,
+    samp6,
+  ];
 
   const models = {
     1: hoodie,
@@ -466,6 +505,11 @@ const ViewOrder = () => {
   const canvasRef = useRef(null);
   const [texture, setTexture] = useState(meshes[prod]);
 
+  const orderColumns = ["Size", "Quantity", "Price"];
+
+  const sizesChosen = order?.size || [];
+  const shippingPrice = 50;
+
   useEffect(() => {
     texture.forEach((item) => {
       if (item.ref.current && item.txture) {
@@ -717,7 +761,10 @@ const ViewOrder = () => {
             }}
             shadows
             className="threeDHolder"
-            style={{ maxWidth: "100%" }}
+            style={{
+              maxWidth: "100%",
+              minHeight: "100%",
+            }}
           >
             {/* <axesHelper args={[5]} />
             <gridHelper args={[10, 10]} /> */}
@@ -739,29 +786,32 @@ const ViewOrder = () => {
               intensity={0.9}
             />
 
-            <group
-              position={[0, aptPos[prod].y, 0]}
-              rotation={[0, 0, 0]}
-              //   ref={groupMeshRef}
-            >
-              {texture?.map((item) => (
-                <mesh
-                  receiveShadow
-                  position={[0, 0, 0]}
-                  rotation={[0, 0, 0]}
-                  key={item.id}
-                  geometry={item.geo}
-                  ref={item.ref}
-                >
-                  <meshPhysicalMaterial
-                    toneMapped={false}
-                    map={item.txture}
-                    roughness={0.5} // Match Blender
-                    normalMap={item.mat.normalMap}
-                  />
-                </mesh>
-              ))}
-            </group>
+            <Center>
+              <group
+                position={[0, aptPos[prod].y, 0]}
+                rotation={[0, 0, 0]}
+                //   ref={groupMeshRef}
+              >
+                {texture?.map((item) => (
+                  <mesh
+                    receiveShadow
+                    position={[0, 0, 0]}
+                    rotation={[0, 0, 0]}
+                    key={item.id}
+                    geometry={item.geo}
+                    ref={item.ref}
+                  >
+                    <meshPhysicalMaterial
+                      toneMapped={false}
+                      map={item.txture}
+                      roughness={0.5} // Match Blender
+                      normalMap={item.mat.normalMap}
+                    />
+                  </mesh>
+                ))}
+              </group>
+            </Center>
+
             {/* <ControlUpdater
               controlRef={controlRef}
               groupMeshRef={groupMeshRef}
@@ -771,8 +821,254 @@ const ViewOrder = () => {
             {/* <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} /> */}
           </Canvas>
         </div>
-        <div></div>
-        <div></div>
+        <div>
+          {/* <span className="contTitle"> Order #123</span> */}
+          <div className="groupHeadTxt">Order #123</div>
+          <div className="customDetail">
+            <div>
+              <div className="CustDetInputItems">
+                <FormControl size="small">
+                  <FormLabel className="orderDetLabel">
+                    Payment Status
+                  </FormLabel>
+                  <Select
+                    labelId="select-label"
+                    size="small"
+                    // value={product.category}
+                    sx={selStyle}
+                    input={
+                      <OutlinedInput
+                        id="select-multiple-chip"
+                        // label="Product Category"
+                        variant="filled"
+                        size="small"
+                      />
+                    }
+                    // onChange={(e) => {
+                    //   console.log("onChange category :", e.target.value);
+                    //   setProduct({ ...product, category: e.target.value });
+                    // }}
+                    // error={validate && !product.category}
+                  >
+                    {/* {productCategories.map((item) => (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.category}
+                      </MenuItem>
+                    ))} */}
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="CustDetInputItems">
+                <FormControl size="small">
+                  <FormLabel className="orderDetLabel">Order Status</FormLabel>
+                  <Select
+                    labelId="select-label"
+                    size="small"
+                    // value={product.category}
+                    sx={selStyle}
+                    input={
+                      <OutlinedInput
+                        id="select-multiple-chip"
+                        // label="Product Category"
+                        variant="filled"
+                      />
+                    }
+                    // onChange={(e) => {
+                    //   console.log("onChange category :", e.target.value);
+                    //   setProduct({ ...product, category: e.target.value });
+                    // }}
+                    // error={validate && !product.category}
+                  >
+                    {/* {productCategories.map((item) => (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.category}
+                      </MenuItem>
+                    ))} */}
+                  </Select>
+                </FormControl>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div className="orderDetItem">
+                  <span>Order Date</span>
+                  <span>20/03/2025</span>
+                </div>
+
+                <div className="orderDetItem">
+                  <span>Account Number</span>
+                  <span>34565432785675</span>
+                </div>
+
+                <div className="orderDetItem">
+                  <span>Customer Address</span>
+                  <span>
+                    Sugam Hospital , 7/4 Narayana Swamy Street,Thiruvottiyur
+                  </span>
+                </div>
+
+                <div className="orderDetItem">
+                  <span>City</span>
+                  <span>Chennai</span>
+                </div>
+              </div>
+              <div>
+                <div className="orderDetItem">
+                  <span>Province</span>
+                  <span>ontario</span>
+                </div>
+
+                <div className="orderDetItem">
+                  <span>PinCode</span>
+                  <span>600019</span>
+                </div>
+
+                <div className="orderDetItem">
+                  <span>Customer Name</span>
+                  <span>Vignesh</span>
+                </div>
+
+                <div className="orderDetItem">
+                  <span>Customer Number</span>
+                  <span>8807207198</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr style={{ marginBlock: "20px" }} />
+
+          <div className="asstAndPrice">
+            <div className="asetSpace">
+              <span className="groupHeadTxt">Assets</span>
+
+              <div>
+                <div className="imgGridListHolder">
+                  {sampImages.map((item, ind) => (
+                    <div className="comImgHolder astImage" key={ind}>
+                      <img
+                        src={item}
+                        className="imgItem"
+                        style={{
+                          // border: "0.5px solid grey",
+                          borderRadius: "8px",
+                          objectFit: "contain",
+                        }}
+                      />
+
+                      <IoCloudDownload
+                        size={25}
+                        color="#3b5998"
+                        className="astDownLoad"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="txtAstList">
+                  {sampImages.map((item, ind) => (
+                    <div className="astTxtItem">
+                      <div>
+                        <span>Heroic</span> <span>Arial</span>
+                      </div>
+                      <div>
+                        <GoDotFill size={40} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="asetSpace">
+              <span className="groupHeadTxt">Pricing</span>
+
+              <div style={{ flex: 4 }}>
+                <TableContainer
+                  style={{
+                    maxheight: "50% !important",
+                  }}
+                >
+                  <Table stickyHeader padding="normal" size="small">
+                    <TableHead>
+                      <TableRow>
+                        {orderColumns.map((item, ind) => (
+                          <TableCell
+                            style={{
+                              fontSize: "medium",
+                              fontWeight: "500",
+                              fontFamily: "Lucida Sans Regular",
+                            }}
+                            align="center"
+                            key={ind}
+                          >
+                            {item}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                      {sizesChosen.length > 0
+                        ? sizesChosen.map((obj, ind) => (
+                            <TableRow key={ind}>
+                              <TableCell align="center">{obj.size}</TableCell>
+                              <TableCell align="center">2</TableCell>
+                              <TableCell align="center">
+                                {obj.price} ₹
+                              </TableCell>
+                            </TableRow>
+                          ))
+                        : null}
+
+                      <TableRow key={sizesChosen.length + 1 || 0}>
+                        <TableCell sx={noBorder}></TableCell>
+                        <TableCell sx={noBorder} align="center">
+                          Subtotal
+                        </TableCell>
+                        <TableCell sx={noBorder} align="center">
+                          {sizesChosen
+                            .map((item) => item.price)
+                            .reduce((acc, cur) => acc + cur, 0) + " ₹" || "-"}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow key={sizesChosen.length + 2 || 1}>
+                        <TableCell sx={noBorder}></TableCell>
+                        <TableCell sx={{ borderBottom: 0 }} align="center">
+                          Shipping
+                        </TableCell>
+                        <TableCell align="center">{shippingPrice} ₹</TableCell>
+                      </TableRow>
+                      <TableRow key={sizesChosen.length + 3 || 2}>
+                        <TableCell sx={noBorder}></TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{ fontWeight: "bold", borderBottom: 0 }}
+                        >
+                          Total
+                        </TableCell>
+                        <TableCell
+                          sx={{ fontWeight: "bold", borderBottom: 0 }}
+                          align="center"
+                        >
+                          {sizesChosen
+                            .map((item) => item.price)
+                            .reduce((acc, cur) => acc + cur, 0) +
+                            shippingPrice +
+                            " ₹" || "-"}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+
+              <div></div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <canvas
