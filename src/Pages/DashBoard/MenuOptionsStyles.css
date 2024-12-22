@@ -1843,8 +1843,7 @@
   max-height: 100%;
   min-height: 0;
   /* border: 1px solid red; */
-  padding-block: 5px;
-  padding: 5px;
+  padding: 5px 15px;
 }
 
 .txtAstList {
@@ -1853,6 +1852,7 @@
   overflow: auto;
   flex: 1;
   /* border: 1px solid red; */
+  padding-inline-end: 10px;
 }
 
 .astDownLoad {
@@ -1883,10 +1883,17 @@
   display: flex;
   flex-direction: column;
   flex: 3;
-  /* border: 0.5px solid black; */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* .astTxtItem > div:first-child > span:first-child {
+  font-size: medium;
+  font-weight: 500;
+} */
+.astTxtItem > div:first-child > span:last-child {
+  font-size: small;
 }
 
 .astTxtItem > div:last-child {

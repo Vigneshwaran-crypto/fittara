@@ -27,6 +27,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import MenuItem from "@mui/material/MenuItem";
 
 import samp1 from "../../../Assets/prints/samp1.png";
 import samp2 from "../../../Assets/prints/samp2.png";
@@ -36,12 +39,14 @@ import samp5 from "../../../Assets/prints/samp5.png";
 import samp6 from "../../../Assets/prints/samp6.png";
 import { GoDotFill } from "react-icons/go";
 import { IoCloudDownload } from "react-icons/io5";
+import Button from "@mui/material/Button";
 
 const noBorder = { borderBottom: "0", paddingBottom: 0, paddingTop: "15px" };
 
 const ViewOrder = () => {
   const loc = useLocation();
   const order = loc.state.order;
+  const assets = order?.assets || [];
 
   const prod = order?.productId || 6;
   const sampImages = [
@@ -510,6 +515,32 @@ const ViewOrder = () => {
   const sizesChosen = order?.size || [];
   const shippingPrice = 50;
 
+  const paymentStatus = [
+    { id: 1, value: "1", title: "Paid" },
+    { id: 2, value: "2", title: "Pending" },
+  ];
+
+  const orderStatus = [
+    { id: 1, value: "1", title: "Pending" },
+    { id: 2, value: "2", title: "Confirm" },
+    { id: 3, value: "3", title: "Cancel" },
+  ];
+
+  const getOrderStatus = {
+    1: "Pending",
+    2: "Confirm",
+    3: "Cancel",
+  };
+  const getOrderCol = {
+    1: "warning",
+    2: "success",
+    3: "error",
+  };
+  const getPaymentStatus = {
+    1: "Paid",
+    2: "Pending",
+  };
+
   useEffect(() => {
     texture.forEach((item) => {
       if (item.ref.current && item.txture) {
@@ -542,7 +573,6 @@ const ViewOrder = () => {
   };
 
   const addImageToTextures = async () => {
-    const assets = order?.assets || [];
     const upTextures = await Promise.all(
       texture.map(async (item) => {
         const ishas = assets.find((ast) => ast.id === item.id);
@@ -743,6 +773,18 @@ const ViewOrder = () => {
     return newTexture;
   };
 
+  const onAstImgClick = async (img) => {
+    const anchor = document.createElement("a");
+    const baseForm = `data:${img.src};base64,${img.file}`;
+    const file = base64ToFile(baseForm, img.src);
+    const imgUrl = URL.createObjectURL(file);
+    anchor.href = imgUrl;
+    anchor.download = `${order.name}_${img.src}`;
+    anchor.click();
+    URL.revokeObjectURL(anchor.href);
+    anchor.remove();
+  };
+
   return (
     <Container fluid className="tabScreens">
       <div className="viewOrder">
@@ -839,22 +881,27 @@ const ViewOrder = () => {
                     input={
                       <OutlinedInput
                         id="select-multiple-chip"
-                        // label="Product Category"
                         variant="filled"
                         size="small"
                       />
                     }
-                    // onChange={(e) => {
-                    //   console.log("onChange category :", e.target.value);
-                    //   setProduct({ ...product, category: e.target.value });
-                    // }}
-                    // error={validate && !product.category}
+                    renderValue={(val) => (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        <Chip
+                          icon={<GoDotFill />}
+                          key={val}
+                          size="small"
+                          label={getPaymentStatus[val]}
+                          color={val === 1 ? "success" : "warning"}
+                        />
+                      </Box>
+                    )}
                   >
-                    {/* {productCategories.map((item) => (
+                    {paymentStatus.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
-                        {item.category}
+                        {item.title}
                       </MenuItem>
-                    ))} */}
+                    ))}
                   </Select>
                 </FormControl>
               </div>
@@ -869,21 +916,26 @@ const ViewOrder = () => {
                     input={
                       <OutlinedInput
                         id="select-multiple-chip"
-                        // label="Product Category"
                         variant="filled"
                       />
                     }
-                    // onChange={(e) => {
-                    //   console.log("onChange category :", e.target.value);
-                    //   setProduct({ ...product, category: e.target.value });
-                    // }}
-                    // error={validate && !product.category}
+                    renderValue={(val) => (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        <Chip
+                          key={val}
+                          size="small"
+                          icon={<GoDotFill />}
+                          color={getOrderCol[val]}
+                          label={getOrderStatus[val]}
+                        />
+                      </Box>
+                    )}
                   >
-                    {/* {productCategories.map((item) => (
+                    {orderStatus.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
-                        {item.category}
+                        {item.title}
                       </MenuItem>
-                    ))} */}
+                    ))}
                   </Select>
                 </FormControl>
               </div>
@@ -944,31 +996,33 @@ const ViewOrder = () => {
 
               <div>
                 <div className="imgGridListHolder">
-                  {sampImages.map((item, ind) => (
-                    <div className="comImgHolder astImage" key={ind}>
-                      <img
-                        src={item}
-                        className="imgItem"
-                        style={{
-                          // border: "0.5px solid grey",
-                          borderRadius: "8px",
-                          objectFit: "contain",
-                        }}
-                      />
+                  {assets?.map((ast) =>
+                    ast.images?.map((img, ind) => (
+                      <div className="comImgHolder astImage" key={ind}>
+                        <img
+                          src={`${fileUrl}${img.src}`}
+                          className="imgItem"
+                          style={{
+                            borderRadius: "8px",
+                            objectFit: "contain",
+                          }}
+                        />
 
-                      <IoCloudDownload
-                        size={25}
-                        color="#3b5998"
-                        className="astDownLoad"
-                      />
-                    </div>
-                  ))}
+                        <IoCloudDownload
+                          size={25}
+                          color="#3b5998"
+                          className="astDownLoad"
+                          onClick={onAstImgClick.bind(this, img)}
+                        />
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
 
               <div>
                 <div className="txtAstList">
-                  {sampImages.map((item, ind) => (
+                  {/* {sampImages.map((item, ind) => (
                     <div className="astTxtItem">
                       <div>
                         <span>Heroic</span> <span>Arial</span>
@@ -977,7 +1031,20 @@ const ViewOrder = () => {
                         <GoDotFill size={40} />
                       </div>
                     </div>
-                  ))}
+                  ))} */}
+
+                  {assets?.map((ast) =>
+                    ast.texts?.map((txt, ind) => (
+                      <div className="astTxtItem" key={ind}>
+                        <div>
+                          <span>{txt.text}</span> <span>{txt.font}</span>
+                        </div>
+                        <div>
+                          <GoDotFill color={txt.color} size={40} />
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
@@ -986,11 +1053,7 @@ const ViewOrder = () => {
               <span className="groupHeadTxt">Pricing</span>
 
               <div style={{ flex: 4 }}>
-                <TableContainer
-                  style={{
-                    maxheight: "50% !important",
-                  }}
-                >
+                <TableContainer>
                   <Table stickyHeader padding="normal" size="small">
                     <TableHead>
                       <TableRow>
@@ -1065,7 +1128,11 @@ const ViewOrder = () => {
                 </TableContainer>
               </div>
 
-              <div></div>
+              <div>
+                <div className="payBtHolder">
+                  <Button variant="contained">Complete Order</Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

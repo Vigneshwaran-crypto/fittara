@@ -52,6 +52,7 @@ import { FaBottleWater } from "react-icons/fa6";
 
 import { ImMug } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
+import { dtFormed } from "../../../Common/Utils";
 
 const Orders = () => {
   const nav = useNavigate();
@@ -64,22 +65,32 @@ const Orders = () => {
       title: "Product",
       key: "productId",
     },
+    { title: "Date", key: "createdAt" },
     { title: "Name", key: "name" },
     { title: "Payment", key: "paymentType" },
     { title: "Status", key: "status" },
     { title: "Price", key: "price" },
   ];
 
+  const getProducts = {
+    1: "Hoodie",
+    2: "Tshirt",
+    3: "Tote Bag",
+    4: "Cap",
+    5: "Coffee Mug",
+    6: "Water Bottle",
+  };
+
   const renderProductIcon = (id) => {
-    const products = {
-      1: <GiHoodie />,
-      2: <FaTshirt />,
-      3: <BsBagFill />,
-      4: <GiBilledCap />,
-      5: <ImMug />,
-      6: <FaBottleWater />,
-    };
-    return products[id];
+    // const products = {
+    //   1: <GiHoodie />,
+    //   2: <FaTshirt />,
+    //   3: <BsBagFill />,
+    //   4: <GiBilledCap />,
+    //   5: <ImMug />,
+    //   6: <FaBottleWater />,
+    // };
+    // return products[id];
   };
 
   const menuGridList = [
@@ -299,7 +310,11 @@ const Orders = () => {
                       {orderColumns.map((col, dex) => (
                         <TableCell align="center" key={dex}>
                           {col.key === "productId"
-                            ? renderProductIcon(obj[col.key])
+                            ? getProducts[obj[col.key]]
+                            : col.key === "price"
+                            ? obj[col.key] + " ₹"
+                            : col.key === "createdAt"
+                            ? dtFormed(obj[col.key])
                             : obj[col.key]}
                         </TableCell>
                       ))}

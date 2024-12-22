@@ -725,6 +725,8 @@ const Editor = () => {
       price: 120,
     },
   ]);
+
+  const [finalPrice, setFinalPrice] = useState(0);
   const orderColumns = ["Size", "Quantity", "Price"];
 
   const [validate, setValidate] = useState(false);
@@ -1351,6 +1353,11 @@ const Editor = () => {
       sizeList[ind].quantity -= 1;
     }
     sizeList[ind].price = sizeList[ind].quantity * tShirtPrice;
+
+    const wholePrice =
+      sizeList.map((item) => item.price).reduce((acc, cur) => acc + cur, 0) +
+      shippingPrice;
+    setFinalPrice(wholePrice);
     setSizesChosen(sizeList);
   };
 
@@ -1440,7 +1447,7 @@ const Editor = () => {
     order.append("city", address.city.city);
     order.append("state", address.state.state);
     order.append("size", JSON.stringify(sizesChosen));
-    order.append("price", 1200);
+    order.append("price", finalPrice);
 
     const assets = sidePosses.map((item, ind) => {
       item.images = item.images?.map((img, dex) => {

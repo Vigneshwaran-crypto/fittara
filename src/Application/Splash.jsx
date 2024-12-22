@@ -42,7 +42,7 @@ const Splash = () => {
       //     checkForToken();
       //   });
     } else {
-      navigation("/dashboard/products", { replace: true });
+      navigation("/dashboard/orders", { replace: true });
       // checkForToken();
     }
   };
