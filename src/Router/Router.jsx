@@ -35,12 +35,12 @@ const Router = () => {
     console.log("isCust in Router :", isCust);
     console.log("userToken in Router :", userToken);
     console.log("curPath in Router :", curPath);
-    if (curPath !== "/splash") navigation(curPath);
-    if (userToken) {
-      const [header, payload, signature] = userToken.split(".");
-      const usr = JSON.parse(atob(payload));
-      dispatch(reduxStore(saveUser(usr)));
-    }
+    // if (curPath !== "/splash") navigation(curPath);
+    // if (userToken) {
+    //   const [header, payload, signature] = userToken.split(".");
+    //   const usr = JSON.parse(atob(payload));
+    //   dispatch(reduxStore(saveUser(usr)));
+    // }
   }, []);
 
   return (
