@@ -1,6 +1,5 @@
 {
-  "homepage": "https://fittara-a27fkdtzp-vigneshwarans-projects-a3ac95ea.vercel.app/fittara",
-  "name": "Fittara",
+  "name": "fittara",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
