@@ -12,10 +12,13 @@ import { useDispatch } from "react-redux";
 import { reduxStore } from "../ReduxToolKit/MainSlice.js";
 import { saveUser } from "../ReduxToolKit/Actions.js";
 import { isCustomer } from "../Common/Constant.js";
+import Loader from "../Application/Loader.jsx";
+import Splash from "../Application/Splash.jsx";
 
-const Loader = lazy(() => import("../Application/Loader.jsx"));
+// const Loader = lazy(() => import("../Application/Loader.jsx"));
+// const Splash = lazy(() => import("../Application/Splash.jsx"));
+
 const UnAuth = lazy(() => import("../Application/UnAuth.jsx"));
-const Splash = lazy(() => import("../Application/Splash.jsx"));
 const Home = lazy(() => import("../Pages/Home/Home.jsx"));
 const LogIn = lazy(() => import("../Pages/Auth/Login.jsx"));
 const Register = lazy(() => import("../Pages/Auth/Register.jsx"));
@@ -49,9 +52,9 @@ const Router = () => {
         path="/*"
         index
         element={
-          <Suspense fallback={<Loader />}>
-            <Splash />
-          </Suspense>
+          // <Suspense fallback={<Loader />}>
+          <Splash />
+          // </Suspense>
         }
       />
 
@@ -83,30 +86,30 @@ const Router = () => {
       />
 
       {/* isCust && */}
-      {isCustomer && (
-        <>
-          <Route
-            path="/home"
-            element={
-              <Suspense fallback={<Loader />}>
-                <Home />
-              </Suspense>
-            }
-          />
+      {/* {isCustomer && ( */}
+      {/* <> */}
+      <Route
+        path="/home"
+        element={
+          <Suspense fallback={<Loader />}>
+            <Home />
+          </Suspense>
+        }
+      />
 
-          <Route
-            path="/editor"
-            element={
-              <Suspense fallback={<Loader />}>
-                <Editor />
-              </Suspense>
-            }
-          />
-        </>
-      )}
+      <Route
+        path="/editor"
+        element={
+          <Suspense fallback={<Loader />}>
+            <Editor />
+          </Suspense>
+        }
+      />
+      {/* </> */}
+      {/* )} */}
 
       {/* userToken && !isCust && */}
-      {!isCustomer && (
+      {/* {!isCustomer && (
         <>
           <Route
             path="/dashboard/*"
@@ -127,7 +130,7 @@ const Router = () => {
             }
           />
         </>
-      )}
+      )} */}
     </Routes>
   );
 };

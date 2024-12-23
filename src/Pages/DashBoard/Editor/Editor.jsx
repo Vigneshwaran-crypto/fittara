@@ -1474,26 +1474,26 @@ const Editor = () => {
     placeOrder(order)
       .then((res) => {
         console.log("placeOrder res :", res);
-        if (res.data?.status === 1) {
-          Swal.close();
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Order Placed",
-            showConfirmButton: false,
-            timer: 1500,
-          }).finally(() => {
-            navigation("/home");
-          });
-        } else {
-          Swal.close();
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Please try again",
-            showConfirmButton: true,
-          });
-        }
+        // if (res.data?.status === 1) {
+        Swal.close();
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Order Placed",
+          showConfirmButton: false,
+          timer: 1500,
+        }).finally(() => {
+          navigation("/home");
+        });
+        // } else {
+        //   Swal.close();
+        //   Swal.fire({
+        //     position: "center",
+        //     icon: "error",
+        //     title: "Please try again",
+        //     showConfirmButton: true,
+        //   });
+        // }
       })
       .catch((err) => {
         console.log("placeOrder err :", err);

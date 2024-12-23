@@ -1636,14 +1636,14 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-image: url(../../Assets/policy/terms.png);
+  background-image: url("../../Assets/policy/terms.png");
 }
 
 .policeParent > div:nth-child(2) > span:first-child {
-  background-image: url(../../Assets/policy/privacy.png);
+  background-image: url("../../Assets/policy/privacy.png");
 }
 .policeParent > div:last-child > span:first-child {
-  background-image: url(../../Assets/policy/del.png);
+  background-image: url("../../Assets/policy/del.png");
 }
 /* txt content */
 .policeParent > div > span:last-child {
@@ -1659,7 +1659,6 @@
 }
 .policeParent > div > span:last-child > h4 {
   margin-bottom: 0px;
-  /* font-size: clamp(0.8rem, 0.8vw + 0.5rem, 1rem); */
 }
 
 .policeParent > div > span:last-child > p {
@@ -1707,8 +1706,6 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* border: 1px solid red; */
-  /* padding-block: 10px; */
 }
 
 .paylabel {
@@ -1754,9 +1751,6 @@
   display: flex;
 }
 
-/* .viewOrder > div:nth-child(2) {
-  background-color: white;
-} */
 .viewOrder > div:last-child {
   background-color: white;
   flex: 1.5;
@@ -1902,10 +1896,6 @@
   text-overflow: ellipsis;
 }
 
-/* .astTxtItem > div:first-child > span:first-child {
-  font-size: medium;
-  font-weight: 500;
-} */
 .astTxtItem > div:first-child > span:last-child {
   font-size: small;
 }
@@ -1925,8 +1915,6 @@
   padding-block: 5px;
   color: rgb(63, 63, 63);
   font-style: italic;
-
-  /* min-width: 100% !important; */
 }
 
 @media screen and (max-width: 600px) {
