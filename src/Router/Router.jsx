@@ -86,8 +86,8 @@ const Router = () => {
       />
 
       {/* isCust && */}
-      {/* {isCustomer && ( */}
-      {/* <> */}
+      {/* {isCustomer && (
+      <>
       <Route
         path="/home"
         element={
@@ -105,32 +105,32 @@ const Router = () => {
           </Suspense>
         }
       />
-      {/* </> */}
-      {/* )} */}
+      </>
+      )} */}
 
       {/* userToken && !isCust && */}
-      {/* {!isCustomer && (
-        <>
-          <Route
-            path="/dashboard/*"
-            exact
-            element={
-              <Suspense fallback={<Loader />}>
-                <NavigationRouter />
-              </Suspense>
-            }
-          />
+      {/* {!isCustomer && ( */}
+      {/* <> */}
+      <Route
+        path="/dashboard/*"
+        exact
+        element={
+          <Suspense fallback={<Loader />}>
+            <NavigationRouter />
+          </Suspense>
+        }
+      />
 
-          <Route
-            path="/viewOrder"
-            element={
-              <Suspense fallback={<Loader />}>
-                <ViewOrder />
-              </Suspense>
-            }
-          />
-        </>
-      )} */}
+      <Route
+        path="/viewOrder"
+        element={
+          <Suspense fallback={<Loader />}>
+            <ViewOrder />
+          </Suspense>
+        }
+      />
+      {/* </> */}
+      {/* )} */}
     </Routes>
   );
 };

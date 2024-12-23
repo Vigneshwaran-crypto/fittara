@@ -19,7 +19,7 @@ const configs = {
 
 export const baseURL = configs.url;
 export const fileUrl = configs.fileUrl;
-export const isCustomer = true;
+export const isCustomer = !true;
 
 export const HTTP = {
   HEADERS: {
