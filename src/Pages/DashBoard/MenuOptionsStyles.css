@@ -1917,6 +1917,12 @@
   font-style: italic;
 }
 
+.productColInd {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 @media screen and (max-width: 600px) {
   .analiticsGridHolder > div:nth-child(5) {
     grid-column: 1/-1;

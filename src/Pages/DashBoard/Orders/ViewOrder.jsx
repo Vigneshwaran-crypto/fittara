@@ -784,7 +784,7 @@ const ViewOrder = () => {
   return (
     <Container fluid className="tabScreens">
       <div className="viewOrder">
-        <div>
+        <div style={{ position: "relative" }}>
           <Canvas
             gl={{
               outputEncoding: LinearFilter,
@@ -858,6 +858,8 @@ const ViewOrder = () => {
             <OrbitControls />
             {/* <ContactShadows position={[0, -1.2, 0]} opacity={0.3} blur={3} /> */}
           </Canvas>
+
+          <GoDotFill className="productColInd" color={order.color} size={40} />
         </div>
         <div>
           {/* <span className="contTitle"> Order #123</span> */}
