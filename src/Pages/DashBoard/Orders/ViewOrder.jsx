@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Container } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Canvas } from "@react-three/fiber";
 import { LinearFilter, NearestFilter, CanvasTexture } from "three";
 import hoodie from "../../../Assets/elems/swater.glb";
@@ -40,29 +40,20 @@ import samp6 from "../../../Assets/prints/samp6.png";
 import { GoDotFill } from "react-icons/go";
 import { IoCloudDownload } from "react-icons/io5";
 import Button from "@mui/material/Button";
+import { dtFormed } from "../../../Common/Utils";
 
 const noBorder = { borderBottom: "0", paddingBottom: 0, paddingTop: "15px" };
 
 const ViewOrder = () => {
+  const navigation = useNavigate();
   const loc = useLocation();
   const order = loc.state.order;
   const assets = order?.assets || [];
 
+  const astImages = assets.map((item) => item.images).flat() ?? [];
+  const astTexts = assets.map((item) => item.texts).flat() ?? [];
+
   const prod = order?.productId || 6;
-  const sampImages = [
-    samp1,
-    samp2,
-    samp3,
-    samp4,
-    samp5,
-    samp6,
-    samp1,
-    samp2,
-    samp3,
-    samp4,
-    samp5,
-    samp6,
-  ];
 
   const models = {
     1: hoodie,
@@ -552,6 +543,7 @@ const ViewOrder = () => {
 
   useEffect(() => {
     console.log("ViewOrder props value :", order);
+
     addImageToTextures();
   }, []);
 
@@ -785,6 +777,10 @@ const ViewOrder = () => {
     anchor.remove();
   };
 
+  const onCompOrderClick = () => {
+    navigation(-1);
+  };
+
   return (
     <Container fluid className="tabScreens">
       <div className="viewOrder">
@@ -877,6 +873,7 @@ const ViewOrder = () => {
                     labelId="select-label"
                     size="small"
                     // value={product.category}
+                    value={1}
                     sx={selStyle}
                     input={
                       <OutlinedInput
@@ -912,6 +909,7 @@ const ViewOrder = () => {
                     labelId="select-label"
                     size="small"
                     // value={product.category}
+                    value={1}
                     sx={selStyle}
                     input={
                       <OutlinedInput
@@ -944,7 +942,7 @@ const ViewOrder = () => {
               <div>
                 <div className="orderDetItem">
                   <span>Order Date</span>
-                  <span>20/03/2025</span>
+                  <span>{dtFormed(order.createdAt)}</span>
                 </div>
 
                 <div className="orderDetItem">
@@ -954,35 +952,33 @@ const ViewOrder = () => {
 
                 <div className="orderDetItem">
                   <span>Customer Address</span>
-                  <span>
-                    Sugam Hospital , 7/4 Narayana Swamy Street,Thiruvottiyur
-                  </span>
+                  <span>{order.address}</span>
                 </div>
 
                 <div className="orderDetItem">
                   <span>City</span>
-                  <span>Chennai</span>
+                  <span>{order.city}</span>
                 </div>
               </div>
               <div>
                 <div className="orderDetItem">
                   <span>Province</span>
-                  <span>ontario</span>
+                  <span>{order.state}</span>
                 </div>
 
                 <div className="orderDetItem">
-                  <span>PinCode</span>
-                  <span>600019</span>
+                  <span>Pincode</span>
+                  <span>{order.pincode || "-"}</span>
                 </div>
 
                 <div className="orderDetItem">
                   <span>Customer Name</span>
-                  <span>Vignesh</span>
+                  <span>{order.name}</span>
                 </div>
 
                 <div className="orderDetItem">
                   <span>Customer Number</span>
-                  <span>8807207198</span>
+                  <span>{order.phoneNo}</span>
                 </div>
               </div>
             </div>
@@ -994,10 +990,12 @@ const ViewOrder = () => {
             <div className="asetSpace">
               <span className="groupHeadTxt">Assets</span>
 
-              <div>
-                <div className="imgGridListHolder">
-                  {assets?.map((ast) =>
-                    ast.images?.map((img, ind) => (
+              <div style={{ maxHeight: "fit-content" }}>
+                <span className="mildLabel">Images</span>
+
+                {astImages.length ? (
+                  <div className="imgGridListHolder">
+                    {astImages.map((img, ind) => (
                       <div className="comImgHolder astImage" key={ind}>
                         <img
                           src={`${fileUrl}${img.src}`}
@@ -1015,35 +1013,36 @@ const ViewOrder = () => {
                           onClick={onAstImgClick.bind(this, img)}
                         />
                       </div>
-                    ))
-                  )}
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="noAstIndicator">No Image assets</span>
+                )}
               </div>
 
-              <div>
+              <div style={{ maxHeight: "fit-content" }}>
+                <span className="mildLabel">Texts</span>
                 <div className="txtAstList">
-                  {/* {sampImages.map((item, ind) => (
-                    <div className="astTxtItem">
-                      <div>
-                        <span>Heroic</span> <span>Arial</span>
-                      </div>
-                      <div>
-                        <GoDotFill size={40} />
-                      </div>
-                    </div>
-                  ))} */}
-
-                  {assets?.map((ast) =>
-                    ast.texts?.map((txt, ind) => (
+                  {astTexts.length ? (
+                    astTexts.map((txt, ind) => (
                       <div className="astTxtItem" key={ind}>
                         <div>
                           <span>{txt.text}</span> <span>{txt.font}</span>
                         </div>
                         <div>
-                          <GoDotFill color={txt.color} size={40} />
+                          <GoDotFill
+                            style={{
+                              filter:
+                                "drop-shadow(rgba(0, 0, 0, 0.35) 0px 5px 15px)",
+                            }}
+                            color={txt.color}
+                            size={40}
+                          />
                         </div>
                       </div>
                     ))
+                  ) : (
+                    <span className="noAstIndicator">No Texts assets</span>
                   )}
                 </div>
               </div>
@@ -1052,9 +1051,9 @@ const ViewOrder = () => {
             <div className="asetSpace">
               <span className="groupHeadTxt">Pricing</span>
 
-              <div style={{ flex: 4 }}>
+              <div style={{ minHeight: "85%" }}>
                 <TableContainer>
-                  <Table stickyHeader padding="normal" size="small">
+                  <Table stickyHeader padding="normal" size="medium">
                     <TableHead>
                       <TableRow>
                         {orderColumns.map((item, ind) => (
@@ -1130,7 +1129,9 @@ const ViewOrder = () => {
 
               <div>
                 <div className="payBtHolder">
-                  <Button variant="contained">Complete Order</Button>
+                  <Button onClick={onCompOrderClick} variant="contained">
+                    Complete Order
+                  </Button>
                 </div>
               </div>
             </div>

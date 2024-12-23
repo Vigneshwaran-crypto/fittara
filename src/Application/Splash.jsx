@@ -8,6 +8,7 @@ import { getUserByDomain } from "../Api/UsersService";
 import { useDispatch, useSelector } from "react-redux";
 import { saveUser, shopDetailsStore } from "../ReduxToolKit/Actions";
 import { reduxStore } from "../ReduxToolKit/MainSlice";
+import { isCustomer } from "../Common/Constant";
 
 const Splash = () => {
   const navigation = useNavigate();
@@ -21,30 +22,37 @@ const Splash = () => {
   }, []);
 
   const checkLastActivity = () => {
-    const domains = urlparts.hostname.split(".");
-    // client's url with subdomain as their userName
-    console.log("founded domain :", domains);
-    if (domains.length > 1) {
+    if (isCustomer) {
       navigation("/home", { replace: true });
-      // const userName = domains[0];
-      // getUserByDomain({ userName: userName })
-      //   .then((res) => {
-      //     console.log("getUserByDomain res :", res);
-      //     if (res.data.status === 1) {
-      //       navigation("/home", { replace: true });
-      //       const shopData = res.data.data;
-      //       dispatch(reduxStore(shopDetailsStore(shopData)));
-      //     } else {
-      //       navigation("/unauth", { state: { shop: userName } });
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     checkForToken();
-      //   });
     } else {
       navigation("/dashboard/orders", { replace: true });
-      // checkForToken();
     }
+
+    // const domains = urlparts.hostname.split(".");
+    // client's url with subdomain as their userName
+    // console.log("founded domain :", domains);
+
+    // if (domains.length > 1) {
+    //   navigation("/home", { replace: true });
+    // const userName = domains[0];
+    // getUserByDomain({ userName: userName })
+    //   .then((res) => {
+    //     console.log("getUserByDomain res :", res);
+    //     if (res.data.status === 1) {
+    //       navigation("/home", { replace: true });
+    //       const shopData = res.data.data;
+    //       dispatch(reduxStore(shopDetailsStore(shopData)));
+    //     } else {
+    //       navigation("/unauth", { state: { shop: userName } });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     checkForToken();
+    //   });
+    // } else {
+    //   navigation("/dashboard/orders", { replace: true });
+    //   checkForToken();
+    // }
   };
 
   const checkForToken = () => {

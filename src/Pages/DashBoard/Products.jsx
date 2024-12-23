@@ -11,6 +11,7 @@ import {
   tableContStyle,
   sampleProducts,
   inpStye,
+  productsList,
 } from "../Components/utils";
 import {
   Autocomplete,
@@ -40,7 +41,7 @@ const Products = (props) => {
   const usr = useSelector(({ main }) => main.user);
   const navigation = useNavigate();
 
-  const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
+  const orderColumns = ["Id", "Name", "In-Stock", "Status", "Price"];
 
   useEffect(() => {
     sessionStorage.setItem("curPath", "/dashboard/products");
@@ -156,9 +157,9 @@ const Products = (props) => {
                 </TableHead>
 
                 <TableBody>
-                  {sampleOrders.map((obj, ind) => (
+                  {productsList.map((obj, ind) => (
                     <TableRow hover key={ind}>
-                      {Object.keys(sampleOrders[0]).map((key, dex) => (
+                      {Object.keys(productsList[0]).map((key, dex) => (
                         <TableCell align="center" key={dex}>
                           {obj[key]}
                         </TableCell>

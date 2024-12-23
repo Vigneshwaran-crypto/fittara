@@ -619,7 +619,7 @@ const Editor = () => {
     hex: "#000000",
   });
   const [meshColor, setMeshColor] = useState({
-    id: 1,
+    id: 2,
     color: "White",
     hex: "#ffffff",
   });
@@ -736,16 +736,17 @@ const Editor = () => {
     number: "8807207198",
     flatNo: "7/4 Narayana Swamy Street",
     area: "Thiruvottiyur",
-    landMark: "Sugam Hospital",
+    landMark: "Hilston Tech Park",
     pincode: "600019",
+    typedCity: "Chennai",
     city: {
-      id: 8,
-      stateId: 3,
-      city: "Silchar",
+      id: 41,
+      stateId: 23,
+      city: "Chennai",
     },
     state: {
-      id: 6,
-      state: "Goa",
+      id: 23,
+      state: "Tamil Nadu",
     },
   });
 
@@ -1354,10 +1355,6 @@ const Editor = () => {
     }
     sizeList[ind].price = sizeList[ind].quantity * tShirtPrice;
 
-    const wholePrice =
-      sizeList.map((item) => item.price).reduce((acc, cur) => acc + cur, 0) +
-      shippingPrice;
-    setFinalPrice(wholePrice);
     setSizesChosen(sizeList);
   };
 
@@ -1393,26 +1390,31 @@ const Editor = () => {
     landMark: "Land Mark",
     pincode: "Pincode",
     city: "Town / City",
+    typedCity: "Town / City",
     state: "State",
   };
 
   const onPaymentClick = () => {
     console.log("onPaymentClick");
     // setAddress((prev) => ({ ...prev, validate: true }));
-    setValidate(true);
 
     if (!sizesChosen.length) return erToast("Please choose the sizes");
     console.log("sizesChosen.length", !sizesChosen.length);
 
     const noValuedKey = Object.entries(address)
-      .filter(([key, val]) => !val)
+      .filter(([key, val]) => {
+        if (key === "number") return val.length < 10;
+        else return !val;
+      })
       .map(([key]) => key);
 
     console.log("noValuedKey", noValuedKey);
 
     if (!noValuedKey.length) {
       setIsPayment(true);
-      // confirmOrder();
+    } else {
+      erToast(`Please fill the ${formalKeys[noValuedKey[0]]}`);
+      setValidate(true);
     }
   };
 
@@ -1437,8 +1439,8 @@ const Editor = () => {
     order.append("prodColor", meshColor.hex);
     order.append("customerId", 1);
     order.append("phoneNo", address.number);
-    order.append("status", "pending");
-    order.append("paymentType", "card");
+    order.append("status", "Pending");
+    order.append("paymentType", "Card");
 
     const add = `${address.flatNo},${address.area}`;
     order.append("address", add);
@@ -1447,7 +1449,12 @@ const Editor = () => {
     order.append("city", address.city.city);
     order.append("state", address.state.state);
     order.append("size", JSON.stringify(sizesChosen));
-    order.append("price", finalPrice);
+
+    const wholePrice =
+      sizesChosen.map((item) => item.price).reduce((acc, cur) => acc + cur, 0) +
+      shippingPrice;
+
+    order.append("price", wholePrice);
 
     const assets = sidePosses.map((item, ind) => {
       item.images = item.images?.map((img, dex) => {
@@ -2192,7 +2199,7 @@ const Editor = () => {
           >
             <div className="meshColList">
               <RadioGroup
-                defaultValue={1}
+                defaultValue={2}
                 value={meshColor.id}
                 sx={meshColListStyle}
                 onChange={(e) => {
@@ -2369,6 +2376,7 @@ const Editor = () => {
                         id="select-multiple-chip"
                         variant="filled"
                         fullWidth
+                        error={validate && !sizesChosen.length}
                       />
                     }
                     value={sizesChosen?.map((item) => item.size) || []}
@@ -2674,7 +2682,7 @@ const Editor = () => {
                         onChange={(e) =>
                           setAddress({ ...address, name: e.target.value })
                         }
-                        error={address.validate && !address.name}
+                        error={validate && !address.name}
                       />
                     </FormControl>
                   </div>
@@ -2693,7 +2701,7 @@ const Editor = () => {
                         onChange={(e) =>
                           setAddress({ ...address, number: e.target.value })
                         }
-                        error={address.validate && address.number.length != 10}
+                        error={validate && address.number.length != 10}
                       />
                     </FormControl>
                   </div>
@@ -2713,7 +2721,7 @@ const Editor = () => {
                         onChange={(e) =>
                           setAddress({ ...address, flatNo: e.target.value })
                         }
-                        error={address.validate && !address.flatNo}
+                        error={validate && !address.flatNo}
                       />
                     </FormControl>
                   </div>
@@ -2733,7 +2741,7 @@ const Editor = () => {
                         onChange={(e) =>
                           setAddress({ ...address, area: e.target.value })
                         }
-                        error={address.validate && !address.area}
+                        error={validate && !address.area}
                       />
                     </FormControl>
                   </div>
@@ -2751,7 +2759,7 @@ const Editor = () => {
                         onChange={(e) =>
                           setAddress({ ...address, landMark: e.target.value })
                         }
-                        error={address.validate && !address.landMark}
+                        error={validate && !address.landMark}
                       />
                     </FormControl>
                   </div>
@@ -2770,7 +2778,7 @@ const Editor = () => {
                           onChange={(e) =>
                             setAddress({ ...address, pincode: e.target.value })
                           }
-                          error={address.validate && address.pincode.length < 6}
+                          error={validate && address.pincode.length < 6}
                         />
                       </FormControl>
                     </div>
@@ -2793,7 +2801,9 @@ const Editor = () => {
                               fullWidth
                               variant="outlined"
                               sx={inpStye}
-                              error={address.validate && !address.city}
+                              error={
+                                validate && !address.city && !address.typedCity
+                              }
                             />
                           )}
                           value={address?.city || address.typedCity}
@@ -2834,7 +2844,7 @@ const Editor = () => {
                             variant="outlined"
                             sx={inpStye}
                             value={address.state}
-                            error={address.validate && !address.state}
+                            error={validate && !address.state}
                           />
                         )}
                         // onInputChange={(e, val) => {

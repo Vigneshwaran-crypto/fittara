@@ -11,6 +11,7 @@ import { getUserToken } from "../Common/SessionHandler.js";
 import { useDispatch } from "react-redux";
 import { reduxStore } from "../ReduxToolKit/MainSlice.js";
 import { saveUser } from "../ReduxToolKit/Actions.js";
+import { isCustomer } from "../Common/Constant.js";
 
 const Loader = lazy(() => import("../Application/Loader.jsx"));
 const UnAuth = lazy(() => import("../Application/UnAuth.jsx"));
@@ -81,7 +82,8 @@ const Router = () => {
         }
       />
 
-      {isCust && (
+      {/* isCust && */}
+      {isCustomer && (
         <>
           <Route
             path="/home"
@@ -103,7 +105,8 @@ const Router = () => {
         </>
       )}
 
-      {userToken && !isCust && (
+      {/* userToken && !isCust && */}
+      {!isCustomer && (
         <>
           <Route
             path="/dashboard/*"

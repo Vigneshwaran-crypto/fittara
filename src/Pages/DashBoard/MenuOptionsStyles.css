@@ -1713,6 +1713,8 @@
 
 .paylabel {
   padding-bottom: 10px;
+  color: rgb(95, 94, 94) !important;
+  font-weight: 500 !important;
 }
 
 .payBtHolder {
@@ -1801,9 +1803,14 @@
   height: fit-content;
 }
 
+.mildLabel,
 .orderDetItem > span:first-child {
   color: gray;
   font-size: 13.8px;
+}
+
+.mildLabel {
+  padding-bottom: 5px;
 }
 .orderDetItem > span:last-child {
   font-size: 13px;
@@ -1825,13 +1832,19 @@
   display: flex;
   flex: 1;
   /* border: 1px solid green; */
+  overflow: hidden !important;
+  max-height: 100%;
+  flex: 1 0 auto;
+  flex-basis: 0;
+  min-height: 0;
 }
 
 .asetSpace {
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: hidden;
+  overflow: hidden !important;
+  max-height: 100%;
 }
 
 .asetSpace > div {
@@ -1841,6 +1854,7 @@
   flex-basis: 0;
   overflow: hidden;
   max-height: 100%;
+  max-height: fit-content;
   min-height: 0;
   /* border: 1px solid red; */
   padding: 5px 15px;
@@ -1902,6 +1916,17 @@
   align-items: center;
   justify-content: center;
   /* border: 0.5px solid black; */
+}
+
+.noAstIndicator {
+  /* border: 0.5px solid black; */
+  font-size: small;
+  text-align: center;
+  padding-block: 5px;
+  color: rgb(63, 63, 63);
+  font-style: italic;
+
+  /* min-width: 100% !important; */
 }
 
 @media screen and (max-width: 600px) {

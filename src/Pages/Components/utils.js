@@ -650,17 +650,12 @@ export const productCategories = [
 ];
 
 export const sampleProducts = [
-  { id: 1, product: "Printed Apron" },
-  { id: 2, product: "Custom Cap" },
-  { id: 3, product: "Embroidered Chef Coat" },
-  { id: 4, product: "Personalized Cup" },
-  { id: 5, product: "Printed Hoodie" },
-  { id: 6, product: "Customized Jersey" },
-  { id: 7, product: "Logo Lab Coat" },
-  { id: 8, product: "Tailored Over Coat" },
-  { id: 9, product: "Custom Shirt" },
-  { id: 10, product: "Sleeveless Coat with Embroidery" },
-  { id: 11, product: "Printed T-Shirt" },
+  { id: 1, product: "Hoodie" },
+  { id: 2, product: "T-Shirt" },
+  { id: 3, product: "Tote Bag" },
+  { id: 4, product: "Cap" },
+  { id: 5, product: "Coffee Mug" },
+  { id: 6, product: "Water Bottle" },
 ];
 
 export const indianStates = [
@@ -1574,6 +1569,51 @@ export const sampleOrders = [
     payment: "Rial",
     status: "jcb",
     cash: "$822.53",
+  },
+];
+
+export const productsList = [
+  {
+    id: 1,
+    name: "Hoodie",
+    inStock: "YES",
+    status: "Inactive",
+    cash: "₹643.96",
+  },
+  {
+    id: 2,
+    name: "T-shirt",
+    inStock: "YES",
+    status: "Inactive",
+    cash: "₹658.66",
+  },
+  {
+    id: 3,
+    name: "Tote-Bag",
+    inStock: "YES",
+    status: "Inactive",
+    cash: "₹195.08",
+  },
+  {
+    id: 4,
+    name: "Cap",
+    inStock: "YES",
+    status: "Active",
+    cash: "₹348.95",
+  },
+  {
+    id: 5,
+    name: "Coffee Mug",
+    inStock: "YES",
+    status: "Inactive",
+    cash: "₹446.85",
+  },
+  {
+    id: 6,
+    name: "Water Bottle",
+    inStock: "YES",
+    status: "Active",
+    cash: "₹470.77",
   },
 ];
 

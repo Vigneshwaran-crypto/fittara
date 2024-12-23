@@ -6,13 +6,20 @@ export const RECEIVED_ACTION = "RECEIVED_ACTION";
 
 export const AuthToken = "";
 
-// 172.16.16.22
+const isTesting = !true;
 
-// export const baseURL = "http://172.16.16.22:8080/api/"; //gramium
-// export const baseURL = "http://192.168.0.101:8080/api/"; //act
-// export const baseURL = "http://192.168.226.211:8080/api/"; //your mobile
-export const baseURL = "http://localhost:8080/api/"; //your mobile
-export const fileUrl = "http://localhost:8080/"; //your mobile
+const configs = {
+  url: isTesting
+    ? "http://localhost:8080/api/"
+    : "https://hitman-production-0749.up.railway.app/api/",
+  fileUrl: isTesting
+    ? "http://localhost:8080/"
+    : "https://hitman-production-0749.up.railway.app/",
+};
+
+export const baseURL = configs.url;
+export const fileUrl = configs.fileUrl;
+export const isCustomer = true;
 
 export const HTTP = {
   HEADERS: {

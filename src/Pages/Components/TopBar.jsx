@@ -2,17 +2,24 @@ import React from "react";
 import styles from "./component.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { CiSearch, CiShoppingCart, CiSliderHorizontal } from "react-icons/ci";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { PiDressLight, PiWatchLight, PiHandbagLight } from "react-icons/pi";
 import { GoChevronDown } from "react-icons/go";
 import { CiGift, CiUser } from "react-icons/ci";
 import { Toaster } from "react-hot-toast";
 import { iconButtonStyle } from "./utils";
+import { isCustomer } from "../../Common/Constant";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import Badge from "@mui/material/Badge";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import PersonIcon from "@mui/icons-material/Person";
+import MailIcon from "@mui/icons-material/Mail";
 
 const TopBar = ({ onMenuClick, onUserClick }) => {
-  return (
+  return isCustomer ? (
     <Row className="topBarHolder" style={{ padding: 10, margin: 0 }}>
-      {/* Brand Name Text */}
       <Col md={5} lg={5} sm={12} xs={12} className="brandTextHolder">
         <div className="brandText">SOMOYA</div>
 
@@ -22,7 +29,6 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
         </div>
       </Col>
 
-      {/* Top menu dropdowns */}
       <Col md={6} lg={6} sm={12} xs={12} className="dropMenuHolder">
         <div className="dropdown">
           <Button
@@ -96,29 +102,7 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
             <a href="#">Anklets</a>
           </div>
         </div>
-        {/* <div className="dropdown">
-          <Button
-            variant="text"
-            color="primary"
-            sx={{
-              color: "black",
-              fontFamily: "initial",
-              textTransform: "none",
-              fontSize: "17px",
-            }}
-          >
-            <CiGift size={17} style={{ marginRight: "2px" }} />
-            Offers {"\b"}
-            <div className="dropChevIcon">
-              <GoChevronDown size={17} />
-            </div>
-          </Button>
-          <div className="dropdown-content">
-            <a href="#">Party</a>
-            <a href="#">Travel</a>
-            <a href="#">Sports</a>
-          </div>
-        </div> */}
+
         <div className="dropdown">
           <Button
             variant="text"
@@ -136,7 +120,6 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
         </div>
       </Col>
 
-      {/* TopBar end Icons */}
       <Col md={1} lg={1} sm={12} xs={12} className="topBarIconHolder">
         <Button color="primary" variant="text" sx={iconButtonStyle}>
           <CiSliderHorizontal size={27} onClick={() => onMenuClick()} />
@@ -155,6 +138,44 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
           >
             <CiUser size={25} />
           </Button>
+        </div>
+      </Col>
+    </Row>
+  ) : (
+    <Row className="topBarHolder" style={{ padding: 10, margin: 0 }}>
+      <Col md={5} lg={5} sm={12} xs={12} className="brandTextHolder">
+        <div className="brandText">SOMOYA</div>
+      </Col>
+
+      <Col md={7} lg={7} sm={12} xs={12} className="dropMenuHolder">
+        <div className="searchBar" style={{ width: "50%" }}>
+          <CiSearch size={20} style={{ marginLeft: 10, marginRight: 3 }} />
+          <input className="searchInput" placeholder="Search for anything" />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            justifyContent: "flex-end",
+            gap: "15px",
+          }}
+        >
+          <IconButton aria-label="cart">
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsNoneOutlinedIcon />
+            </Badge>
+          </IconButton>
+
+          <IconButton aria-label="cart">
+            <Badge color="secondary" variant="dot">
+              <MailIcon />
+            </Badge>
+          </IconButton>
+
+          <IconButton aria-label="cart">
+            <PersonIcon />
+          </IconButton>
         </div>
       </Col>
     </Row>

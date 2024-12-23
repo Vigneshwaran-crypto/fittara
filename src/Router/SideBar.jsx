@@ -239,8 +239,8 @@ const SideBar = () => {
 
             {!isollapsed && (
               <div className="userTextHolder">
-                <div className="userNameText">@The Osaiyuma</div>
-                <div className="userMailText">Vickytata619@gmail.com</div>
+                <div className="userNameText">Admin</div>
+                <div className="userMailText">admin@gmail.com</div>
 
                 {/* <a className="loginLinkText">Login</a> */}
               </div>

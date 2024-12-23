@@ -13,6 +13,7 @@ import {
 } from "react-icons/ci";
 import {
   Autocomplete,
+  Box,
   FormControl,
   InputLabel,
   MenuItem,
@@ -53,11 +54,20 @@ import { FaBottleWater } from "react-icons/fa6";
 import { ImMug } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
 import { dtFormed } from "../../../Common/Utils";
+import { useDispatch, useSelector } from "react-redux";
+import { reduxStore } from "../../../ReduxToolKit/MainSlice";
+import { saveOrders } from "../../../ReduxToolKit/Actions";
+const noBorder = { borderBottom: "0", paddingBottom: 0, paddingTop: "15px" };
 
 const Orders = () => {
+  const dispatch = useDispatch();
   const nav = useNavigate();
   const fSize = "clamp(1rem, 1vw + 1rem, 2rem)";
-  const [orderList, setOrderList] = useState([]);
+
+  const allOrders = useSelector(({ main }) => main.allOrders);
+  const [orderList, setOrderList] = useState(allOrders);
+
+  const [loader, setLoader] = useState(false);
 
   const orderColumns = [
     { title: "Id", key: "id" },
@@ -66,7 +76,7 @@ const Orders = () => {
       key: "productId",
     },
     { title: "Date", key: "createdAt" },
-    { title: "Name", key: "name" },
+    { title: "Customer Name", key: "name" },
     { title: "Payment", key: "paymentType" },
     { title: "Status", key: "status" },
     { title: "Price", key: "price" },
@@ -74,23 +84,11 @@ const Orders = () => {
 
   const getProducts = {
     1: "Hoodie",
-    2: "Tshirt",
+    2: "T-Shirt",
     3: "Tote Bag",
     4: "Cap",
     5: "Coffee Mug",
     6: "Water Bottle",
-  };
-
-  const renderProductIcon = (id) => {
-    // const products = {
-    //   1: <GiHoodie />,
-    //   2: <FaTshirt />,
-    //   3: <BsBagFill />,
-    //   4: <GiBilledCap />,
-    //   5: <ImMug />,
-    //   6: <FaBottleWater />,
-    // };
-    // return products[id];
   };
 
   const menuGridList = [
@@ -126,16 +124,20 @@ const Orders = () => {
 
   useEffect(() => {
     sessionStorage.setItem("curPath", "/dashboard/orders");
+    setLoader(true);
     getAllOrders()
       .then((res) => {
         console.log("getAllOrders res :", res);
         if (res.data?.status) {
-          const allOrders = res.data?.data || [];
-          setOrderList(allOrders);
+          const orderList = res.data?.data || [];
+          dispatch(reduxStore(saveOrders(orderList)));
+          setOrderList(orderList);
         }
+        setLoader(false);
       })
       .catch((err) => {
         console.log("getAllOrders err :", err);
+        setLoader(false);
       });
   }, []);
 
@@ -301,25 +303,47 @@ const Orders = () => {
                 </TableHead>
 
                 <TableBody>
-                  {orderList.map((obj, ind) => (
-                    <TableRow
-                      hover
-                      key={ind}
-                      onClick={onOrderClick.bind(this, obj)}
-                    >
-                      {orderColumns.map((col, dex) => (
-                        <TableCell align="center" key={dex}>
-                          {col.key === "productId"
-                            ? getProducts[obj[col.key]]
-                            : col.key === "price"
-                            ? obj[col.key] + " ₹"
-                            : col.key === "createdAt"
-                            ? dtFormed(obj[col.key])
-                            : obj[col.key]}
+                  {!orderList.length && loader ? (
+                    orderColumns.map((item, ind) => (
+                      <TableRow key={ind}>
+                        <TableCell sx={noBorder} colSpan={12}>
+                          <Skeleton />
                         </TableCell>
-                      ))}
+                      </TableRow>
+                    ))
+                  ) : orderList.length ? (
+                    orderList.map((obj, ind) => (
+                      <TableRow
+                        hover
+                        key={ind}
+                        onClick={onOrderClick.bind(this, obj)}
+                      >
+                        {orderColumns.map((col, dex) => (
+                          <TableCell
+                            style={{
+                              color: col.key === "status" ? "orange" : "black",
+                            }}
+                            align="center"
+                            key={dex}
+                          >
+                            {col.key === "productId"
+                              ? getProducts[obj[col.key]]
+                              : col.key === "price"
+                              ? obj[col.key] + " ₹"
+                              : col.key === "createdAt"
+                              ? dtFormed(obj[col.key])
+                              : obj[col.key]}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell sx={noBorder} align="center" colSpan={12}>
+                        <span className="noAstIndicator">No Orders Yet</span>
+                      </TableCell>
                     </TableRow>
-                  ))}
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>

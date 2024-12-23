@@ -8,7 +8,6 @@
 
 .brandTextHolder {
   display: flex;
-  /* border: 1px solid black; */
   align-items: center;
   justify-content: space-between;
   font-weight: 500;
@@ -28,6 +27,7 @@
   letter-spacing: 1px;
   font-size: 20px;
   font-family: "Segoe UI" !important;
+  padding-inline-start: 20px;
 }
 
 @media screen and (max-width: 576px) {

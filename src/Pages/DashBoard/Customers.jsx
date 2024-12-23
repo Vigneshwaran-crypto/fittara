@@ -34,7 +34,7 @@ import {
 import { Container } from "react-bootstrap";
 
 const Customers = () => {
-  const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
+  const orderColumns = ["Id", "Name", "Status", "Payment", "Cash"];
 
   useEffect(() => {
     sessionStorage.setItem("curPath", "/dashboard/customers");
