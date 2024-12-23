@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkFittara=self.webpackChunkFittara||[]).push([[170],{5170:(a,s,t)=>{t.r(s),t.d(s,{default:()=>n});t(65043),t(15217);var e=t(28616),l=t(94097),i=t(70579);const n=()=>(0,i.jsx)("div",{className:"splashCont",children:(0,i.jsx)(l.A,{loop:!0,animationData:e,play:!0})})}}]);
-//# sourceMappingURL=170.8b594f93.chunk.js.map
