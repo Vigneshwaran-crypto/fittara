@@ -16,12 +16,22 @@ import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNone
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import PersonIcon from "@mui/icons-material/Person";
 import MailIcon from "@mui/icons-material/Mail";
+import { useNavigate } from "react-router-dom";
 
 const TopBar = ({ onMenuClick, onUserClick }) => {
-  return isCustomer ? (
+  const isCust = new URL(window.location.href).hostname.split(".").length > 1;
+  const navigation = useNavigate();
+
+  const onBrandClick = () => {
+    navigation("/enhancer");
+  };
+
+  return isCust ? (
     <Row className="topBarHolder" style={{ padding: 10, margin: 0 }}>
       <Col md={5} lg={5} sm={12} xs={12} className="brandTextHolder">
-        <div className="brandText">SOMOYA</div>
+        <div className="brandText" onClick={onBrandClick}>
+          SOMOYA
+        </div>
 
         <div className="searchBar">
           <CiSearch size={20} style={{ marginLeft: 10, marginRight: 3 }} />
@@ -144,7 +154,9 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
   ) : (
     <Row className="topBarHolder" style={{ padding: 10, margin: 0 }}>
       <Col md={5} lg={5} sm={12} xs={12} className="brandTextHolder">
-        <div className="brandText">SOMOYA</div>
+        <div className="brandText" onClick={onBrandClick}>
+          SOMOYA
+        </div>
       </Col>
 
       <Col md={7} lg={7} sm={12} xs={12} className="dropMenuHolder">

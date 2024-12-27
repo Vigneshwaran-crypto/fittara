@@ -2207,10 +2207,7 @@ const Editor = () => {
                   const selCol = fontColors.find(
                     (ite) => ite.id == e.target.value
                   );
-                  // texture.forEach((item) => {
-                  //   const uv = item.geo.attributes.uv.array;
                   meshColChanger(selCol.hex, uv);
-                  // });
                   setMeshColor(selCol);
                 }}
               >
@@ -2306,6 +2303,7 @@ const Editor = () => {
               shadow-bias={-0.0001}
               shadow-normalBias={0.02}
             />
+
             <hemisphereLight
               skyColor={"#ffffff"}
               groundColor={"#333333"}

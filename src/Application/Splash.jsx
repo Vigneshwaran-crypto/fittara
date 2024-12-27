@@ -22,37 +22,37 @@ const Splash = () => {
   }, []);
 
   const checkLastActivity = () => {
-    if (isCustomer) {
-      navigation("/home", { replace: true });
-    } else {
-      navigation("/dashboard/orders", { replace: true });
-    }
+    // if (isCustomer) {
+    //   navigation("/home", { replace: true });
+    // } else {
+    //   navigation("/dashboard/orders", { replace: true });
+    // }
 
-    // const domains = urlparts.hostname.split(".");
+    const domains = urlparts.hostname.split(".");
     // client's url with subdomain as their userName
     // console.log("founded domain :", domains);
 
-    // if (domains.length > 1) {
-    //   navigation("/home", { replace: true });
-    // const userName = domains[0];
-    // getUserByDomain({ userName: userName })
-    //   .then((res) => {
-    //     console.log("getUserByDomain res :", res);
-    //     if (res.data.status === 1) {
-    //       navigation("/home", { replace: true });
-    //       const shopData = res.data.data;
-    //       dispatch(reduxStore(shopDetailsStore(shopData)));
-    //     } else {
-    //       navigation("/unauth", { state: { shop: userName } });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     checkForToken();
-    //   });
-    // } else {
-    //   navigation("/dashboard/orders", { replace: true });
-    //   checkForToken();
-    // }
+    if (domains.length > 1) {
+      navigation("/home", { replace: true });
+      // const userName = domains[0];
+      // getUserByDomain({ userName: userName })
+      //   .then((res) => {
+      //     console.log("getUserByDomain res :", res);
+      //     if (res.data.status === 1) {
+      //       navigation("/home", { replace: true });
+      //       const shopData = res.data.data;
+      //       dispatch(reduxStore(shopDetailsStore(shopData)));
+      //     } else {
+      //       navigation("/unauth", { state: { shop: userName } });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     checkForToken();
+      //   });
+    } else {
+      navigation("/dashboard/orders", { replace: true });
+      checkForToken();
+    }
   };
 
   const checkForToken = () => {

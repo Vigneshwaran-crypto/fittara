@@ -838,7 +838,8 @@ export const fonts = [
 ];
 
 export const fontColors = [
-  { id: 1, color: "Black", hex: "#000000" },
+  // { id: 1, color: "Black", hex: "#000000" },
+  { id: 1, color: "Black", hex: "#343131" },
   { id: 2, color: "White", hex: "#FFFFFF" },
   { id: 3, color: "Purple", hex: "#9C27B0" },
   { id: 4, color: "Deep Purple", hex: "#673AB7" },
@@ -2076,3 +2077,23 @@ export const sampleSize = [
 //     texts: [],
 //   },
 // ]);
+
+// Getting appropriate materials & nodes dynamically
+// const shirtMd = useGLTF(tshirt);
+// const getAppNodeAndMat = () => {
+//   const nodes = shirtMd.nodes;
+//   const materials = shirtMd.materials;
+
+//   const nodesWithMat = Object.entries(nodes)
+//     .filter(([name, node]) => node.type === "Mesh")
+//     .map(([name, node]) => {
+//       return {
+//         name,
+//         geo: node.geometry,
+//         mat: node.material,
+//         fullMat: materials[node.material.name],
+//       };
+//     });
+
+//   console.log("Model with it's materials :", nodesWithMat);
+// };
