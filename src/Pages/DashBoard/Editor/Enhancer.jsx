@@ -2177,14 +2177,14 @@ const Enhancer = () => {
             {/* <axesHelper args={[5]} />
             <gridHelper args={[10, 10]} /> */}
 
-            <ambientLight intensity={1.5} color={meshColor.hex} />
+            {/* <ambientLight intensity={1.5} color={meshColor.hex} /> */}
             {/* <ambientLight intensity={1.5} color={"white"} /> */}
 
-            <DirectLight position={[0, 30, 50]} intensity={1.2} />
-            <HemLight position={[0, -5, 30]} intensity={0.5} />
+            <DirectLight position={[0, 30, 50]} intensity={2} />
+            <HemLight position={[0, -5, 30]} intensity={1} />
 
-            <DirectLight position={[0, 30, -50]} intensity={1} />
-            <HemLight position={[0, -5, -30]} intensity={0.2} />
+            <DirectLight position={[0, 30, -50]} intensity={2} />
+            <HemLight position={[0, -5, -30]} intensity={1} />
 
             <group
               position={[0, aptPos[prod].y, 0]}
