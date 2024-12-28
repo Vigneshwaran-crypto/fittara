@@ -12,12 +12,12 @@ import { isCustomer } from "../Common/Constant";
 
 const Splash = () => {
   const navigation = useNavigate();
-  const dispatch = useDispatch();
-  const urlFromBrowser = window.location.href;
-  const urlparts = new URL(urlFromBrowser);
+  // const dispatch = useDispatch();
+  // const urlFromBrowser = window.location.href;
+  // const urlparts = new URL(urlFromBrowser);
 
   useEffect(() => {
-    console.log("URL from browser in Splash:", urlparts.hostname.split("."));
+    // console.log("URL from browser in Splash:", urlparts.hostname.split("."));
     checkLastActivity();
   }, []);
 

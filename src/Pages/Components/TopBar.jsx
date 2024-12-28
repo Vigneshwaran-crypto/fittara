@@ -26,7 +26,7 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
     navigation("/enhancer");
   };
 
-  return isCust ? (
+  return isCustomer ? (
     <Row className="topBarHolder" style={{ padding: 10, margin: 0 }}>
       <Col md={5} lg={5} sm={12} xs={12} className="brandTextHolder">
         <div className="brandText" onClick={onBrandClick}>

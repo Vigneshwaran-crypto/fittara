@@ -14,7 +14,7 @@ import { saveUser } from "../ReduxToolKit/Actions.js";
 import { isCustomer } from "../Common/Constant.js";
 import Loader from "../Application/Loader.jsx";
 import Splash from "../Application/Splash.jsx";
-import Enhancer from "../Pages/DashBoard/Editor/Enhancer.jsx";
+// import Enhancer from "../Pages/DashBoard/Editor/Enhancer.jsx";
 
 // const Loader = lazy(() => import("../Application/Loader.jsx"));
 // const Splash = lazy(() => import("../Application/Splash.jsx"));
@@ -39,12 +39,12 @@ const Router = () => {
     console.log("isCust in Router :", isCust);
     console.log("userToken in Router :", userToken);
     console.log("curPath in Router :", curPath);
-    if (curPath !== "/splash") navigation(curPath);
-    if (userToken) {
-      const [header, payload, signature] = userToken.split(".");
-      const usr = JSON.parse(atob(payload));
-      dispatch(reduxStore(saveUser(usr)));
-    }
+    // if (curPath !== "/splash") navigation(curPath);
+    // if (userToken) {
+    //   const [header, payload, signature] = userToken.split(".");
+    //   const usr = JSON.parse(atob(payload));
+    //   dispatch(reduxStore(saveUser(usr)));
+    // }
   }, []);
 
   return (
@@ -86,17 +86,17 @@ const Router = () => {
         }
       />
 
-      <Route
+      {/* <Route
         path="/enhancer"
         element={
           <Suspense fallback={<Loader />}>
             <Enhancer />
           </Suspense>
         }
-      />
+      /> */}
 
       {/* isCust && */}
-      {isCust && (
+      {isCustomer && (
         <>
           <Route
             path="/home"
@@ -119,7 +119,7 @@ const Router = () => {
       )}
 
       {/* userToken && !isCust && */}
-      {userToken && !isCust && (
+      {!isCustomer && (
         <>
           <Route
             path="/dashboard/*"
@@ -146,8 +146,9 @@ const Router = () => {
 };
 
 const AppRouter = () => {
+  // basename="fittara"
   return (
-    <BrowserRouter basename="/fittara">
+    <BrowserRouter>
       <Router />
     </BrowserRouter>
   );
