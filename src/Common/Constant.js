@@ -8,10 +8,19 @@ export const AuthToken = "";
 
 const isTesting = !true;
 
+// const configs = {
+//   url: isTesting
+//     ? "http://localhost:8080/api/"
+//     : "https://hitman-production-0749.up.railway.app/api/",
+//   fileUrl: isTesting
+//     ? "http://localhost:8080/"
+//     : "https://hitman-production-0749.up.railway.app/",
+// };
+
 const configs = {
   url: isTesting
     ? "http://localhost:8080/api/"
-    : "https://hitman-production-0749.up.railway.app/api/",
+    : "https://fittara-spring.onrender.com/api/",
   fileUrl: isTesting
     ? "http://localhost:8080/"
     : "https://hitman-production-0749.up.railway.app/",
