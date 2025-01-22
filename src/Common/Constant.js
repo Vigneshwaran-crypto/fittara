@@ -23,7 +23,7 @@ const configs = {
     : "https://fittara-spring.onrender.com/api/",
   fileUrl: isTesting
     ? "http://localhost:8080/"
-    : "https://hitman-production-0749.up.railway.app/",
+    : "https://fittara-spring.onrender.com/",
 };
 
 export const baseURL = configs.url;
