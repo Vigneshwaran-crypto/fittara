@@ -18,3 +18,14 @@ export const getAllOrders = (req) => {
     data: req,
   });
 };
+
+export const getHello = () => {
+  return apiHit({
+    url: "http://localhost:8081/hello",
+    headers: HTTP.HEADERS,
+    method: "get",
+  });
+};
+
+// we acces the server from the client ,
+// What we need server address , - http://localhost:8081/"apiName"

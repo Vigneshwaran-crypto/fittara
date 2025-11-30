@@ -12,9 +12,9 @@ import { isCustomer } from "../Common/Constant";
 
 const Splash = () => {
   const navigation = useNavigate();
-  // const dispatch = useDispatch();
-  // const urlFromBrowser = window.location.href;
-  // const urlparts = new URL(urlFromBrowser);
+  const dispatch = useDispatch();
+  const urlFromBrowser = window.location.href;
+  const urlparts = new URL(urlFromBrowser);
 
   useEffect(() => {
     // console.log("URL from browser in Splash:", urlparts.hostname.split("."));
@@ -22,37 +22,42 @@ const Splash = () => {
   }, []);
 
   const checkLastActivity = () => {
-    if (isCustomer) {
-      navigation("/home", { replace: true });
-    } else {
-      navigation("/dashboard/orders", { replace: true });
-    }
-
-    // const domains = urlparts.hostname.split(".");
-    // client's url with subdomain as their userName
-    // console.log("founded domain :", domains);
-
-    // if (domains.length > 1) {
+    // if (isCustomer) {
     //   navigation("/home", { replace: true });
-    // const userName = domains[0];
-    // getUserByDomain({ userName: userName })
-    //   .then((res) => {
-    //     console.log("getUserByDomain res :", res);
-    //     if (res.data.status === 1) {
-    //       navigation("/home", { replace: true });
-    //       const shopData = res.data.data;
-    //       dispatch(reduxStore(shopDetailsStore(shopData)));
-    //     } else {
-    //       navigation("/unauth", { state: { shop: userName } });
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     checkForToken();
-    //   });
     // } else {
     //   navigation("/dashboard/orders", { replace: true });
-    //   checkForToken();
     // }
+
+    const domains = urlparts.hostname.split(".");
+    // client's url with subdomain as their userName
+    console.log("founded domain :", domains);
+
+    if (domains.length > 1) {
+      navigation("/home", { replace: true });
+      const userName = domains[0];
+      getUserByDomain({ userName: userName })
+        .then((res) => {
+          console.log("getUserByDomain res :", res);
+          if (res.data.status === 1) {
+            const shopData = res.data.data;
+            if (shopData.isSeller) {
+              navigation("/dashboard/products", { replace: true });
+            } else {
+              navigation("/home", { replace: true });
+            }
+
+            dispatch(reduxStore(shopDetailsStore(shopData)));
+          } else {
+            navigation("/unauth", { state: { shop: userName } });
+          }
+        })
+        .catch((err) => {
+          checkForToken();
+        });
+    } else {
+      navigation("/dashboard/orders", { replace: true });
+      checkForToken();
+    }
   };
 
   const checkForToken = () => {

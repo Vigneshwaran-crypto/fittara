@@ -4,9 +4,7 @@ export const RECEIVED_ACTION = "RECEIVED_ACTION";
 //   testHit: "testHit",
 // };
 
-export const AuthToken = "";
-
-const isTesting = !true;
+const isTesting = true;
 
 // const configs = {
 //   url: isTesting
@@ -27,8 +25,13 @@ const configs = {
 };
 
 export const baseURL = configs.url;
+// export const baseURL = "http://localhost:8081/";
+
 export const fileUrl = configs.fileUrl;
-export const isCustomer = !true;
+
+export const isCustomer = true;
+
+export const AuthToken = "";
 
 export const HTTP = {
   HEADERS: {

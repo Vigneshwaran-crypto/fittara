@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 // import "./MenuOptionsStyles.css";
 // import "../Home/styles.css";
 // import "../Components/component.css";
@@ -142,7 +142,7 @@ const Orders = () => {
   }, []);
 
   const onOrderClick = (order) => {
-    nav("/viewOrder", { state: { order } });
+    nav("/viewOrder", { state: { order, from: false } });
   };
 
   return (

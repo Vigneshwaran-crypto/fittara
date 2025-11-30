@@ -14,6 +14,8 @@ import { saveUser } from "../ReduxToolKit/Actions.js";
 import { isCustomer } from "../Common/Constant.js";
 import Loader from "../Application/Loader.jsx";
 import Splash from "../Application/Splash.jsx";
+import CustomerOrders from "../Pages/Home/CustomerOrders.jsx";
+import Notes from "../Pages/Home/Notes.jsx";
 // import Enhancer from "../Pages/DashBoard/Editor/Enhancer.jsx";
 
 // const Loader = lazy(() => import("../Application/Loader.jsx"));
@@ -39,25 +41,17 @@ const Router = () => {
     console.log("isCust in Router :", isCust);
     console.log("userToken in Router :", userToken);
     console.log("curPath in Router :", curPath);
-    // if (curPath !== "/splash") navigation(curPath);
-    // if (userToken) {
-    //   const [header, payload, signature] = userToken.split(".");
-    //   const usr = JSON.parse(atob(payload));
-    //   dispatch(reduxStore(saveUser(usr)));
-    // }
+    if (curPath !== "/splash") navigation(curPath);
+    if (userToken) {
+      const [header, payload, signature] = userToken.split(".");
+      const usr = JSON.parse(atob(payload));
+      dispatch(reduxStore(saveUser(usr)));
+    }
   }, []);
 
   return (
     <Routes>
-      <Route
-        path="/*"
-        index
-        element={
-          // <Suspense fallback={<Loader />}>
-          <Splash />
-          // </Suspense>
-        }
-      />
+      <Route path="/*" index element={<Splash />} />
 
       <Route
         path="/register"
@@ -73,6 +67,24 @@ const Router = () => {
         element={
           <Suspense fallback={<Loader />}>
             <LogIn />
+          </Suspense>
+        }
+      />
+
+      <Route
+        path="/custOrders"
+        element={
+          // <Suspense fallback={<Loader />}>
+          <CustomerOrders />
+          // </Suspense>
+        }
+      />
+
+      <Route
+        path="/viewOrder"
+        element={
+          <Suspense fallback={<Loader />}>
+            <ViewOrder />
           </Suspense>
         }
       />
@@ -95,52 +107,44 @@ const Router = () => {
         }
       /> */}
 
-      {/* isCust && */}
-      {isCustomer && (
-        <>
-          <Route
-            path="/home"
-            element={
-              <Suspense fallback={<Loader />}>
-                <Home />
-              </Suspense>
-            }
-          />
+      {/* isCustomer && */}
+      {/* {isCust && ( */}
+      <>
+        <Route
+          path="/home"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Home />
+              {/* <Notes /> */}
+            </Suspense>
+          }
+        />
 
-          <Route
-            path="/editor"
-            element={
-              <Suspense fallback={<Loader />}>
-                <Editor />
-              </Suspense>
-            }
-          />
-        </>
-      )}
+        <Route
+          path="/editor"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Editor />
+            </Suspense>
+          }
+        />
+      </>
+      {/* )} */}
 
-      {/* userToken && !isCust && */}
-      {!isCustomer && (
-        <>
-          <Route
-            path="/dashboard/*"
-            exact
-            element={
-              <Suspense fallback={<Loader />}>
-                <NavigationRouter />
-              </Suspense>
-            }
-          />
-
-          <Route
-            path="/viewOrder"
-            element={
-              <Suspense fallback={<Loader />}>
-                <ViewOrder />
-              </Suspense>
-            }
-          />
-        </>
-      )}
+      {/* !isCustomer */}
+      {/* {userToken && !isCust && ( */}
+      <>
+        <Route
+          path="/dashboard/*"
+          exact
+          element={
+            <Suspense fallback={<Loader />}>
+              <NavigationRouter />
+            </Suspense>
+          }
+        />
+      </>
+      {/* )} */}
     </Routes>
   );
 };

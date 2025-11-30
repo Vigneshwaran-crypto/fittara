@@ -22,6 +22,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { SAVE_USER } from "../../ReduxToolKit/Types";
 
 const LogIn = () => {
   const navigation = useNavigate();
@@ -64,7 +65,10 @@ const LogIn = () => {
         .then((res) => {
           console.log("authenticateUser res :", res);
           if (res.data.status === 1) {
-            dispatch(reduxStore(saveUser(res.data.data)));
+            // dispatch(reduxStore(saveUser(res.data.data)));
+
+            dispatch(reduxStore({ ...userData, type: SAVE_USER }));
+
             setUserToken(res.data.data.token);
             navigation("/dashboard/products");
             toast.success("Login successfully");
@@ -241,7 +245,7 @@ const LogIn = () => {
               <b>
                 <a
                   className="loginTroubleLinkText"
-                  href="#"
+                  // href="#"
                   onClick={() => navigation("/register")}
                 >
                   {" "}

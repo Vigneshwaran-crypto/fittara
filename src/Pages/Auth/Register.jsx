@@ -2,7 +2,6 @@ import { Button, TextField } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "./auth.css";
-// const axios = require("axios").default;
 import { useGoogleLogin } from "@react-oauth/google";
 import toast, { Toaster } from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
@@ -22,6 +21,7 @@ import { saveUser } from "../../ReduxToolKit/Actions";
 import { setUserToken } from "../../Common/SessionHandler";
 import { useDispatch } from "react-redux";
 import { reduxStore } from "../../ReduxToolKit/MainSlice";
+import { Switch } from "antd";
 
 const Register = () => {
   const navigation = useNavigate();
@@ -114,7 +114,6 @@ const Register = () => {
               toast.success("Login successfully");
             } else {
               //first time Gauth user
-
               toast.error("Something went wrong");
             }
           })
@@ -245,8 +244,16 @@ const Register = () => {
                 }}
               />
 
+              <Switch
+                size="default"
+                checkedChildren="Seller"
+                unCheckedChildren="Customer"
+                value={seller}
+                onChange={setSeller}
+              />
+
               <Button
-                style={{ textTransform: "none" }}
+                style={{ textTransform: "none", marginTop: "16px" }}
                 variant="contained"
                 onClick={onRegClick}
               >
@@ -274,10 +281,9 @@ const Register = () => {
                 <b>
                   <a
                     className="loginTroubleLinkText"
-                    href="#"
+                    // href="#"
                     onClick={() => navigation("/login")}
                   >
-                    {" "}
                     Signin
                   </a>
                 </b>

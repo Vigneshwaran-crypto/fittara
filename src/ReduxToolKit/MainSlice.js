@@ -28,20 +28,20 @@ const mainSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(reduxStore.pending, (state, { payload }) => {});
 
-    builder.addCase(reduxStore.fulfilled, (state, { payload }) => {
+    builder.addCase(reduxStore.fulfilled, (store, { payload }) => {
       console.log("payload", payload);
       if (payload) {
         switch (payload.type) {
           case SAVE_USER:
-            state.user = payload.data;
+            store.user = payload.data;
             break;
 
           case SHOP_DETAILS:
-            state.shop = payload.data;
+            store.shop = payload.data;
             break;
 
           case ALL_ORDERS:
-            state.allOrders = payload.data;
+            store.allOrders = payload.data;
             break;
 
           default:

@@ -50,6 +50,8 @@ const ViewOrder = () => {
   const order = loc.state.order;
   const assets = order?.assets || [];
 
+  const isFrom = loc.state.from;
+
   const astImages = assets.map((item) => item.images).flat() ?? [];
   const astTexts = assets.map((item) => item.texts).flat() ?? [];
 
@@ -861,284 +863,293 @@ const ViewOrder = () => {
 
           <GoDotFill className="productColInd" color={order.color} size={40} />
         </div>
-        <div>
-          {/* <span className="contTitle"> Order #123</span> */}
-          <div className="groupHeadTxt">Order #123</div>
-          <div className="customDetail">
-            <div>
-              <div className="CustDetInputItems">
-                <FormControl size="small">
-                  <FormLabel className="orderDetLabel">
-                    Payment Status
-                  </FormLabel>
-                  <Select
-                    labelId="select-label"
-                    size="small"
-                    // value={product.category}
-                    value={1}
-                    sx={selStyle}
-                    input={
-                      <OutlinedInput
-                        id="select-multiple-chip"
-                        variant="filled"
-                        size="small"
-                      />
-                    }
-                    renderValue={(val) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        <Chip
-                          icon={<GoDotFill />}
-                          key={val}
-                          size="small"
-                          label={getPaymentStatus[val]}
-                          color={val === 1 ? "success" : "warning"}
-                        />
-                      </Box>
-                    )}
-                  >
-                    {paymentStatus.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-              <div className="CustDetInputItems">
-                <FormControl size="small">
-                  <FormLabel className="orderDetLabel">Order Status</FormLabel>
-                  <Select
-                    labelId="select-label"
-                    size="small"
-                    // value={product.category}
-                    value={1}
-                    sx={selStyle}
-                    input={
-                      <OutlinedInput
-                        id="select-multiple-chip"
-                        variant="filled"
-                      />
-                    }
-                    renderValue={(val) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        <Chip
-                          key={val}
-                          size="small"
-                          icon={<GoDotFill />}
-                          color={getOrderCol[val]}
-                          label={getOrderStatus[val]}
-                        />
-                      </Box>
-                    )}
-                  >
-                    {orderStatus.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.title}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </div>
-            </div>
-            <div>
+        {!isFrom && (
+          <div>
+            <div className="groupHeadTxt">Order #123</div>
+            <div className="customDetail">
               <div>
-                <div className="orderDetItem">
-                  <span>Order Date</span>
-                  <span>{dtFormed(order.createdAt)}</span>
+                <div className="CustDetInputItems">
+                  <FormControl size="small">
+                    <FormLabel className="orderDetLabel">
+                      Payment Status
+                    </FormLabel>
+                    <Select
+                      labelId="select-label"
+                      size="small"
+                      // value={product.category}
+                      value={1}
+                      sx={selStyle}
+                      input={
+                        <OutlinedInput
+                          id="select-multiple-chip"
+                          variant="filled"
+                          size="small"
+                        />
+                      }
+                      renderValue={(val) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          <Chip
+                            icon={<GoDotFill />}
+                            key={val}
+                            size="small"
+                            label={getPaymentStatus[val]}
+                            color={val === 1 ? "success" : "warning"}
+                          />
+                        </Box>
+                      )}
+                    >
+                      {paymentStatus.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.title}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
-
-                <div className="orderDetItem">
-                  <span>Account Number</span>
-                  <span>34565432785675</span>
-                </div>
-
-                <div className="orderDetItem">
-                  <span>Customer Address</span>
-                  <span>{order.address}</span>
-                </div>
-
-                <div className="orderDetItem">
-                  <span>City</span>
-                  <span>{order.city}</span>
+                <div className="CustDetInputItems">
+                  <FormControl size="small">
+                    <FormLabel className="orderDetLabel">
+                      Order Status
+                    </FormLabel>
+                    <Select
+                      labelId="select-label"
+                      size="small"
+                      // value={product.category}
+                      value={1}
+                      sx={selStyle}
+                      input={
+                        <OutlinedInput
+                          id="select-multiple-chip"
+                          variant="filled"
+                        />
+                      }
+                      renderValue={(val) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          <Chip
+                            key={val}
+                            size="small"
+                            icon={<GoDotFill />}
+                            color={getOrderCol[val]}
+                            label={getOrderStatus[val]}
+                          />
+                        </Box>
+                      )}
+                    >
+                      {orderStatus.map((item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.title}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </div>
               </div>
               <div>
-                <div className="orderDetItem">
-                  <span>Province</span>
-                  <span>{order.state}</span>
-                </div>
-
-                <div className="orderDetItem">
-                  <span>Pincode</span>
-                  <span>{order.pincode || "-"}</span>
-                </div>
-
-                <div className="orderDetItem">
-                  <span>Customer Name</span>
-                  <span>{order.name}</span>
-                </div>
-
-                <div className="orderDetItem">
-                  <span>Customer Number</span>
-                  <span>{order.phoneNo}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <hr style={{ marginBlock: "20px" }} />
-
-          <div className="asstAndPrice">
-            <div className="asetSpace">
-              <span className="groupHeadTxt">Assets</span>
-
-              <div style={{ maxHeight: "fit-content" }}>
-                <span className="mildLabel">Images</span>
-
-                {astImages.length ? (
-                  <div className="imgGridListHolder">
-                    {astImages.map((img, ind) => (
-                      <div className="comImgHolder astImage" key={ind}>
-                        <img
-                          src={`${fileUrl}${img.src}`}
-                          className="imgItem"
-                          style={{
-                            borderRadius: "8px",
-                            objectFit: "contain",
-                          }}
-                        />
-
-                        <IoCloudDownload
-                          size={25}
-                          color="#3b5998"
-                          className="astDownLoad"
-                          onClick={onAstImgClick.bind(this, img)}
-                        />
-                      </div>
-                    ))}
+                <div>
+                  <div className="orderDetItem">
+                    <span>Order Date</span>
+                    <span>{dtFormed(order.createdAt)}</span>
                   </div>
-                ) : (
-                  <span className="noAstIndicator">No Image assets</span>
-                )}
-              </div>
 
-              <div style={{ maxHeight: "fit-content" }}>
-                <span className="mildLabel">Texts</span>
-                <div className="txtAstList">
-                  {astTexts.length ? (
-                    astTexts.map((txt, ind) => (
-                      <div className="astTxtItem" key={ind}>
-                        <div>
-                          <span>{txt.text}</span> <span>{txt.font}</span>
-                        </div>
-                        <div>
-                          <GoDotFill
+                  <div className="orderDetItem">
+                    <span>Account Number</span>
+                    <span>34565432785675</span>
+                  </div>
+
+                  <div className="orderDetItem">
+                    <span>Customer Address</span>
+                    <span>{order.address}</span>
+                  </div>
+
+                  <div className="orderDetItem">
+                    <span>City</span>
+                    <span>{order.city}</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="orderDetItem">
+                    <span>Province</span>
+                    <span>{order.state}</span>
+                  </div>
+
+                  <div className="orderDetItem">
+                    <span>Pincode</span>
+                    <span>{order.pincode || "-"}</span>
+                  </div>
+
+                  <div className="orderDetItem">
+                    <span>Customer Name</span>
+                    <span>{order.name}</span>
+                  </div>
+
+                  <div className="orderDetItem">
+                    <span>Customer Number</span>
+                    <span>{order.phoneNo}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr style={{ marginBlock: "20px" }} />
+
+            <div className="asstAndPrice">
+              <div className="asetSpace">
+                <span className="groupHeadTxt">Assets</span>
+
+                <div style={{ maxHeight: "fit-content" }}>
+                  <span className="mildLabel">Images</span>
+
+                  {astImages.length ? (
+                    <div className="imgGridListHolder">
+                      {astImages.map((img, ind) => (
+                        <div className="comImgHolder astImage" key={ind}>
+                          <img
+                            src={`${fileUrl}${img.src}`}
+                            className="imgItem"
                             style={{
-                              filter:
-                                "drop-shadow(rgba(0, 0, 0, 0.35) 0px 5px 15px)",
+                              borderRadius: "8px",
+                              objectFit: "contain",
                             }}
-                            color={txt.color}
-                            size={40}
+                          />
+
+                          <IoCloudDownload
+                            size={25}
+                            color="#3b5998"
+                            className="astDownLoad"
+                            onClick={onAstImgClick.bind(this, img)}
                           />
                         </div>
-                      </div>
-                    ))
+                      ))}
+                    </div>
                   ) : (
-                    <span className="noAstIndicator">No Texts assets</span>
+                    <span className="noAstIndicator">No Image assets</span>
                   )}
                 </div>
+
+                <div style={{ maxHeight: "fit-content" }}>
+                  <span className="mildLabel">Texts</span>
+                  <div className="txtAstList">
+                    {astTexts.length ? (
+                      astTexts.map((txt, ind) => (
+                        <div className="astTxtItem" key={ind}>
+                          <div>
+                            <span>{txt.text}</span> <span>{txt.font}</span>
+                          </div>
+                          <div>
+                            <GoDotFill
+                              style={{
+                                filter:
+                                  "drop-shadow(rgba(0, 0, 0, 0.35) 0px 5px 15px)",
+                              }}
+                              color={txt.color}
+                              size={40}
+                            />
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <span className="noAstIndicator">No Texts assets</span>
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div className="asetSpace">
-              <span className="groupHeadTxt">Pricing</span>
+              <div className="asetSpace">
+                <span className="groupHeadTxt">Pricing</span>
 
-              <div style={{ minHeight: "85%" }}>
-                <TableContainer>
-                  <Table stickyHeader padding="normal" size="medium">
-                    <TableHead>
-                      <TableRow>
-                        {orderColumns.map((item, ind) => (
-                          <TableCell
-                            style={{
-                              fontSize: "medium",
-                              fontWeight: "500",
-                              fontFamily: "Lucida Sans Regular",
-                            }}
-                            align="center"
-                            key={ind}
-                          >
-                            {item}
+                <div style={{ minHeight: "85%" }}>
+                  <TableContainer>
+                    <Table stickyHeader padding="normal" size="medium">
+                      <TableHead>
+                        <TableRow>
+                          {orderColumns.map((item, ind) => (
+                            <TableCell
+                              style={{
+                                fontSize: "medium",
+                                fontWeight: "500",
+                                fontFamily: "Lucida Sans Regular",
+                              }}
+                              align="center"
+                              key={ind}
+                            >
+                              {item}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      </TableHead>
+
+                      <TableBody>
+                        {sizesChosen.length > 0
+                          ? sizesChosen.map((obj, ind) => (
+                              <TableRow key={ind}>
+                                <TableCell align="center">{obj.size}</TableCell>
+                                <TableCell align="center">2</TableCell>
+                                <TableCell align="center">
+                                  {obj.price} ₹
+                                </TableCell>
+                              </TableRow>
+                            ))
+                          : null}
+
+                        <TableRow key={sizesChosen.length + 1 || 0}>
+                          <TableCell sx={noBorder}></TableCell>
+                          <TableCell sx={noBorder} align="center">
+                            Subtotal
                           </TableCell>
-                        ))}
-                      </TableRow>
-                    </TableHead>
+                          <TableCell sx={noBorder} align="center">
+                            {sizesChosen
+                              .map((item) => item.price)
+                              .reduce((acc, cur) => acc + cur, 0) + " ₹" || "-"}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow key={sizesChosen.length + 2 || 1}>
+                          <TableCell sx={noBorder}></TableCell>
+                          <TableCell sx={{ borderBottom: 0 }} align="center">
+                            Shipping
+                          </TableCell>
+                          <TableCell align="center">
+                            {shippingPrice} ₹
+                          </TableCell>
+                        </TableRow>
+                        <TableRow key={sizesChosen.length + 3 || 2}>
+                          <TableCell sx={noBorder}></TableCell>
+                          <TableCell
+                            align="center"
+                            sx={{ fontWeight: "bold", borderBottom: 0 }}
+                          >
+                            Total
+                          </TableCell>
+                          <TableCell
+                            sx={{ fontWeight: "bold", borderBottom: 0 }}
+                            align="center"
+                          >
+                            {sizesChosen
+                              .map((item) => item.price)
+                              .reduce((acc, cur) => acc + cur, 0) +
+                              shippingPrice +
+                              " ₹" || "-"}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </div>
 
-                    <TableBody>
-                      {sizesChosen.length > 0
-                        ? sizesChosen.map((obj, ind) => (
-                            <TableRow key={ind}>
-                              <TableCell align="center">{obj.size}</TableCell>
-                              <TableCell align="center">2</TableCell>
-                              <TableCell align="center">
-                                {obj.price} ₹
-                              </TableCell>
-                            </TableRow>
-                          ))
-                        : null}
-
-                      <TableRow key={sizesChosen.length + 1 || 0}>
-                        <TableCell sx={noBorder}></TableCell>
-                        <TableCell sx={noBorder} align="center">
-                          Subtotal
-                        </TableCell>
-                        <TableCell sx={noBorder} align="center">
-                          {sizesChosen
-                            .map((item) => item.price)
-                            .reduce((acc, cur) => acc + cur, 0) + " ₹" || "-"}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow key={sizesChosen.length + 2 || 1}>
-                        <TableCell sx={noBorder}></TableCell>
-                        <TableCell sx={{ borderBottom: 0 }} align="center">
-                          Shipping
-                        </TableCell>
-                        <TableCell align="center">{shippingPrice} ₹</TableCell>
-                      </TableRow>
-                      <TableRow key={sizesChosen.length + 3 || 2}>
-                        <TableCell sx={noBorder}></TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{ fontWeight: "bold", borderBottom: 0 }}
-                        >
-                          Total
-                        </TableCell>
-                        <TableCell
-                          sx={{ fontWeight: "bold", borderBottom: 0 }}
-                          align="center"
-                        >
-                          {sizesChosen
-                            .map((item) => item.price)
-                            .reduce((acc, cur) => acc + cur, 0) +
-                            shippingPrice +
-                            " ₹" || "-"}
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-
-              <div>
-                <div className="payBtHolder">
-                  <Button onClick={onCompOrderClick} variant="contained">
-                    Complete Order
-                  </Button>
+                <div>
+                  <div className="payBtHolder">
+                    <Button onClick={onCompOrderClick} variant="contained">
+                      Complete Order
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <canvas

@@ -13,13 +13,12 @@ makeApi.interceptors.response.use(
     return res;
   },
   (err) => {
-    if (err.response.status === 401) {
-      // Token expires handle all the logout protocols
-      erToast("Token Expires");
-      window.location.href = "/login";
-      clearLocalStorage();
-      console.log("TOKEN EXPIRES", err);
-    }
+    // if (err.response.status === 401) {
+    //   erToast("Token Expires");
+    //   window.location.href = "/login";
+    //   clearLocalStorage();
+    //   console.log("TOKEN EXPIRES", err);
+    // }
 
     return Promise.reject(err);
   }

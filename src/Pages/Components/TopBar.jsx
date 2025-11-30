@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import styles from "./component.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { CiSearch, CiShoppingCart, CiSliderHorizontal } from "react-icons/ci";
@@ -26,6 +26,27 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
     navigation("/enhancer");
   };
 
+  const onCartClick = () => {
+    navigation("/custOrders");
+  };
+
+  const debounce = (fn, del) => {
+    let timer;
+    console.log("debounce fn:", fn);
+    console.log("debounce del:", del);
+    return (...arg) => {
+      console.log("debounce arg:", ...arg);
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...arg), del);
+    };
+  };
+
+  const handleSearch = (val) => {
+    console.log("handleSearch :", val);
+  };
+
+  const bounceCall = useMemo(() => debounce(handleSearch, 1000), []);
+
   return isCustomer ? (
     <Row className="topBarHolder" style={{ padding: 10, margin: 0 }}>
       <Col md={5} lg={5} sm={12} xs={12} className="brandTextHolder">
@@ -35,7 +56,14 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
 
         <div className="searchBar">
           <CiSearch size={20} style={{ marginLeft: 10, marginRight: 3 }} />
-          <input className="searchInput" placeholder="Search for anything" />
+          <input
+            className="searchInput"
+            placeholder="Search for anything"
+            onChange={(e) => {
+              console.log("typing : ", e.target.value);
+              bounceCall(e.target.value);
+            }}
+          />
         </div>
       </Col>
 
@@ -135,7 +163,12 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
           <CiSliderHorizontal size={27} onClick={() => onMenuClick()} />
         </Button>
 
-        <Button color="primary" variant="text" sx={iconButtonStyle}>
+        <Button
+          color="primary"
+          variant="text"
+          sx={iconButtonStyle}
+          onClick={onCartClick}
+        >
           <CiShoppingCart size={27} />
         </Button>
 

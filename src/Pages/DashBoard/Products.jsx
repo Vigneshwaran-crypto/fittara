@@ -36,6 +36,8 @@ import {
   CiDeliveryTruck,
 } from "react-icons/ci";
 
+import ProfileCard from "../TS/ProfileCard";
+
 const Products = (props) => {
   const dispatch = useDispatch();
   const usr = useSelector(({ main }) => main.user);
@@ -53,27 +55,17 @@ const Products = (props) => {
 
   return (
     <Container fluid className="tabScreens">
-      {/* <div
-        className="backContent"
-        style={{ justifyContent: "space-between", paddingBottom: "10px" }}
-      >
-        <div className="backTexts">
-          <span className="screenTitle">Your Products</span>
-        </div>
-
-        <Button
-          className="addProductBt"
-          variant="outlined"
-          onClick={() => navigation("/dashboard/addProduct")}
-        >
-          Add Product
-        </Button>
-      </div> */}
-
       <div className="orderListContent">
         <div className="filterHolder">
           <div className="filterConts">
             <div className="gridTitle">Your Products</div>
+
+            {/* <ProfileCard
+              user={{ id: 2, name: 2, age: 22 }}
+              onMessage={() => {
+                console.log("hello");
+              }}
+            /> */}
 
             <div className="filterInps">
               <div

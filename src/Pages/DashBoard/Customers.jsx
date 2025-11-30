@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useReducer } from "react";
 import "./MenuOptionsStyles.css";
 import "../Home/styles.css";
 import {
@@ -33,12 +33,38 @@ import {
 } from "react-icons/ci";
 import { Container } from "react-bootstrap";
 
+const reducer = (state, action) => {
+  console.log("reducer :", { state, action });
+
+  switch (action.type) {
+    case "age":
+      return { ...state, age: state.age + 1 };
+
+    default:
+  }
+};
+
 const Customers = () => {
   const orderColumns = ["Id", "Name", "Status", "Payment", "Cash"];
+
+  const initialState = {
+    age: 0,
+    name: "vignesh",
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     sessionStorage.setItem("curPath", "/dashboard/customers");
   }, []);
+
+  useEffect(() => {
+    console.log("Updated State Customers:", state);
+  }, [state]);
+
+  const onTbClick = (item) => {
+    dispatch({ type: "age", age: "22" });
+    console.log("state instant :", state);
+  };
 
   return (
     <Container fluid className="tabScreens">
@@ -121,7 +147,11 @@ const Customers = () => {
 
                 <TableBody>
                   {sampleOrders.map((obj, ind) => (
-                    <TableRow hover key={ind}>
+                    <TableRow
+                      hover
+                      key={ind}
+                      onClick={onTbClick.bind(this, obj)}
+                    >
                       {Object.keys(sampleOrders[0]).map((key, dex) => (
                         <TableCell align="center" key={dex}>
                           {obj[key]}
