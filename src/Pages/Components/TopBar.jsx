@@ -32,10 +32,10 @@ const TopBar = ({ onMenuClick, onUserClick }) => {
 
   const debounce = (fn, del) => {
     let timer;
-    console.log("debounce fn:", fn);
-    console.log("debounce del:", del);
+    // console.log("debounce fn:", fn);
+    // console.log("debounce del:", del);
     return (...arg) => {
-      console.log("debounce arg:", ...arg);
+      // console.log("debounce arg:", ...arg);
       clearTimeout(timer);
       timer = setTimeout(() => fn(...arg), del);
     };

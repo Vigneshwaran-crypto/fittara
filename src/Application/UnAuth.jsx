@@ -23,8 +23,10 @@ const UnAuth = () => {
         style={{ height: "100%", width: "100%" }}
       />
       <div className="loginConts">
-        <span onClick={() => navigation("/login")}>Login</span> To Create{" "}
+        <span onClick={() => navigation("/register")}>Register</span> To Create{" "}
         <span>{shop}</span> Store
+        {/* <span onClick={() => navigation("/login")}>Login</span> To Create{" "}
+        <span>{shop}</span> Store */}
       </div>
     </div>
   );

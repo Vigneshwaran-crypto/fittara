@@ -16,10 +16,6 @@ import Loader from "../Application/Loader.jsx";
 import Splash from "../Application/Splash.jsx";
 import CustomerOrders from "../Pages/Home/CustomerOrders.jsx";
 import Notes from "../Pages/Home/Notes.jsx";
-// import Enhancer from "../Pages/DashBoard/Editor/Enhancer.jsx";
-
-// const Loader = lazy(() => import("../Application/Loader.jsx"));
-// const Splash = lazy(() => import("../Application/Splash.jsx"));
 
 const UnAuth = lazy(() => import("../Application/UnAuth.jsx"));
 const Home = lazy(() => import("../Pages/Home/Home.jsx"));
@@ -35,14 +31,19 @@ const Router = () => {
   const isCust = new URL(window.location.href).hostname.split(".").length > 1;
 
   const navigation = useNavigate();
-  const curPath = sessionStorage.getItem("curPath") || "/splash";
+  const curPath = sessionStorage.getItem("curPath");
 
   useEffect(() => {
+    console.log("Auth Host Router:", window.location.href);
     console.log("isCust in Router :", isCust);
     console.log("userToken in Router :", userToken);
     console.log("curPath in Router :", curPath);
-    if (curPath !== "/splash") navigation(curPath);
-    if (userToken) {
+
+    if (!isCust && !userToken) {
+      navigation("/unauth");
+    } else if (isCust) navigation("/");
+    else if (curPath !== "/splash") navigation(curPath);
+    else if (userToken) {
       const [header, payload, signature] = userToken.split(".");
       const usr = JSON.parse(atob(payload));
       dispatch(reduxStore(saveUser(usr)));
@@ -71,14 +72,7 @@ const Router = () => {
         }
       />
 
-      <Route
-        path="/custOrders"
-        element={
-          // <Suspense fallback={<Loader />}>
-          <CustomerOrders />
-          // </Suspense>
-        }
-      />
+      <Route path="/custOrders" element={<CustomerOrders />} />
 
       <Route
         path="/viewOrder"
@@ -98,24 +92,12 @@ const Router = () => {
         }
       />
 
-      {/* <Route
-        path="/enhancer"
-        element={
-          <Suspense fallback={<Loader />}>
-            <Enhancer />
-          </Suspense>
-        }
-      /> */}
-
-      {/* isCustomer && */}
-      {/* {isCust && ( */}
       <>
         <Route
           path="/home"
           element={
             <Suspense fallback={<Loader />}>
               <Home />
-              {/* <Notes /> */}
             </Suspense>
           }
         />
@@ -129,10 +111,7 @@ const Router = () => {
           }
         />
       </>
-      {/* )} */}
 
-      {/* !isCustomer */}
-      {/* {userToken && !isCust && ( */}
       <>
         <Route
           path="/dashboard/*"
@@ -144,13 +123,11 @@ const Router = () => {
           }
         />
       </>
-      {/* )} */}
     </Routes>
   );
 };
 
 const AppRouter = () => {
-  // basename="fittara"
   return (
     <BrowserRouter>
       <Router />

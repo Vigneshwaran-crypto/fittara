@@ -66,9 +66,7 @@ const LogIn = () => {
           console.log("authenticateUser res :", res);
           if (res.data.status === 1) {
             // dispatch(reduxStore(saveUser(res.data.data)));
-
             dispatch(reduxStore({ ...userData, type: SAVE_USER }));
-
             setUserToken(res.data.data.token);
             navigation("/dashboard/products");
             toast.success("Login successfully");

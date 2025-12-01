@@ -17,6 +17,7 @@ const Splash = () => {
   const urlparts = new URL(urlFromBrowser);
 
   useEffect(() => {
+    console.log("Splash works");
     // console.log("URL from browser in Splash:", urlparts.hostname.split("."));
     checkLastActivity();
   }, []);
@@ -29,33 +30,35 @@ const Splash = () => {
     // }
 
     const domains = urlparts.hostname.split(".");
+    const userName = domains[0];
     // client's url with subdomain as their userName
     console.log("founded domain :", domains);
 
     if (domains.length > 1) {
-      navigation("/home", { replace: true });
-      const userName = domains[0];
+      // navigation("/home", { replace: true });
       getUserByDomain({ userName: userName })
         .then((res) => {
           console.log("getUserByDomain res :", res);
           if (res.data.status === 1) {
             const shopData = res.data.data;
-            if (shopData.isSeller) {
-              navigation("/dashboard/products", { replace: true });
-            } else {
-              navigation("/home", { replace: true });
-            }
-
             dispatch(reduxStore(shopDetailsStore(shopData)));
+            navigation("/home", { replace: true });
+            // if (shopData.isSeller) {
+            //   navigation("/dashboard/products", { replace: true });
+            // } else {
+            //   navigation("/home", { replace: true });
+            // }
           } else {
             navigation("/unauth", { state: { shop: userName } });
           }
         })
         .catch((err) => {
-          checkForToken();
+          navigation("/unauth", { state: { shop: "Your" } });
+          // checkForToken();
         });
     } else {
-      navigation("/dashboard/orders", { replace: true });
+      // navigation("/unauth", { state: { shop: "Your" } });
+      // navigation("/dashboard/orders", { replace: true });
       checkForToken();
     }
   };
@@ -66,17 +69,18 @@ const Splash = () => {
       console.log("userToken navigate");
       navigation("/dashboard/products", { replace: true });
     } else {
-      console.log("Home navigate");
+      console.log("unauth navigate");
 
-      navigation("/home", { replace: true });
-      // sessionStorage.setItem("curPath", "/login");
-      // navigation("/login", { replace: true });
+      // navigation("/home", { replace: true });
+      sessionStorage.setItem("curPath", "/login");
+      navigation("/unauth", { replace: true });
     }
   };
 
   return (
     <div className="splashCont">
       <Lottie loop animationData={splashLoad} play />
+      splash
     </div>
   );
 };
