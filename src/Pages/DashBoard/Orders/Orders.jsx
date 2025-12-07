@@ -123,7 +123,6 @@ const Orders = () => {
   ];
 
   useEffect(() => {
-    sessionStorage.setItem("curPath", "/dashboard/orders");
     setLoader(true);
     getAllOrders()
       .then((res) => {

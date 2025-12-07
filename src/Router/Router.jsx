@@ -1,21 +1,9 @@
-import React, { lazy, Suspense, useEffect } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import { getUserToken } from "../Common/SessionHandler.js";
-import { useDispatch } from "react-redux";
-import { reduxStore } from "../ReduxToolKit/MainSlice.js";
-import { saveUser } from "../ReduxToolKit/Actions.js";
-import { isCustomer } from "../Common/Constant.js";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loader from "../Application/Loader.jsx";
 import Splash from "../Application/Splash.jsx";
 import CustomerOrders from "../Pages/Home/CustomerOrders.jsx";
-import Notes from "../Pages/Home/Notes.jsx";
+import AuthRoute from "./AuthRoute.jsx";
 
 const UnAuth = lazy(() => import("../Application/UnAuth.jsx"));
 const Home = lazy(() => import("../Pages/Home/Home.jsx"));
@@ -24,32 +12,9 @@ const Register = lazy(() => import("../Pages/Auth/Register.jsx"));
 const Editor = lazy(() => import("../Pages/DashBoard/Editor/Editor.jsx"));
 const NavigationRouter = lazy(() => import("./NavigationRouter.jsx"));
 const ViewOrder = lazy(() => import("../Pages/DashBoard/Orders/ViewOrder.jsx"));
-
+// 1 - customer
+// 2 - admin
 const Router = () => {
-  const dispatch = useDispatch();
-  const userToken = getUserToken();
-  const isCust = new URL(window.location.href).hostname.split(".").length > 1;
-
-  const navigation = useNavigate();
-  const curPath = sessionStorage.getItem("curPath");
-
-  useEffect(() => {
-    console.log("Auth Host Router:", window.location.href);
-    console.log("isCust in Router :", isCust);
-    console.log("userToken in Router :", userToken);
-    console.log("curPath in Router :", curPath);
-
-    if (!isCust && !userToken) {
-      navigation("/unauth");
-    } else if (isCust) navigation("/");
-    else if (curPath !== "/splash") navigation(curPath);
-    else if (userToken) {
-      const [header, payload, signature] = userToken.split(".");
-      const usr = JSON.parse(atob(payload));
-      dispatch(reduxStore(saveUser(usr)));
-    }
-  }, []);
-
   return (
     <Routes>
       <Route path="/*" index element={<Splash />} />
@@ -72,13 +37,22 @@ const Router = () => {
         }
       />
 
-      <Route path="/custOrders" element={<CustomerOrders />} />
+      <Route
+        path="/custOrders"
+        element={
+          <AuthRoute>
+            <CustomerOrders />
+          </AuthRoute>
+        }
+      />
 
       <Route
         path="/viewOrder"
         element={
           <Suspense fallback={<Loader />}>
-            <ViewOrder />
+            <AuthRoute roles={[1]}>
+              <ViewOrder />
+            </AuthRoute>
           </Suspense>
         }
       />
@@ -97,7 +71,9 @@ const Router = () => {
           path="/home"
           element={
             <Suspense fallback={<Loader />}>
-              <Home />
+              <AuthRoute roles={[1]}>
+                <Home />
+              </AuthRoute>
             </Suspense>
           }
         />
@@ -106,7 +82,9 @@ const Router = () => {
           path="/editor"
           element={
             <Suspense fallback={<Loader />}>
-              <Editor />
+              <AuthRoute roles={[1]}>
+                <Editor />
+              </AuthRoute>
             </Suspense>
           }
         />
@@ -118,7 +96,9 @@ const Router = () => {
           exact
           element={
             <Suspense fallback={<Loader />}>
-              <NavigationRouter />
+              <AuthRoute roles={[2]}>
+                <NavigationRouter />
+              </AuthRoute>
             </Suspense>
           }
         />

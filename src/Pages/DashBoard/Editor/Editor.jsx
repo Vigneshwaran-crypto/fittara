@@ -753,10 +753,6 @@ const Editor = () => {
   const sampImages = [samp1, samp2, samp3, samp4, samp5, samp6];
 
   useEffect(() => {
-    sessionStorage.setItem("curPath", "/editor");
-  }, []);
-
-  useEffect(() => {
     console.log("shopDetails :", shopDetails);
   }, [shopDetails]);
 

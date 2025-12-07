@@ -101,10 +101,6 @@ const Home = ({ noTopBar = false }) => {
     offer11,
   ];
 
-  useEffect(() => {
-    sessionStorage.setItem("curPath", "/home");
-  }, []);
-
   const onCatItemClick = (item) => {
     console.log("onCatItemClick item :", item);
     navigation("/editor", { state: { prod: item.id } });

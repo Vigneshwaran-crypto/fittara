@@ -4,10 +4,6 @@ import "../MenuOptionsStyles.css";
 import { Button } from "@mui/material";
 
 const Policy = () => {
-  useEffect(() => {
-    sessionStorage.setItem("curPath", "/dashboard/policies");
-  }, []);
-
   return (
     <Container fluid className="tabScreens">
       <div className="policeParent">

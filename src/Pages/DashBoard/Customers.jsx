@@ -54,10 +54,6 @@ const Customers = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    sessionStorage.setItem("curPath", "/dashboard/customers");
-  }, []);
-
-  useEffect(() => {
     console.log("Updated State Customers:", state);
   }, [state]);
 

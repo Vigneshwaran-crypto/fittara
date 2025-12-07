@@ -107,10 +107,6 @@ const Analytics = () => {
 
   const orderColumns = ["Id", "Name", "Payment", "Status", "Cash"];
 
-  useEffect(() => {
-    sessionStorage.setItem("curPath", "/dashboard/analytics");
-  }, []);
-
   return (
     <Container fluid className="tabScreens">
       <div className="filterHolder">

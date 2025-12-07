@@ -193,10 +193,6 @@ const AddProduct = () => {
     []
   );
 
-  useEffect(() => {
-    sessionStorage.setItem("curPath", "/dashboard/addProduct");
-  }, []);
-
   const onImageUploadClick = (val) => {
     imgBtInd.current = val;
     imageUploadRef.current.click();

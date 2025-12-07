@@ -39,10 +39,6 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    sessionStorage.setItem("curPath", "/register");
-  }, []);
-
-  useEffect(() => {
     if (Object.keys(user).length !== 0) {
       axios
         .get(

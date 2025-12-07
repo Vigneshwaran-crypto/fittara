@@ -42,10 +42,6 @@ const LogIn = () => {
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
-  useEffect(() => {
-    sessionStorage.setItem("curPath", "/login");
-  }, []);
-
   const onSigInClick = () => {
     if (!email) {
       toast.error("Enter email");

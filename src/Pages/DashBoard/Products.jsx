@@ -46,10 +46,6 @@ const Products = (props) => {
   const orderColumns = ["Id", "Name", "In-Stock", "Status", "Price"];
 
   useEffect(() => {
-    sessionStorage.setItem("curPath", "/dashboard/products");
-  }, []);
-
-  useEffect(() => {
     console.log("userData", usr);
   }, []);
 

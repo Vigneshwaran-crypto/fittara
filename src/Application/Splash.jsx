@@ -13,74 +13,65 @@ import { isCustomer } from "../Common/Constant";
 const Splash = () => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
-  const urlFromBrowser = window.location.href;
-  const urlparts = new URL(urlFromBrowser);
+  const userToken = getUserToken();
+
+  const isCust = new URL(window.location.href).hostname.split(".").length > 1;
 
   useEffect(() => {
-    console.log("Splash works");
-    // console.log("URL from browser in Splash:", urlparts.hostname.split("."));
-    checkLastActivity();
+    console.group("Splash Works");
+    console.log("Auth Host Splash:", window.location.href);
+    console.log("isCust in Splash :", isCust);
+    console.log("userToken in Splash :", userToken);
+    console.groupEnd();
+
+    if (!isCust && !userToken) {
+      navigation("/login");
+    }
+
+    if (isCust) {
+      navToShop();
+    } else {
+      authAdmin();
+    }
   }, []);
 
-  const checkLastActivity = () => {
-    // if (isCustomer) {
-    //   navigation("/home", { replace: true });
-    // } else {
-    //   navigation("/dashboard/orders", { replace: true });
-    // }
-
+  const navToShop = () => {
+    const urlparts = new URL(window.location.href);
+    console.log("urlparts in navToShop :", urlparts);
     const domains = urlparts.hostname.split(".");
     const userName = domains[0];
-    // client's url with subdomain as their userName
-    console.log("founded domain :", domains);
-
-    if (domains.length > 1) {
-      // navigation("/home", { replace: true });
-      getUserByDomain({ userName: userName })
-        .then((res) => {
-          console.log("getUserByDomain res :", res);
-          if (res.data.status === 1) {
-            const shopData = res.data.data;
-            dispatch(reduxStore(shopDetailsStore(shopData)));
-            navigation("/home", { replace: true });
-            // if (shopData.isSeller) {
-            //   navigation("/dashboard/products", { replace: true });
-            // } else {
-            //   navigation("/home", { replace: true });
-            // }
-          } else {
-            navigation("/unauth", { state: { shop: userName } });
-          }
-        })
-        .catch((err) => {
-          navigation("/unauth", { state: { shop: "Your" } });
-          // checkForToken();
-        });
-    } else {
-      // navigation("/unauth", { state: { shop: "Your" } });
-      // navigation("/dashboard/orders", { replace: true });
-      checkForToken();
-    }
+    console.log("Shop domain :", domains);
+    getUserByDomain({ userName: userName })
+      .then((res) => {
+        console.log("getUserByDomain res :", res);
+        if (res.data.status === 1) {
+          const shopData = res.data.data;
+          dispatch(reduxStore(shopDetailsStore(shopData)));
+          navigation("/home", { replace: true });
+        } else {
+          navigation("/unauth", { state: { shop: userName } });
+        }
+      })
+      .catch((err) => {
+        navigation("/unauth", { state: { shop: "Your" } });
+      });
   };
 
-  const checkForToken = () => {
-    const userToken = getUserToken();
+  const authAdmin = () => {
     if (userToken) {
-      console.log("userToken navigate");
+      const [header, payload, signature] = userToken.split(".");
+      const usr = JSON.parse(atob(payload));
+      console.log("user from token :", atob(payload));
+      dispatch(reduxStore(saveUser(usr)));
       navigation("/dashboard/products", { replace: true });
     } else {
-      console.log("unauth navigate");
-
-      // navigation("/home", { replace: true });
-      sessionStorage.setItem("curPath", "/login");
-      navigation("/unauth", { replace: true });
+      navigation("/login");
     }
   };
 
   return (
     <div className="splashCont">
       <Lottie loop animationData={splashLoad} play />
-      splash
     </div>
   );
 };

@@ -22,7 +22,6 @@ const NavigationRouter = () => {
         <Route path="analytics" element={<Analytics />} />
         <Route path="policies" element={<Policy />} />
         <Route path="orders" element={<Orders />} />
-        {/* <Route path="viewOrder" element={<ViewOrder />} /> */}
         <Route path="settings" element={<Settings />} />
         <Route path="userAccount" element={<UserAccount />} />
         <Route path="addProduct" element={<AddProduct />} />

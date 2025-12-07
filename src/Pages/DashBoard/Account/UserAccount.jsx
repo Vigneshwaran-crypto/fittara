@@ -6,10 +6,6 @@ import Home from "../../Home/Home";
 import "../../Home/styles.css";
 
 const UserAccount = () => {
-  useEffect(() => {
-    sessionStorage.setItem("curPath", "/dashboard/userAccount");
-  }, []);
-
   return (
     <div className="screenContainer">
       <div className="rowHolder">
