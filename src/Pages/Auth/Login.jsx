@@ -135,31 +135,6 @@ const LogIn = () => {
     onError: (err) => console.log("onGLogError : ", err),
   });
 
-  const onContinueClick = () => {
-    console.log("userData in onContinueClick : ", userData);
-
-    const changedUser = { ...userData };
-    changedUser.isSeller = seller;
-
-    console.log("updated user data : ", changedUser);
-
-    updateUser(changedUser)
-      .then((res) => {
-        console.log("user updated successfully : ", res);
-        if (res.data.status === 1) {
-          dispatch(reduxStore(saveUser(changedUser)));
-          setUserToken(changedUser.token);
-          navigation("/dashboard/products");
-        } else {
-          console.log("authenticateUser err : ");
-          toast.error("Something went wrong");
-        }
-      })
-      .catch((err) => {
-        console.log("userUpdate failed");
-      });
-  };
-
   return (
     <Container
       className="registerContainer"
@@ -169,7 +144,6 @@ const LogIn = () => {
       {loader && <Loader />}
       <Toaster />
 
-      {/* {isLogin ? ( */}
       <Row md={12} sm={12} lg={12} xl={12} className="registerBigCardHolder">
         <Col md={6} sm={8} lg={6} xl={4} className="registerBigCard">
           <div className="loginTitle">Login</div>
@@ -250,33 +224,6 @@ const LogIn = () => {
           </div>
         </Col>
       </Row>
-      {/* // ) : (
-      //   <Row className="registerBigCardHolder fadeInUp-animation">
-      //     <Col md={6} sm={8} lg={6} xl={4} className="registerBigCard">
-      //       <div className="loginTitle">Welcome to our app</div>
-
-      //       {seller ? (
-      //         <div className="loginSubText">Boost Your Business with Us.</div>
-      //       ) : (
-      //         <div className="loginSubText">
-      //           Discover the Best Deals, All in One Place.
-      //         </div>
-      //       )}
-
-      //       <div className="inputsHolder">
-      //         <CustomSwitch curSwitch={(flag) => setSeller(flag)} />
-
-      //         <Button
-      //           style={{ textTransform: "none" }}
-      //           variant="contained"
-      //           onClick={onContinueClick}
-      //         >
-      //           Continue
-      //         </Button>
-      //       </div>
-      //     </Col>
-      //   </Row>
-      // )} */}
 
       <div className="copyRightsHolder">
         <div className="copyRightText">Copyright @shopzape2024</div>|

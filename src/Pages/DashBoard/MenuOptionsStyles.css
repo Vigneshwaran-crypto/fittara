@@ -295,8 +295,9 @@
 }
 
 .userProfileContainer {
-  /* border: 1px solid black; */
+  /* border: 1px solid red; */
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   flex-direction: column;
@@ -306,28 +307,31 @@
   display: flex;
   /* border: 1px solid black; */
   justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 70%;
+  height: 100%;
 }
 
 .userImgHolder {
-  display: flex;
   /* border: 1px solid green; */
+  display: flex;
   overflow: hidden;
-  flex: 0.35;
-  flex: 0.45;
-  border-radius: 100%;
-  width: 100%;
 }
 
 .userImage {
+  /* border: 1px solid red; */
   display: flex;
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  border-radius: 50%;
+  object-fit: contain;
 }
 
 .profileIconsHolder {
   /* border: 1px solid black; */
   display: flex;
+  flex: 1;
   width: 100%;
   justify-content: space-around;
 }

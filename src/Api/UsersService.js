@@ -31,9 +31,9 @@ export const verifyUser = (req) => {
 export const updateUser = (req) => {
   return apiHit({
     url: baseURL + "updateUser",
-    headers: HTTP.HEADERS,
+    headers: HTTP.formDataHeader,
     method: "post",
-    data: JSON.stringify(req),
+    data: req,
   });
 };
 

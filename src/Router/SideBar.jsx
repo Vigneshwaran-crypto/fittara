@@ -5,32 +5,25 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { Toaster } from "react-hot-toast";
 import { CgChevronDoubleRight } from "react-icons/cg";
 import {
-  CiBookmark,
-  CiGift,
-  CiCircleList,
-  CiSliderVertical,
-  CiShare1,
   CiAlignBottom,
+  CiCircleList,
   CiGrid41,
-  CiShop,
-  CiViewList,
   CiPen,
+  CiShop,
 } from "react-icons/ci";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import userImage from "../Assets/auth/userProfile.png";
 import TopBar from "../Pages/Components/TopBar";
+import UserDetails from "../Pages/Components/UserDetails";
 import { iconButtonStyle } from "../Pages/Components/utils";
 import "../Pages/DashBoard/MenuOptionsStyles.css";
-import UserDetails from "../Pages/Components/UserDetails";
 
 const buttonAct = {
-  // margin: 1,
   paddingBlock: "6px",
   borderRadius: 1.5,
   backgroundColor: "#292929",
@@ -49,7 +42,6 @@ const buttonAct = {
 };
 
 const buttonInAct = {
-  // margin: 1,
   paddingBlock: "6px",
   borderRadius: 1.5,
   color: "black",
@@ -241,8 +233,6 @@ const SideBar = () => {
               <div className="userTextHolder">
                 <div className="userNameText">Admin</div>
                 <div className="userMailText">admin@gmail.com</div>
-
-                {/* <a className="loginLinkText">Login</a> */}
               </div>
             )}
           </ListItemButton>

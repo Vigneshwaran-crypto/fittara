@@ -4,6 +4,10 @@ import Loader from "../Application/Loader.jsx";
 import Splash from "../Application/Splash.jsx";
 import CustomerOrders from "../Pages/Home/CustomerOrders.jsx";
 import AuthRoute from "./AuthRoute.jsx";
+import { getUserToken } from "../Common/SessionHandler.js";
+import { useDispatch } from "react-redux";
+import { reduxStore } from "../ReduxToolKit/MainSlice.js";
+import { saveUser } from "../ReduxToolKit/Actions.js";
 
 const UnAuth = lazy(() => import("../Application/UnAuth.jsx"));
 const Home = lazy(() => import("../Pages/Home/Home.jsx"));
@@ -15,6 +19,17 @@ const ViewOrder = lazy(() => import("../Pages/DashBoard/Orders/ViewOrder.jsx"));
 // 1 - customer
 // 2 - admin
 const Router = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const userToken = getUserToken();
+    if (userToken) {
+      const [header, payload, signature] = userToken.split(".");
+      const usr = JSON.parse(atob(payload));
+      dispatch(reduxStore(saveUser(usr)));
+    }
+  }, []);
+
   return (
     <Routes>
       <Route path="/*" index element={<Splash />} />

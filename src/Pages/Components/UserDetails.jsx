@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../DashBoard/MenuOptionsStyles.css";
 import userImage from "../../Assets/auth/userProfile.png";
 import { Button, InputAdornment, styled, TextField } from "@mui/material";
@@ -6,9 +6,14 @@ import { FloatingLabel, Form } from "react-bootstrap";
 import { CiTrophy } from "react-icons/ci";
 import { CiMedal } from "react-icons/ci";
 import { CiShoppingBasket } from "react-icons/ci";
+import { useSelector } from "react-redux";
+import { updateUser } from "../../Api/UsersService";
 
 const UserDetails = (props) => {
   const [isEdit, setIsEdit] = useState(false);
+  const usrInpImgRef = useRef(null);
+
+  const usr = useSelector(({ main }) => main.user);
 
   const [userData, setUserData] = useState({
     email: "Vickytata619@gmail.com",
@@ -17,50 +22,8 @@ const UserDetails = (props) => {
     phone: "8807207198",
     address:
       "4/7 Narayana swamy street, Thiruvottiyur , chennai - 19 , tamilnadu , india",
-  });
-
-  const Minput = styled(TextField)({
-    "& .MuiInputBase-root": {
-      // border: "1px solid red",
-      // padding: 0,
-      fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-      fontSize: "15px !important",
-    },
-    "& .MuiInput-underline:before": {
-      borderBottomColor: isEdit ? "#96A0B2" : "transparent",
-      borderBottomWidth: "1px",
-    },
-    "& .MuiInput-underline:after": {
-      borderBottomColor: isEdit ? "#96A0B2" : "transparent",
-      borderBottomWidth: "1px",
-    },
-    "&:hover .MuiInput-underline:before": {
-      borderBottomWidth: "1px !important",
-      borderBottomColor: isEdit
-        ? "#96A0B2  !important"
-        : "transparent  !important",
-    },
-    "& .MuiInputLabel-root": {
-      fontFamily: "sans-serif",
-      borderBottomWidth: "1px",
-    },
-    "& .MuiInputLabel-root.Mui-focused": {
-      fontSize: "18px",
-      fontWeight: "bold",
-      color: "#96A0B2",
-    },
-    "& .MuiInputLabel-root.MuiFormLabel-filled": {
-      fontSize: "18px",
-    },
-
-    "& .MuiInputLabel-root:not(.Mui-focused)": {
-      fontSize: "18px",
-      fontWeight: "bold",
-      color: "#96A0B2",
-    },
-    "&:not(.Mui-focused):not(.MuiInputLabel-shrink)": {
-      fontSize: "10px",
-    },
+    profile: userImage,
+    imgFile: {},
   });
 
   const lableSize = {
@@ -113,8 +76,44 @@ const UserDetails = (props) => {
     },
   };
 
+  useEffect(() => {
+    console.log("usr details comp :", usr);
+  }, [usr]);
+
+  const onChosenImg = (e) => {
+    console.log("onChosenImg :", e);
+    if (e.target.files.length > 0) {
+      setUserData({
+        ...userData,
+        imgFile: e.target.files[0],
+        profile: URL.createObjectURL(e.target.files[0]),
+      });
+    }
+  };
+
   const onUpdateClick = () => {
     setIsEdit(!isEdit);
+
+    if (isEdit) {
+      console.log("onUpdateClick :", userData);
+
+      const formReq = new FormData();
+      formReq.append("id", usr.id);
+      formReq.append("userName", userData.userName);
+      formReq.append("email", usr.email);
+      formReq.append("bio", userData.bio);
+      formReq.append("phoneNumber", userData.phone);
+      formReq.append("address", userData.address);
+      formReq.append("profileImageFile", userData.imgFile);
+
+      updateUser(formReq)
+        .then((res) => {
+          console.log("updateUser res :", res);
+        })
+        .catch((err) => {
+          console.log("updateUser catch :", err);
+        });
+    }
   };
 
   return (
@@ -129,7 +128,17 @@ const UserDetails = (props) => {
       <div className="userProfileContainer">
         <div className="userImageWrapper">
           <div className="userImgHolder">
-            <img className="userImage" src={userImage} alt="inage" />
+            <img
+              style={{
+                height: "25dvh",
+                width: "25dvh",
+                objectFit: "fill",
+              }}
+              className="userImage"
+              src={userData.profile}
+              alt="inage"
+              onClick={isEdit ? () => usrInpImgRef.current?.click() : null}
+            />
           </div>
         </div>
 
@@ -232,6 +241,14 @@ const UserDetails = (props) => {
             }
           />
         </div>
+
+        <input
+          type="file"
+          accept="image/png, image/gif, image/jpeg"
+          style={{ display: "none" }}
+          ref={usrInpImgRef}
+          onChange={onChosenImg}
+        />
 
         <Button
           sx={{
