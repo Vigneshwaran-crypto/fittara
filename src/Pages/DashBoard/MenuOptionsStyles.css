@@ -1,7 +1,8 @@
 :root {
   --mildGrey: #f6f6f6;
   --mainFont: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  --subFont: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+  --subFont:
+    "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   --subColor: #3c3d37;
 }
@@ -101,7 +102,8 @@
     transition: 0.5s ease-in-out;
     position: absolute !important;
     z-index: 1;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    box-shadow:
+      rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
       rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
     z-index: 50;
@@ -192,7 +194,8 @@
   align-items: center;
   border-radius: 4px !important;
   background-color: white !important;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
     rgba(0, 0, 0, 0.01) 0px 1px 2px 0px;
   padding: 0 !important;
   padding-block: 10px !important;
@@ -1284,6 +1287,7 @@
   height: 100%;
   max-width: 100%;
   min-height: auto;
+  background-color: white;
 }
 
 .paginationHolder {
@@ -1916,6 +1920,17 @@
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.basicForm {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-block: 12px;
+  border: 1px solid red;
 }
 
 @media screen and (max-width: 600px) {
